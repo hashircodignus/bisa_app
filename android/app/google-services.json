@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "206724845736",
+    "project_id": "bisa-app-848a5",
+    "storage_bucket": "bisa-app-848a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206724845736:android:b0e45fc0eb85d5542cf29d",
+        "android_client_info": {
+          "package_name": "com.example.bisa_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsB8CU5y6ltGSySSgt7yNqZUhfEIOJmtY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
