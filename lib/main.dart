@@ -1,4 +1,4 @@
-import 'package:bisa_app/src/presentation/widget/auth_page.dart';
+import 'package:bisa_app/src/presentation/select_country_screen/select_country_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         ),
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        home: const AuthPage(),
+        home:  SelectCountryPage(),
       );
       },designSize:const Size(430, 932),
     );
