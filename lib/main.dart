@@ -23,11 +23,6 @@ class MyApp extends StatelessWidget {
     return  ScreenUtilInit(
       builder:(_ , child) {
         return MaterialApp(
-        theme: ThemeData(
-          textSelectionTheme: const TextSelectionThemeData(
-            selectionHandleColor: Colors.transparent
-          )
-        ),
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         home:  SelectCountryPage(),
