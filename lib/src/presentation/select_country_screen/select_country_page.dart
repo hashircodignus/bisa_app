@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/terms_and_conditions_screen/terms_and_conditions_page.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:country_picker/country_picker.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/resources/asset_resources.dart';
+import '../widget/country_text_field.dart';
 
 class SelectCountryPage extends StatefulWidget {
   const SelectCountryPage({super.key});
@@ -12,6 +14,7 @@ class SelectCountryPage extends StatefulWidget {
   @override
   State<SelectCountryPage> createState() => _SelectCountryPageState();
 }
+
 
 class _SelectCountryPageState extends State<SelectCountryPage> {
   final TextEditingController countryController = TextEditingController();
@@ -109,8 +112,15 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
-          child: const ButtonWidget(
+
+          child: ButtonWidget(
             buttonTextContent: "GO AHEAD",
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const TermsAndConditionsPage()));
+            },
           ),
         ));
   }
