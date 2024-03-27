@@ -1,44 +1,65 @@
-import 'package:bisa_app/src/presentation/create_password_screen/create_password_page.dart';
+import 'package:bisa_app/src/presentation/widget/appbar_back_button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
-import 'package:bisa_app/src/presentation/widget/head_container.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
+
+import '../card_type_page/card_type_page.dart';
 
 class OTPPage extends StatefulWidget {
   final String? phoneNumber;
-  final String verificationId;
-  const OTPPage({super.key,this.phoneNumber,required this.verificationId});
+  //final String verificationId;
+  const OTPPage({super.key, this.phoneNumber,
+  //  required this.verificationId
+  });
 
   @override
   State<OTPPage> createState() => _OTPPageState();
 }
+
 class _OTPPageState extends State<OTPPage> {
   final TextEditingController _pinController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const AppBarBackButton(),
+        ),
         body: Container(
-          padding:  EdgeInsets.symmetric(horizontal: 20.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
           color: AppTheme.backColor,
-          child:  SingleChildScrollView(
+          child: SingleChildScrollView(
             child: Column(
               children: [
-                 SizedBox(height: 100.h,),
-                 Padding(
-                   padding:  EdgeInsets.symmetric(horizontal: 45.w),
-                   child: HeadContainer(headingText: "ENTER YOUR OTP",
-                      smallTitleText: "Otp Will be Send to Your Registered Email or Mobile Number",
-                      image: AssetImage(AssetResources.otpIcon),containerHeight: 311.h,containerWidth: 299.w,logoHeight: 179.h,logoWidth: 100.w),
-                 ),
-                 SizedBox(height: 118.h,),
+                SizedBox(
+                  height: 21.h,
+                ),
+                Lottie.asset(AssetResources.otpLottie,
+                    width: 179.w, height: 179.h),
+                SizedBox(
+                  height: 40.h,
+                ),
+                Text(
+                  "Enter Your OTP",
+                  style: AppTheme.headText,
+                ),
+                Text(
+                  "OTP Will Send to Your Registerd Email or\nMobile Number",
+                  style: AppTheme.smallHead,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 60.h,
+                ),
                 Container(
                   height: 59.h,
                   width: double.infinity,
@@ -46,31 +67,40 @@ class _OTPPageState extends State<OTPPage> {
                   child: Pinput(
                     controller: _pinController,
                     length: 6,
-
                   ),
                 ),
-                 SizedBox(height: 235.h,),
-                ButtonWidget(buttonTextContent: "GO",onPressed: ()async{
-                  showDialog(context: context, builder: (context){
-                    return const Center(child: CircularProgressIndicator(
-                      color: AppTheme.textColor,
-                    ));
-                  });
-                  PhoneAuthCredential credential = PhoneAuthProvider.credential(
-                      verificationId: widget.verificationId,
-                      smsCode: _pinController.text);
-                  await FirebaseFirestore.instance.collection('users').add(
-                      {
-                        'phoneNumber':widget.phoneNumber
-                      });
-                  await auth.signInWithCredential(credential).then((value) {
-                    Navigator.push(context, MaterialPageRoute(builder: (
-                        context) =>  CreatePasswordPage(phoneNumber: widget.phoneNumber,)));
-                  });
-                })
               ],
             ),
           ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
+          child: ButtonWidget(
+              buttonTextContent: "GO",
+              onPressed: () async {
+                // showDialog(context: context, builder: (context){
+                //   return const Center(child: CircularProgressIndicator(
+                //     color: AppTheme.textColor,
+                //   ));
+                // });
+                // PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                //     verificationId: widget.verificationId,
+                //     smsCode: _pinController.text);
+                // await FirebaseFirestore.instance.collection('users').add(
+                //     {
+                //       'phoneNumber':widget.phoneNumber
+                //     });
+                // await auth.signInWithCredential(credential).then((value) {
+                //   Navigator.push(context, MaterialPageRoute(builder: (
+                //       context) =>  const CardTypePage()));
+                // });
+
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CardTypePage()),
+                    (route) => false);
+              }),
         ),
       ),
     );

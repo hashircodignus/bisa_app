@@ -1,9 +1,12 @@
+import 'package:bisa_app/src/presentation/terms_and_conditions_screen/terms_and_conditions_page.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/asset_resources.dart';
+import '../widget/country_text_field.dart';
+
 
 class SelectCountryPage extends StatefulWidget {
   const SelectCountryPage({super.key});
@@ -11,6 +14,12 @@ class SelectCountryPage extends StatefulWidget {
   @override
   State<SelectCountryPage> createState() => _SelectCountryPageState();
 }
+
+class SelectCountryPage extends StatelessWidget {
+  SelectCountryPage({super.key});
+
+  final TextEditingController countryController = TextEditingController();
+
 
 class _SelectCountryPageState extends State<SelectCountryPage> {
   final TextEditingController countryController = TextEditingController();
@@ -30,11 +39,19 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                   height: 39.h,
                   width: 105.w,
                 ),
+
               ),
               SizedBox(
                 height: 100.h,
               ),
               SizedBox(
+
+              ),
+              SizedBox(
+                height: 100.h,
+              ),
+              SizedBox(
+
                 height: 92.h,
                 child: Column(
                   children: [
@@ -53,6 +70,7 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
               SizedBox(
                 height: 60.h,
               ),
+
               SizedBox(
                 height: 59.h,
                 child: TextFormField(
@@ -101,13 +119,27 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                   ),
                 ),
               )
+
+              CountryTextField(countryController: countryController)
+
             ],
           ),
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
+
           child: const ButtonWidget(
             buttonTextContent: "GO AHEAD",
+
+          child: ButtonWidget(
+            buttonTextContent: "GO AHEAD",
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const TermsAndConditionsPage()));
+            },
+
           ),
         ));
   }
