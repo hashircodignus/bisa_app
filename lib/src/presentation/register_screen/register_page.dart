@@ -1,8 +1,6 @@
-import 'package:bisa_app/src/presentation/create_password_screen/create_password_page.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/userid_textfield.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,68 +24,68 @@ class _RegisterPageState extends State<RegisterPage> {
         SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
   }
 
-  void verifyPhoneNumber() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-              child: CircularProgressIndicator(
-            color: AppTheme.textColor,
-          ));
-        });
-    try {
-      await auth.verifyPhoneNumber(
-          phoneNumber: "+91${loginIdController.text}",
-          verificationCompleted: (PhoneAuthCredential credential) {
-            _showSnackBar("OTP sent");
-          },
-          verificationFailed: (FirebaseAuthException e) {
-            _showSnackBar(e.message.toString());
-          },
-          codeSent: (String verificationId, int? resendToken) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => OTPPage(
-                          phoneNumber: loginIdController.text,
-                          verificationId: verificationId,
-                        )));
-          },
-          codeAutoRetrievalTimeout: (String verificationId) {});
-      final uuid = FirebaseAuth.instance.currentUser!.uid;
-      FirebaseFirestore.instance.collection('userCredential').doc(uuid).set({
-        'id': uuid,
-        'phoneNumber': loginIdController.text,
-      });
-    } on FirebaseAuthException catch (e) {
-      _showSnackBar(e.code);
-    }
-  }
+  // void verifyPhoneNumber() async {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return const Center(
+  //             child: CircularProgressIndicator(
+  //           color: AppTheme.textColor,
+  //         ));
+  //       });
+  //   try {
+  //     await auth.verifyPhoneNumber(
+  //         phoneNumber: "+91${loginIdController.text}",
+  //         verificationCompleted: (PhoneAuthCredential credential) {
+  //           _showSnackBar("OTP sent");
+  //         },
+  //         verificationFailed: (FirebaseAuthException e) {
+  //           _showSnackBar(e.message.toString());
+  //         },
+  //         codeSent: (String verificationId, int? resendToken) {
+  //           Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                   builder: (context) => OTPPage(
+  //                         phoneNumber: loginIdController.text,
+  //                         verificationId: verificationId,
+  //                       )));
+  //         },
+  //         codeAutoRetrievalTimeout: (String verificationId) {});
+  //     final uuid = FirebaseAuth.instance.currentUser!.uid;
+  //     FirebaseFirestore.instance.collection('userCredential').doc(uuid).set({
+  //       'id': uuid,
+  //       'phoneNumber': loginIdController.text,
+  //     });
+  //   } on FirebaseAuthException catch (e) {
+  //     _showSnackBar(e.code);
+  //   }
+  // }
 
-  void addEmail() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-              child: CircularProgressIndicator(
-            color: AppTheme.textColor,
-          ));
-        });
-    try {
-      await FirebaseFirestore.instance
-          .collection('userCredential')
-          .add({'email': loginIdController.text}).then((value) => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CreatePasswordPage(
-                              emailId: loginIdController.text,
-                            ))),
-              });
-    } on FirebaseAuthException catch (e) {
-      _showSnackBar(e.code);
-    }
-  }
+  // void addEmail() async {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return const Center(
+  //             child: CircularProgressIndicator(
+  //           color: AppTheme.textColor,
+  //         ));
+  //       });
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('userCredential')
+  //         .add({'email': loginIdController.text}).then((value) => {
+  //               Navigator.push(
+  //                   context,
+  //                   MaterialPageRoute(
+  //                       builder: (context) => CreatePasswordPage(
+  //                             emailId: loginIdController.text,
+  //                           ))),
+  //             });
+  //   } on FirebaseAuthException catch (e) {
+  //     _showSnackBar(e.code);
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -134,17 +132,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   UserIdTextField(
                     controller: loginIdController,
                     textInputAction: TextInputAction.done,
-                    onSubmitted: (value) {
-                      if (_signUpKey.currentState!.validate() &&
-                          loginIdController.text.contains(RegExp(
-                              r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
-                        verifyPhoneNumber();
-                      } else if (_signUpKey.currentState!.validate() &&
-                          loginIdController.text.contains(RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
-                        addEmail();
-                      }
-                    },
+                    // onSubmitted: (value) {
+                    //   if (_signUpKey.currentState!.validate() &&
+                    //       loginIdController.text.contains(RegExp(
+                    //           r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
+                    //     verifyPhoneNumber();
+                    //   // } else if (_signUpKey.currentState!.validate() &&
+                    //   //     loginIdController.text.contains(RegExp(
+                    //   //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
+                    //   //   addEmail();
+                    //   }
+                    // },
                   ),
                 ],
               ),
@@ -156,16 +154,21 @@ class _RegisterPageState extends State<RegisterPage> {
           child: ButtonWidget(
             buttonTextContent: "GET START",
             onPressed: () async {
-              if (_signUpKey.currentState!.validate() &&
-                  loginIdController.text.contains(RegExp(
-                      r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
-                verifyPhoneNumber();
-              } else if (_signUpKey.currentState!.validate() &&
-                  loginIdController.text.contains(RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
-                addEmail();
-              }
-            },
+              // if (_signUpKey.currentState!.validate() &&
+              //     loginIdController.text.contains(RegExp(
+              //         r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
+              //   verifyPhoneNumber();
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const OTPPage()));
+
+
+
+
+              // } else if (_signUpKey.currentState!.validate() &&
+              //     loginIdController.text.contains(RegExp(
+              //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
+              //   addEmail();
+              },
           ),
         ),
       ),

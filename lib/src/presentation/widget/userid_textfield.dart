@@ -69,6 +69,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
             SizedBox(width: 20.w,),
             Expanded(
               child: TextFormField(
+                keyboardType: TextInputType.phone,
                 onFieldSubmitted: widget.onSubmitted,
                 textInputAction: widget.textInputAction,
                 validator: (value){
