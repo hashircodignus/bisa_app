@@ -43,7 +43,9 @@ dependencies:
   cloud_firestore: ^4.14.0
   flutter_svg: ^2.0.10+1
   image_picker: ^1.0.7
-  flutter_screenutil: ^5.9.0
+  flutter_screenutil: 
+  country_picker: ^2.0.25
+  
 
 dev_dependencies:
   flutter_test:
