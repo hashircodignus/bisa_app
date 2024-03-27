@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:bisa_app/src/presentation/register_screen/register_page.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/light_button_widget.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
@@ -122,7 +122,9 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(left: 20.w,right: 20.w,bottom: 50.h),
-        child: isChecked == true? const ButtonWidget(buttonTextContent: "CONTINUE") : const LightButtonWidget(buttonTextContent: "CONTINUE"),
+        child: isChecked == true?  ButtonWidget(buttonTextContent: "CONTINUE",onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterPage()));
+        },) : const LightButtonWidget(buttonTextContent: "CONTINUE"),
       ),
     );
   }
