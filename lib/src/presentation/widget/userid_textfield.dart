@@ -25,50 +25,89 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Email/Mobile",style: AppTheme.titleText,),
-        SizedBox(height: 6.h,),
+        Text("Country code",style: AppTheme.smallHead,),
         // SizedBox(height: MediaQuery.sizeOf(context).height*0.006,),
-        TextFormField(
-          onFieldSubmitted: widget.onSubmitted,
-          textInputAction: widget.textInputAction,
-          validator: (value){
-            if (!isEmail(value!) && !isPhone(value)) {
-              return 'Please enter a valid email or phone number.';
-            }
-            return null;
-          },
-          style: AppTheme.fieldText,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 65.h,
+              width: 80.w,
+              //color: Colors.red,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: TextFormField(
+                  initialValue: "+91",
+                  readOnly: true,
+                  style: AppTheme.fieldText,
+                  decoration:  InputDecoration(
+                    prefixIcon: const Icon(Icons.flag),
+                    prefixIconConstraints: BoxConstraints(maxWidth: 70.w),
+                    suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                    suffixIconConstraints: BoxConstraints(maxWidth: 70.w),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide:  BorderSide(
+                          color: AppTheme.smallText,width: 1.w,style: BorderStyle.solid),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:  BorderSide(
+                          color: AppTheme.textColor,width: 1.w,style: BorderStyle.solid),
+                    ),
+                    errorBorder: UnderlineInputBorder(
+                      borderSide:  BorderSide(
+                          color: Colors.red,width: 0.5.w,style: BorderStyle.solid),
+                    ),
+                    focusedErrorBorder: UnderlineInputBorder(
+                      borderSide:  BorderSide(
+                          color: AppTheme.textColor,width: 1.w,style: BorderStyle.solid),
+                    ),
+                  ),
+                ),
+              )
+            ),
+            SizedBox(width: 20.w,),
+            Expanded(
+              child: TextFormField(
+                onFieldSubmitted: widget.onSubmitted,
+                textInputAction: widget.textInputAction,
+                validator: (value){
+                  if (!isEmail(value!) && !isPhone(value)) {
+                    return 'Please enter a valid email or phone number.';
+                  }
+                  return null;
+                },
+                style: AppTheme.fieldText,
 
-          cursorColor: AppTheme.textColor,
-          enableInteractiveSelection: true,
-          controller: widget.controller,
-          decoration: InputDecoration(
-            //errorStyle: AppTheme.errorTextRed,
-            contentPadding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 20.w),
-           helperText: " ",
-            hintText: "Enter here...",
-            hintStyle: AppTheme.smallHead,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.r),
-              borderSide:  BorderSide(
-                  color: AppTheme.smallText,width: 0.5.w,style: BorderStyle.solid),
+                cursorColor: AppTheme.textColor,
+                enableInteractiveSelection: true,
+                controller: widget.controller,
+                decoration: InputDecoration(
+                  //errorStyle: AppTheme.errorTextRed,
+                  contentPadding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 20.w),
+                 helperText: " ",
+                  hintText: "Enter here...",
+                  hintStyle: AppTheme.smallHead,
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide:  BorderSide(
+                        color: AppTheme.smallText,width: 1.w,style: BorderStyle.solid),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide:  BorderSide(
+                        color: AppTheme.textColor,width: 1.w,style: BorderStyle.solid),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderSide:  BorderSide(
+                        color: Colors.red,width: 0.5.w,style: BorderStyle.solid),
+                  ),
+                  focusedErrorBorder: UnderlineInputBorder(
+                    borderSide:  BorderSide(
+                        color: AppTheme.textColor,width: 1.w,style: BorderStyle.solid),
+                  ),
+                ),
+              ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.r),
-              borderSide:  BorderSide(
-                  color: AppTheme.textColor,width: 1.w,style: BorderStyle.solid),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.r),
-              borderSide:  BorderSide(
-                  color: Colors.red,width: 0.5.w,style: BorderStyle.solid),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.r),
-              borderSide:  BorderSide(
-                  color: AppTheme.textColor,width: 1.w,style: BorderStyle.solid),
-            ),
-          ),
+          ],
         ),
        // SizedBox(height: 20.h,),
       ],
