@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/asset_resources.dart';
 
-
-
 class SelectCountryPage extends StatefulWidget {
   
   const SelectCountryPage({super.key});
@@ -15,7 +13,6 @@ class SelectCountryPage extends StatefulWidget {
   @override
   State<SelectCountryPage> createState() => _SelectCountryPageState();
 }
-
 
 class _SelectCountryPageState extends State<SelectCountryPage> {
   final TextEditingController countryController = TextEditingController();
@@ -28,9 +25,6 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
     final int secondLetter = countryCode.codeUnitAt(1) - 0x41 + 0x1F1E6;
     return String.fromCharCode(firstLetter) + String.fromCharCode(secondLetter);
   }
-
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,8 +50,6 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                   children: [
                     Text(
                       "Choose Your Country",
-
-                    
                       style: AppTheme.headText,
                     ),
                     Text(
@@ -138,7 +130,6 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
-
           child: ButtonWidget(
             buttonTextContent: "GO AHEAD",
             onPressed: () {
