@@ -95,11 +95,7 @@ class _OTPPageState extends State<OTPPage> {
                 //       context) =>  const CardTypePage()));
                 // });
 
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CardTypePage()),
-                    (route) => false);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const CardTypePage()));
               }),
         ),
       ),
