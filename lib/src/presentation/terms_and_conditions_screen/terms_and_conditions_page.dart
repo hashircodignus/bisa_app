@@ -8,7 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widget/appbar_back_button_widget.dart';
 
 class TermsAndConditionsPage extends StatefulWidget {
-  const TermsAndConditionsPage({super.key});
+  final String flag;
+  final String countryphoneCode;
+  const TermsAndConditionsPage({super.key, required this.flag, required this.countryphoneCode, });
 
   @override
   State<TermsAndConditionsPage> createState() => _TermsAndConditionsPageState();
@@ -123,7 +125,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(left: 20.w,right: 20.w,bottom: 50.h),
         child: isChecked == true?  ButtonWidget(buttonTextContent: "CONTINUE",onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterPage(flag:widget.flag,  countryphoneCode:widget.countryphoneCode,)));
         },) : const LightButtonWidget(buttonTextContent: "CONTINUE"),
       ),
     );

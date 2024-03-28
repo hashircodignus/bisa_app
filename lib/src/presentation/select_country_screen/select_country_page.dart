@@ -4,11 +4,12 @@ import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../utils/resources/asset_resources.dart';
-import '../widget/country_text_field.dart';
+
+
 
 class SelectCountryPage extends StatefulWidget {
+  
   const SelectCountryPage({super.key});
 
   @override
@@ -19,6 +20,17 @@ class SelectCountryPage extends StatefulWidget {
 class _SelectCountryPageState extends State<SelectCountryPage> {
   final TextEditingController countryController = TextEditingController();
   String countryname = '';
+  String countryCode = '';
+  String countryphonecode='';
+
+  String getFlagEmoji(String countryCode) {
+    final int firstLetter = countryCode.codeUnitAt(0) - 0x41 + 0x1F1E6;
+    final int secondLetter = countryCode.codeUnitAt(1) - 0x41 + 0x1F1E6;
+    return String.fromCharCode(firstLetter) + String.fromCharCode(secondLetter);
+  }
+
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,12 +74,15 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
               SizedBox(
                 height: 59.h,
                 child: TextFormField(
+
                   onTap: () => showCountryPicker(
                       countryListTheme: CountryListThemeData(
+                       
                           inputDecoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(60.r),
                               ),
+                              
                               prefixIcon: const Icon(Icons.search),
                               hintText: "Search Country",
                               hintStyle: AppTheme.smallHead),
@@ -76,9 +91,12 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                           borderRadius: BorderRadius.zero),
                       context: context,
                       onSelect: (Country value) {
+                        
                         setState(() {
+                           countryCode = value.countryCode!;
                           countryname = value.name!;
                           countryController.text = countryname;
+                          countryphonecode=value.phoneCode!;
                         });
                       }),
                   controller: countryController,
@@ -86,6 +104,13 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                   style: AppTheme.labelTextBlack,
                   readOnly: true,
                   decoration: InputDecoration(
+                    prefixIcon: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      countryCode.isNotEmpty ? getFlagEmoji(countryCode) : '',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                  ),
                     suffixIcon: const Icon(
                       Icons.arrow_forward_rounded,
                       color: AppTheme.smallText,
@@ -105,6 +130,7 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                           const BorderSide(color: AppTheme.textColor, width: 1),
                     ),
                   ),
+                  
                 ),
               )
             ],
@@ -119,7 +145,7 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const TermsAndConditionsPage()));
+                      builder: (context) => TermsAndConditionsPage(flag:getFlagEmoji(countryCode), countryphoneCode:countryphonecode,)));
             },
           ),
         ));

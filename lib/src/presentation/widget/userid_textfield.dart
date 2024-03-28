@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 class UserIdTextField extends StatefulWidget {
+  final String flag;
+  final String countryphoneCode;
   final TextEditingController controller;
   final void Function(String)? onSubmitted;
   final TextInputAction textInputAction;
    const UserIdTextField({
-    super.key,required this.controller,this.onSubmitted,required this.textInputAction});
+    super.key,required this.controller,this.onSubmitted,required this.textInputAction, required this.flag, required this.countryphoneCode, });
 
   @override
   State<UserIdTextField> createState() => _UserIdTextFieldState();
@@ -33,16 +35,16 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
           children: [
             Container(
               height: 65.h,
-              width: 80.w,
-              //color: Colors.red,
+              width: 90.w,
+              // color: Colors.red,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: TextFormField(
-                  initialValue: "+91",
+                  initialValue: "+${widget.countryphoneCode}",
                   readOnly: true,
                   style: AppTheme.fieldText,
                   decoration:  InputDecoration(
-                    prefixIcon: const Icon(Icons.flag),
+                    prefixIcon: Text(widget.flag),
                     prefixIconConstraints: BoxConstraints(maxWidth: 70.w),
                     suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
                     suffixIconConstraints: BoxConstraints(maxWidth: 70.w),
