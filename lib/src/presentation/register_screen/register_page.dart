@@ -8,7 +8,9 @@ import '../../utils/resources/asset_resources.dart';
 import '../otp_screen/otp_page.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final String flag;
+  final String countryphoneCode;
+  const RegisterPage({super.key, required this.flag,  required this.countryphoneCode});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -98,6 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: AppTheme.backColor,
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           color: AppTheme.backColor,
@@ -131,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   UserIdTextField(
                     controller: loginIdController,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.done, flag:widget.flag, countryphoneCode: widget.countryphoneCode,
                     // onSubmitted: (value) {
                     //   if (_signUpKey.currentState!.validate() &&
                     //       loginIdController.text.contains(RegExp(

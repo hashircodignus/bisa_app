@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                   key: _loginKey,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      UserIdTextField(controller: _loginIdController,textInputAction: TextInputAction.next,),
+                      UserIdTextField(controller: _loginIdController,textInputAction: TextInputAction.next, flag: '', countryphoneCode: '',),
                       PasswordTextField(textInputAction: TextInputAction.done, passController: _passwordController,onSubmitted: (value) async{
                         if(_loginKey.currentState!.validate() &&
                             _loginIdController.text.isNotEmpty &&
@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                        } ,),
                       SizedBox(height: 35.h,),
                       InkWell(
-                        onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterPage())),
+                        onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterPage(flag: '', countryphoneCode: '',))),
                         child: Container(
                           decoration: const BoxDecoration(
                             //color: Colors.red
