@@ -20,7 +20,8 @@ class AppBarTitleWidget extends StatelessWidget {
             const Icon(
               Icons.arrow_back_ios_new_rounded,
               color: AppTheme.textColor,
-              size: 15,
+              size: 20,
+
             ),
             SizedBox(width: 12.w,),
             Text(

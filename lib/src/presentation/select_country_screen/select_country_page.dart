@@ -4,9 +4,7 @@ import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../utils/resources/asset_resources.dart';
-import '../widget/country_text_field.dart';
 
 class SelectCountryPage extends StatefulWidget {
   const SelectCountryPage({super.key});
@@ -15,10 +13,9 @@ class SelectCountryPage extends StatefulWidget {
   State<SelectCountryPage> createState() => _SelectCountryPageState();
 }
 
-
 class _SelectCountryPageState extends State<SelectCountryPage> {
   final TextEditingController countryController = TextEditingController();
-  String countryname = '';
+  String countryName = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +41,6 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                   children: [
                     Text(
                       "Choose Your Country",
-
-                    
                       style: AppTheme.headText,
                     ),
                     Text(
@@ -77,8 +72,8 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                       context: context,
                       onSelect: (Country value) {
                         setState(() {
-                          countryname = value.name!;
-                          countryController.text = countryname;
+                          countryName = value.name;
+                          countryController.text = countryName;
                         });
                       }),
                   controller: countryController,
@@ -112,7 +107,6 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
-
           child: ButtonWidget(
             buttonTextContent: "GO AHEAD",
             onPressed: () {
