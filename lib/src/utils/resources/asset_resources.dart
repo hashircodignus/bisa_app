@@ -29,6 +29,7 @@ class AssetResources{
   static const feedbackIcon = "assets/images/feedback.png";
   static const partnerWithUs = "assets/images/link.png";
   static const logOut = "assets/images/logout.png";
+  static const background = "assets/images/background.png";
 
   static const homeIcon = "assets/images/home_icon.png";
   static const dashboardIcon = "assets/images/dashboard.png";
@@ -39,5 +40,6 @@ class AssetResources{
 
   static const briefcaseIcon = "assets/svg/briefcase_icon.svg";
   static const personIcon = "assets/svg/person.svg";
+  static const editIcon = "assets/svg/edit_icon.svg";
 
 }
