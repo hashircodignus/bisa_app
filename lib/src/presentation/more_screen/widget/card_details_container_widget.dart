@@ -12,29 +12,21 @@ class CardDetailsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5.h,
-      child: Container(
-        padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
-        height: height,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white ,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(cardHead,style: AppTheme.profilePageTab,),
-                 Icon(Icons.add_circle,color: Colors.green,size: 20.sp,)
-              ],
-            ),
-            SizedBox(height: 12.h,),
-            widget
-          ],
-        ),
+    return Container(
+      //padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
+      height: height,
+      width: double.infinity,
+      decoration: BoxDecoration(
+       // color: Colors.red,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(cardHead,style: AppTheme.smallHead,),
+
+          widget
+        ],
       ),
     );
   }

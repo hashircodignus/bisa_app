@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page.dart';
 import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
@@ -59,20 +60,25 @@ class MyCardPage extends StatelessWidget {
              ),
            ),
             SizedBox(height: 20.h,),
-            Container(
-              height: 111.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50.r),
-                color: AppTheme.backColor,
-                border: Border.all(width: 3.w,color: AppTheme.backColor),
-                boxShadow: [BoxShadow(
-                  color: AppTheme.textColor.withOpacity(0.08),
-                  spreadRadius: 1,
-                  blurRadius: 8
-                ),]
-              ),
-              child: Center(
-                child: Text("Add New Card",style: AppTheme.smallTextHead,),
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateCardPage()));
+              },
+              child: Container(
+                height: 111.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50.r),
+                  color: AppTheme.backColor,
+                  border: Border.all(width: 3.w,color: AppTheme.backColor),
+                  boxShadow: [BoxShadow(
+                    color: AppTheme.textColor.withOpacity(0.08),
+                    spreadRadius: 1,
+                    blurRadius: 8
+                  ),]
+                ),
+                child: Center(
+                  child: Text("Add New Card",style: AppTheme.smallTextHead,),
+                ),
               ),
             )
           ],
