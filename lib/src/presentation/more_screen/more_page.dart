@@ -1,8 +1,6 @@
 import 'package:bisa_app/src/presentation/home_screen/bottom_nav_bar.dart';
 import 'package:bisa_app/src/presentation/home_screen/widget/menu_text_button_widget.dart';
-import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_business_card_page.dart';
-import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_individual_card_page.dart';
-import 'package:bisa_app/src/presentation/widget/pop_up_alert_dialog_box_widget.dart';
+import 'package:bisa_app/src/presentation/more_screen/create_card_screen/my_card_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,73 +40,7 @@ class MorePage extends StatelessWidget {
                SizedBox(height: 30.h,),
               MenuTextButtonWidget(buttonText: 'Home', buttonImage: const AssetImage(AssetResources.homeIcon),onTap: ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const BottomNavBarPage())),),
                SizedBox(height: 30.h,),
-               MenuTextButtonWidget(buttonText: 'Create Card', buttonImage: const AssetImage(AssetResources.dashboardIcon),onTap: ()=>showDialog(context: context, builder: (BuildContext context){
-                 return  PopUpAlertDialogBox(
-                   height: 252.h,
-                   color: AppTheme.backColor,
-                   widget: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    InkWell(
-                      onTap:()
-                     { Navigator.pop(context);
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateBusinessCardPage()));
-
-                     },
-                      child: Card(
-                        elevation:2.h,
-                        child: Container(
-                          padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
-                          height: 62.h,
-                          width: 350.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.r),
-                            color: Colors.white,
-                            //border: Border.all(color: AppTheme.smallText,width: 0.2),
-                            // boxShadow: [BoxShadow(
-                            //   color: AppTheme.textColor,blurRadius: 1
-                            // )]
-                          ),
-                          child: Row(
-                            children: [
-                               Icon(Icons.card_travel_outlined,color: AppTheme.textColor,size: 22.sp,),
-                               SizedBox(width: 12.w,),
-                              Text("Create Business",style: AppTheme.tabText,)
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: (){
-                 Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateIndividualCardPage()));},
-                      child: Card(
-                        elevation:2.h,
-                        child: Container(
-                          padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
-                          height: 62.h,
-                          width: 350.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.r),
-                            color: Colors.white,
-                          ),
-                          child: Row(
-                            children: [
-                               Icon(Icons.person,color: AppTheme.textColor,size: 22.sp,),
-                               SizedBox(width: 12.w,),
-                              Text("Create Individual",style: AppTheme.tabText,)
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                   ],
-                 ),
-                 );
-               }),),
-              SizedBox(height: 30.h,),
-              const MenuTextButtonWidget(buttonText: 'My Card', buttonImage: AssetImage(AssetResources.myCard)),
+               MenuTextButtonWidget(buttonText: 'My Card', buttonImage: const AssetImage(AssetResources.myCard),onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>const MyCardPage())),),
               SizedBox(height: 30.h,),
               const MenuTextButtonWidget(buttonText: 'Pay Now', buttonImage:AssetImage(AssetResources.payNow),),
               SizedBox(height: 30.h,),

@@ -20,56 +20,6 @@ class _ProfilePageState extends State<ProfilePage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        // appBar: AppBar(
-        //   elevation: 0,
-        //   backgroundColor: const Color(0xffF6F6F6),
-        //   leading: Padding(
-        //     padding:  EdgeInsets.symmetric(horizontal: 20.w),
-        //     child: InkWell(
-        //       onTap: ()=>Navigator.pop(context),
-        //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         crossAxisAlignment: CrossAxisAlignment.center,
-        //         children: [
-        //          Row(
-        //            children: [
-        //               Icon(Icons.keyboard_arrow_left_rounded,color: AppTheme.textColor,size: 30.sp,),
-        //              Text("Profile",style: AppTheme.pageHead,),
-        //            ],
-        //          ),
-        //           Text("Verified",style: AppTheme.smallHeadGreen,),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        //   bottom: PreferredSize(preferredSize:  Size.square(160.h),
-        //       child: Column(
-        //     children: [
-        //       Container(
-        //         height: 80.h,
-        //         width: 80.w,
-        //         decoration: BoxDecoration(
-        //             border: Border.all(color: AppTheme.smallText,width: 0.5.w),
-        //           image: const DecorationImage(image: AssetImage(AssetResources.user1Dp),fit: BoxFit.cover),
-        //          // color: Colors.blue,
-        //           borderRadius: BorderRadius.circular(100.r),
-        //         ),
-        //       ),
-        //        SizedBox(height: 12.h,),
-        //       Row(mainAxisAlignment: MainAxisAlignment.center,
-        //         children: [
-        //           Text("Full Name",style: AppTheme.tabText,),
-        //            SizedBox(width: 5.w,),
-        //            Icon(Icons.check_circle,color: Colors.green,size: 15.h,)
-        //         ],
-        //       ),
-        //         SizedBox(height: 8.h,),
-        //        Text("Sales Officer Designation",style: AppTheme.smallHead,),
-        //        SizedBox(height:20.h,),
-        //
-        //     ],
-        //   )),
-        //   leadingWidth: 430.w,
-        // ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
