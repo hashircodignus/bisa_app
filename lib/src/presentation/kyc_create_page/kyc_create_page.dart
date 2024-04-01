@@ -131,7 +131,9 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
         title: const AppBarTitleWidget(text: "KYC Create"),
         actions: [
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const BottomNavBarPage()), (route) => false);
+              },
               child: Text(
                 "Skip",
                 style: AppTheme.tabText2,
