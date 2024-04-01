@@ -10,7 +10,11 @@ import '../widget/appbar_back_button_widget.dart';
 class TermsAndConditionsPage extends StatefulWidget {
   final String flag;
   final String countryphoneCode;
-  const TermsAndConditionsPage({super.key, required this.flag, required this.countryphoneCode, });
+  const TermsAndConditionsPage({
+    super.key,
+    required this.flag,
+    required this.countryphoneCode,
+  });
 
   @override
   State<TermsAndConditionsPage> createState() => _TermsAndConditionsPageState();
@@ -33,7 +37,9 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20.h,),
+              SizedBox(
+                height: 20.h,
+              ),
               Text(
                 "Terms of Services",
                 style: AppTheme.headText,
@@ -91,7 +97,9 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                 style: AppTheme.tabText,
               ),
               Text(
-                "The App may allow you to access and view certain content, including but not limited to, cryptocurrency information, news, and market data (""Content""). The Content is provided for informational purposes only and should not be considered financial or investment advice.",
+                "The App may allow you to access and view certain content, including but not limited to, cryptocurrency information, news, and market data ("
+                "Content"
+                "). The Content is provided for informational purposes only and should not be considered financial or investment advice.",
                 style: AppTheme.smallHead,
               ),
               SizedBox(
@@ -100,7 +108,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
               Row(
                 children: [
                   Checkbox(
-                     checkColor: AppTheme.backColor,
+                    checkColor: AppTheme.backColor,
                     activeColor: AppTheme.textColor,
                     value: isChecked,
                     onChanged: (value) {
@@ -111,8 +119,13 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                       });
                     },
                   ),
-                  SizedBox(width: 12.w,),
-                  Text("Accept Terms & Conditions",style: AppTheme.labelTextBlack,)
+                  SizedBox(
+                    width: 12.w,
+                  ),
+                  Text(
+                    "Accept Terms & Conditions",
+                    style: AppTheme.labelTextBlack,
+                  )
                 ],
               ),
               SizedBox(
@@ -123,10 +136,21 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(left: 20.w,right: 20.w,bottom: 50.h),
-        child: isChecked == true?  ButtonWidget(buttonTextContent: "CONTINUE",onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterPage(flag:widget.flag,  countryphoneCode:widget.countryphoneCode,)));
-        },) : const LightButtonWidget(buttonTextContent: "CONTINUE"),
+        padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
+        child: isChecked == true
+            ? ButtonWidget(
+                buttonTextContent: "CONTINUE",
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegisterPage(
+                                flag: widget.flag,
+                                countryphoneCode: widget.countryphoneCode,
+                              )));
+                },
+              )
+            : const LightButtonWidget(buttonTextContent: "CONTINUE"),
       ),
     );
   }
