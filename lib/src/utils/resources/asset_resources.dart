@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AssetResources{
   static const appLogo = "assets/images/bisa_logo.png";
   static const appLogoWhite = "assets/images/bisa_logo_white.png";
@@ -39,5 +41,6 @@ class AssetResources{
 
   static const briefcaseIcon = "assets/svg/briefcase_icon.svg";
   static const personIcon = "assets/svg/person.svg";
+  static const notification = "assets/svg/notification.svg";
 
 }

@@ -7,8 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/asset_resources.dart';
 
 class SelectCountryPage extends StatefulWidget {
-  
   const SelectCountryPage({super.key});
+
+ 
 
   @override
   State<SelectCountryPage> createState() => _SelectCountryPageState();
@@ -16,15 +17,19 @@ class SelectCountryPage extends StatefulWidget {
 
 class _SelectCountryPageState extends State<SelectCountryPage> {
   final TextEditingController countryController = TextEditingController();
+
   String countryname = '';
+
   String countryCode = '';
-  String countryphonecode='';
+
+  String countryphonecode = '';
 
   String getFlagEmoji(String countryCode) {
     final int firstLetter = countryCode.codeUnitAt(0) - 0x41 + 0x1F1E6;
     final int secondLetter = countryCode.codeUnitAt(1) - 0x41 + 0x1F1E6;
     return String.fromCharCode(firstLetter) + String.fromCharCode(secondLetter);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,15 +71,12 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
               SizedBox(
                 height: 59.h,
                 child: TextFormField(
-
                   onTap: () => showCountryPicker(
                       countryListTheme: CountryListThemeData(
-                       
                           inputDecoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(60.r),
                               ),
-                              
                               prefixIcon: const Icon(Icons.search),
                               hintText: "Search Country",
                               hintStyle: AppTheme.smallHead),
@@ -83,12 +85,11 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                           borderRadius: BorderRadius.zero),
                       context: context,
                       onSelect: (Country value) {
-                        
                         setState(() {
-                           countryCode = value.countryCode!;
-                          countryname = value.name!;
+                          countryCode = value.countryCode;
+                          countryname = value.name;
                           countryController.text = countryname;
-                          countryphonecode=value.phoneCode!;
+                          countryphonecode = value.phoneCode;
                         });
                       }),
                   controller: countryController,
@@ -97,32 +98,33 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                   readOnly: true,
                   decoration: InputDecoration(
                     prefixIcon: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      countryCode.isNotEmpty ? getFlagEmoji(countryCode) : '',
-                      style: TextStyle(fontSize: 24),
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        countryCode.isNotEmpty
+                            ? getFlagEmoji(countryCode)
+                            : '',
+                        style: const TextStyle(fontSize: 24),
+                      ),
                     ),
-                  ),
                     suffixIcon: const Icon(
                       Icons.arrow_forward_rounded,
                       color: AppTheme.smallText,
                     ),
                     hintText: "Select Country",
                     hintStyle: AppTheme.smallHead,
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: 10.w, vertical: 20.h),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.r),
-                      borderSide:
-                          const BorderSide(color: AppTheme.smallText, width: 1),
+                      borderSide: const BorderSide(
+                          color: AppTheme.smallText, width: 1),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.r),
-                      borderSide:
-                          const BorderSide(color: AppTheme.textColor, width: 1),
+                      borderSide: const BorderSide(
+                          color: AppTheme.textColor, width: 1),
                     ),
                   ),
-                  
                 ),
               )
             ],
@@ -130,15 +132,21 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
-          child: ButtonWidget(
-            buttonTextContent: "GO AHEAD",
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TermsAndConditionsPage(flag:getFlagEmoji(countryCode), countryphoneCode:countryphonecode,)));
-            },
-          ),
-        ));
-  }
+          child:ButtonWidget(
+                buttonTextContent: "GO AHEAD",
+                onPressed: () {
+      
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TermsAndConditionsPage(
+                                flag: getFlagEmoji(countryCode),
+                                countryphoneCode:countryphonecode
+                              )));
+                },
+          )
+        )
+              );
+            }
 }
+

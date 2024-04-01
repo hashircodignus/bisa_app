@@ -1,8 +1,10 @@
+
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/userid_textfield.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/asset_resources.dart';
 import '../otp_screen/otp_page.dart';
@@ -10,7 +12,8 @@ import '../otp_screen/otp_page.dart';
 class RegisterPage extends StatefulWidget {
   final String flag;
   final String countryphoneCode;
-  const RegisterPage({super.key, required this.flag,  required this.countryphoneCode});
+  const RegisterPage(
+      {super.key, required this.flag, required this.countryphoneCode});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -124,8 +127,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   Container(
                     child: Column(
                       children: [
-                        Text("Enter your mobile number",style: AppTheme.headText,),
-                        Text("Please confirm your country code and enter your mobile number",style: AppTheme.smallHead,textAlign: TextAlign.center,),
+                        Text(
+                          "Enter your mobile number",
+                          style: AppTheme.headText,
+                        ),
+                        Text(
+                          "Please confirm your country code and enter your mobile number",
+                          style: AppTheme.smallHead,
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
                   ),
@@ -134,7 +144,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   UserIdTextField(
                     controller: loginIdController,
-                    textInputAction: TextInputAction.done, flag:widget.flag, countryphoneCode: widget.countryphoneCode,
+                    textInputAction: TextInputAction.done,
+                    flag: widget.flag,
+                    countryphoneCode: widget.countryphoneCode
                     // onSubmitted: (value) {
                     //   if (_signUpKey.currentState!.validate() &&
                     //       loginIdController.text.contains(RegExp(
@@ -152,8 +164,8 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
-        bottomNavigationBar:  Padding(
-          padding:  EdgeInsets.only(bottom: 50.h,left: 20.w,right: 20.w),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
           child: ButtonWidget(
             buttonTextContent: "GET START",
             onPressed: () async {
@@ -162,16 +174,14 @@ class _RegisterPageState extends State<RegisterPage> {
               //         r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
               //   verifyPhoneNumber();
 
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const OTPPage()));
-
-
-
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const OTPPage()));
 
               // } else if (_signUpKey.currentState!.validate() &&
               //     loginIdController.text.contains(RegExp(
               //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
               //   addEmail();
-              },
+            },
           ),
         ),
       ),
