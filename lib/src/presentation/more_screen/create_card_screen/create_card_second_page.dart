@@ -7,14 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/resources/theme.dart';
 import '../widget/card_details_container_widget.dart';
 
-class CreateBusinessCardSecondPage extends StatelessWidget {
-  const CreateBusinessCardSecondPage({super.key});
+class CreateCardSecondPage extends StatelessWidget {
+  const CreateCardSecondPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: AppTheme.backColor,
         appBar: AppBar(
           elevation: 0.h,
           backgroundColor: AppTheme.backColor,
@@ -74,27 +75,65 @@ class CreateBusinessCardSecondPage extends StatelessWidget {
             child: Column(
               children: [
                  CardDetailsContainer(
-                  height: 199.h,
-                  cardHead: 'PHONE NUMBER',
+                 // height: 202.h,
+                  cardHead: 'Phone Number',
                   widget: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       CustomDataTextField(prefixIcon: Icon(Icons.phone_outlined,color: AppTheme.textColor,size: 19.sp,),initialValue: "1234567890",hintText: "Phone Number"),
                       CustomDataTextField(prefixIcon: Icon(Icons.phone_outlined,color: AppTheme.textColor,size: 19.sp,),hintText: "Phone Number"),
+                      SizedBox(height: 12.h,),
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        height: 40.h,
+                        width: 109.w,
+                        decoration: BoxDecoration(
+                          color: AppTheme.cardColor,
+                          borderRadius: BorderRadius.circular(12.r)
+                        ),
+                        child: Center(
+                          child: Row(
+                            children: [
+                              Text("Add New",style: AppTheme.smallHeadWhite,),
+                               Icon(Icons.add,color: AppTheme.backColor,size: 20.sp,)
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   )
                 ),
                  SizedBox(height: 20.h,),
-                 CardDetailsContainer(cardHead: "EMAIL ADDRESS",
-                    height: 132.h,
-                    widget: Column(
+                 CardDetailsContainer(cardHead: "Email address",
+                   // height: 132.h,
+                    widget: Column(crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    CustomDataTextField(prefixIcon: Icon(Icons.mail_outline_rounded,color: AppTheme.smallText,size: 19.sp,),hintText: "Email Address")
+                    CustomDataTextField(prefixIcon: Icon(Icons.mail_outline_rounded,color: AppTheme.smallText,size: 19.sp,),hintText: "Email Address"),
+                    SizedBox(height: 12.h,),
+                    Container(
+                      padding: EdgeInsets.all(10.sp),
+                      height: 40.h,
+                      width: 109.w,
+                      decoration: BoxDecoration(
+                          color: AppTheme.cardColor,
+                          borderRadius: BorderRadius.circular(12.r)
+                      ),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            Text("Add New",style: AppTheme.smallHeadWhite,),
+                            Icon(Icons.add,color: AppTheme.backColor,size: 20.sp,)
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 )),
                  SizedBox(height: 20.h,),
                 CardDetailsContainer(
-                    height: 207.h,
-                    cardHead: "SOCIAL MEDIA", widget: Column(
+                   // height: 207.h,
+                    cardHead: "Social media", widget: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     CustomDataTextField(
                       initialValue: "Facebook.com/23345567876",
@@ -302,6 +341,25 @@ class CreateBusinessCardSecondPage extends StatelessWidget {
                         ),
                       ),
                       ),
+                    SizedBox(height: 12.h,),
+                    Container(
+                      padding: EdgeInsets.all(10.sp),
+                      height: 40.h,
+                      width: 109.w,
+                      decoration: BoxDecoration(
+                          color: AppTheme.cardColor,
+                          borderRadius: BorderRadius.circular(12.r)
+                      ),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            Text("Add New",style: AppTheme.smallHeadWhite,),
+                            Icon(Icons.add,color: AppTheme.backColor,size: 20.sp,)
+                          ],
+                        ),
+                      ),
+                    )
+
                   ],
                 ))
               ],
