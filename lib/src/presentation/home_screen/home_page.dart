@@ -4,6 +4,7 @@ import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widget/search_text_field.dart';
 
@@ -19,106 +20,158 @@ class HomePage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             elevation: 0,
-            title: InkWell(
-                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>const MorePage())),
-                child:  Padding(
-                  padding:  EdgeInsets.only(left: 8.w),
-                  child: Image(image: const AssetImage(AssetResources.appLogo),color: AppTheme.backColor,height: 22.h,width: 59.w,),
+            title: GestureDetector(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const MorePage())),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 8.w),
+                  child: Image(
+                    image: const AssetImage(AssetResources.appLogo),
+                    color: AppTheme.backColor,
+                    height: 22.h,
+                    width: 59.w,
+                  ),
                 )),
             centerTitle: false,
-            actions:  [
-              IconButton(onPressed: (){}, icon:  Icon(Icons.notifications,color: AppTheme.backColor,size: 24.sp,),padding: EdgeInsets.only(right: 8.w),)
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.notifications_outlined,
+                  color: AppTheme.backColor,
+                  size: 24.sp,
+                ),
+                padding: EdgeInsets.only(right: 8.w),
+              )
             ],
             backgroundColor: AppTheme.textColor,
-            bottom:  PreferredSize(preferredSize:  Size.square(150.h), child: Column(
-              children: [
-                Container(
-
-                  margin:  EdgeInsets.only(bottom: 20.h,left: 20.w,right: 20.w,),
-                    padding:  EdgeInsets.only(left: 20.w,right: 5.w),
-
-                    decoration: BoxDecoration(
-                      color: AppTheme.backColor,
-                      borderRadius: BorderRadius.circular(20.r),),
-                    child:  SearchTextField(
-                      hintText: "Search Message",
-                      cursorColor: AppTheme.textColor,
-                      hintStyle:AppTheme.smallHead,
-                      style: AppTheme.fieldText,
-                      icon:   const Icon(Icons.search,color: AppTheme.textColor,),
-                    )
-                ),
-                Container(
-                  height: 59.h,
-                    width: double.infinity,
-                    //padding: const EdgeInsets.only(left: 10,right: 10),
-                    decoration: const BoxDecoration(
-                      color: AppTheme.backColor,
+            bottom: PreferredSize(
+                preferredSize: Size.square(70.h),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 59.h,
+                      width: double.infinity,
+                      //padding: const EdgeInsets.only(left: 10,right: 10),
+                      decoration: const BoxDecoration(
+                        color: AppTheme.backColor,
+                                // color: Colors.amber,
                       ),
-                  child:  TabBar(
-                    indicatorPadding:  EdgeInsets.only(left: 20.w,right: 20.w),
-                    dividerColor: AppTheme.backColor,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    unselectedLabelColor: AppTheme.smallText,
-                    unselectedLabelStyle: AppTheme.labelText,
-                    indicatorColor: Colors.black87,
-                      labelColor: AppTheme.textColor,
-                      labelStyle: AppTheme.tabText,
-                      tabs: const [
-                        Tab(child: Text('Recent')),
-                        Tab(child: Text('Saved')),
-                        Tab(child: Text('Promotions')),
-                      ]),
-
-                ),
-              ],
-            )),
+                      
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TabBar(
+                          
+                           indicator: BoxDecoration(
+                            color: Colors.black,
+                            
+                            borderRadius: BorderRadiusDirectional.circular(5)
+                           ),
+                           unselectedLabelColor: const Color.fromARGB(255, 118, 116, 116),
+                           labelStyle: TextStyle(color:AppTheme.backColor),
+                          dividerColor: Colors.transparent,
+                          indicatorColor: Colors.transparent, tabs: [
+                          SizedBox(
+                            height: 46.h,
+                            width: 117.w,
+                            child: Tab(
+                                child: Text(
+                              'Recent',
+                            )),
+                          ),
+                          SizedBox(
+                            height: 46.h,
+                            width: 116.w,
+                            child: Tab(child: Text('Saved'))),
+                          SizedBox(
+                            height: 46.h,
+                            width: 117.w,child: Tab(child: Text('Promotions'))),
+                        ]),
+                      ),
+                    ),
+                  ],
+                )),
           ),
           body: TabBarView(
             children: <Widget>[
               Container(
                 color: AppTheme.backColor,
-                padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
-                child:  SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20.h,),
-                      const CustomerNameField(nameText: 'Customer Name',
-                        companyNameText: 'Customer Company Private Limited',
-                        checkedIcon: Icons.check_circle, profileImage: AssetImage(AssetResources.userDp),),
-                      SizedBox(height: 20.h,),
-                      CustomerNameField(nameText: 'Customer Name',onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProfilePage())),
-                        companyNameText: 'Customer Company Private Limited', profileImage: const AssetImage(AssetResources.user1Dp),
+                child: SingleChildScrollView(
+                  child:ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 20,
+                    itemBuilder:( context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfilePage()));
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(),
+                      trailing: Icon(Icons.check_circle,color:Colors.green,),
+                      title: Text(
+                        "Customer Name"
                       ),
-                      SizedBox(height: 20.h,),
-                      const CustomerNameField(nameText: 'Customer Name',
-                        companyNameText: 'Customer Company Private Limited',
-                        checkedIcon: Icons.check_circle, profileImage: AssetImage(AssetResources.user1Dp),),
-                      SizedBox(height: 20.h,),
-                      const CustomerNameField(nameText: 'Customer Name',
-                        companyNameText: 'Customer Company Private Limited', profileImage: AssetImage(AssetResources.userDp),),
-                      SizedBox(height: 20.h,),
-                      const CustomerNameField(nameText: 'Customer Name',
-                        companyNameText: 'Customer Company Private Limited',
-                        checkedIcon: Icons.check_circle, profileImage: AssetImage(AssetResources.user2Dp),),
-                      SizedBox(height: 20.h,),
-                      const CustomerNameField(nameText: 'Customer Name',
-                        companyNameText: 'Customer Company Private Limited', profileImage: AssetImage(AssetResources.userDp),),
-                      SizedBox(height: 20.h,),
-                      const CustomerNameField(nameText: 'Customer Name',
-                        companyNameText: 'Customer Company Private Limited',
-                        checkedIcon: Icons.check_circle, profileImage: AssetImage(AssetResources.user1Dp),),
-                      SizedBox(height: 20.h,),
-                      const CustomerNameField(nameText: 'Customer Name',
-                        companyNameText: 'Customer Company Private Limited', profileImage: AssetImage(AssetResources.userDp),),
-                      SizedBox(height: 20.h,),
-                    ],
-                  ),
+                      subtitle: Text("Designation"),
+                    ),
+                  );
+                  })
                 ),
               ),
-              Center(child: const Text("Saved")),
-              Center(child: const Text("Promotions")),
+               Container(
+                color: AppTheme.backColor,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child:ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 5,
+                    itemBuilder:( context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfilePage()));
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(),
+                      trailing: Icon(Icons.check_circle,color:Colors.green,),
+                      title: Text(
+                        "Customer Name"
+                      ),
+                      subtitle: Text("Designation"),
+                    ),
+                  );
+                  })
+                ),
+              ),
+               Container(
+                color: AppTheme.backColor,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child:ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 3,
+                    itemBuilder:( context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfilePage()));
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(),
+                      trailing: Icon(Icons.check_circle,color:Colors.green,),
+                      title: Text(
+                        "Customer Name"
+                      ),
+                      subtitle: Text("Designation"),
+                    ),
+                  );
+                  })
+                ),
+              ),
             ],
           ),
         ),
@@ -126,7 +179,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-
-
-

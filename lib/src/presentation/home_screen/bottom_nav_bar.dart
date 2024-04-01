@@ -64,8 +64,8 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
                     label: "Home",
                 ),
                 BottomNavigationBarItem(
-                    icon: ImageIcon(AssetImage(AssetResources.dashboardIcon),size: 22.sp,),
-                    label: "Dashboard"
+                    icon: Icon(Icons.search,size: 25.sp,),
+                    label: "Search"
                 ),
                 BottomNavigationBarItem(
                     icon: ImageIcon(AssetImage(AssetResources.moreIcon),size: 22.sp,),

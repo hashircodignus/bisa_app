@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider(create: (context) => SelectedCountryCubit()),
           ],
-          child: MaterialApp(
+          child: const MaterialApp(
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             home: SelectCountryPage(),
