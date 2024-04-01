@@ -1,4 +1,4 @@
-import 'package:bisa_app/src/presentation/dashboard_screen/dashboard_page.dart';
+import 'package:bisa_app/src/presentation/search_screen/search_page.dart';
 import 'package:bisa_app/src/presentation/home_screen/home_page.dart';
 import 'package:bisa_app/src/presentation/more_screen/more_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
@@ -19,7 +19,7 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
 
   final List<Widget> _list=[
     const HomePage(),
-    const DashboardPage(),
+    const SearchPage(),
 
   ];
 
@@ -60,7 +60,7 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
               elevation: 0,
               items:   <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                    icon: ImageIcon(AssetImage(AssetResources.homeIcon),size: 22.sp,),
+                    icon: ImageIcon(const AssetImage(AssetResources.homeIcon),size: 22.sp,),
                     label: "Home",
                 ),
                 BottomNavigationBarItem(
@@ -68,7 +68,7 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
                     label: "Search"
                 ),
                 BottomNavigationBarItem(
-                    icon: ImageIcon(AssetImage(AssetResources.moreIcon),size: 22.sp,),
+                    icon: ImageIcon(const AssetImage(AssetResources.moreIcon),size: 22.sp,),
                     label: "More",
 
                 ),

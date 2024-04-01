@@ -15,11 +15,13 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      
       onTap: onTap,
       textAlignVertical: TextAlignVertical.center,
       cursorColor: cursorColor,
       style: style,
       decoration:  InputDecoration(
+        contentPadding: EdgeInsets.all(13),
           hintText: hintText,
           hintStyle: hintStyle,
           prefixIcon: prefix,
@@ -28,6 +30,7 @@ class SearchTextField extends StatelessWidget {
           focusedErrorBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           suffixIcon:icon
+          
       ),
     );
   }

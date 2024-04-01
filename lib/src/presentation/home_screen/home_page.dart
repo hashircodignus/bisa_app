@@ -1,12 +1,9 @@
-import 'package:bisa_app/src/presentation/home_screen/widget/customer_name_field_widget.dart';
 import 'package:bisa_app/src/presentation/more_screen/more_page.dart';
 import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widget/search_text_field.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -55,38 +52,39 @@ class HomePage extends StatelessWidget {
                       //padding: const EdgeInsets.only(left: 10,right: 10),
                       decoration: const BoxDecoration(
                         color: AppTheme.backColor,
-                                // color: Colors.amber,
+                        // color: Colors.amber,
                       ),
-                      
+
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: TabBar(
-                          
-                           indicator: BoxDecoration(
-                            color: Colors.black,
-                            
-                            borderRadius: BorderRadiusDirectional.circular(5)
-                           ),
-                           unselectedLabelColor: const Color.fromARGB(255, 118, 116, 116),
-                           labelStyle: TextStyle(color:AppTheme.backColor),
-                          dividerColor: Colors.transparent,
-                          indicatorColor: Colors.transparent, tabs: [
-                          SizedBox(
-                            height: 46.h,
-                            width: 117.w,
-                            child: Tab(
-                                child: Text(
-                              'Recent',
-                            )),
-                          ),
-                          SizedBox(
-                            height: 46.h,
-                            width: 116.w,
-                            child: Tab(child: Text('Saved'))),
-                          SizedBox(
-                            height: 46.h,
-                            width: 117.w,child: Tab(child: Text('Promotions'))),
-                        ]),
+                            indicator: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(5)),
+                            unselectedLabelColor:
+                                const Color.fromARGB(255, 118, 116, 116),
+                            labelStyle: const TextStyle(color: AppTheme.backColor),
+                            dividerColor: Colors.transparent,
+                            indicatorColor: Colors.transparent,
+                            tabs: [
+                              SizedBox(
+                                height: 46.h,
+                                width: 117.w,
+                                child: const Tab(
+                                    child: Text(
+                                  'Recent',
+                                )),
+                              ),
+                              SizedBox(
+                                  height: 46.h,
+                                  width: 116.w,
+                                  child: const Tab(child: Text('Saved'))),
+                              SizedBox(
+                                  height: 46.h,
+                                  width: 117.w,
+                                  child: const Tab(child: Text('Promotions'))),
+                            ]),
                       ),
                     ),
                   ],
@@ -99,78 +97,87 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
                 child: SingleChildScrollView(
-                  child:ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 20,
-                    itemBuilder:( context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfilePage()));
-                    },
-                    child: ListTile(
-                      leading: CircleAvatar(),
-                      trailing: Icon(Icons.check_circle,color:Colors.green,),
-                      title: Text(
-                        "Customer Name"
-                      ),
-                      subtitle: Text("Designation"),
-                    ),
-                  );
-                  })
-                ),
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 20,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const ProfilePage()));
+                            },
+                            child: const ListTile(
+                              leading: CircleAvatar(),
+                              trailing: Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
+                              title: Text("Customer Name"),
+                              subtitle: Text("Designation"),
+                            ),
+                          );
+                        })),
               ),
-               Container(
+              Container(
                 color: AppTheme.backColor,
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
                 child: SingleChildScrollView(
-                  child:ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 5,
-                    itemBuilder:( context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfilePage()));
-                    },
-                    child: ListTile(
-                      leading: CircleAvatar(),
-                      trailing: Icon(Icons.check_circle,color:Colors.green,),
-                      title: Text(
-                        "Customer Name"
-                      ),
-                      subtitle: Text("Designation"),
-                    ),
-                  );
-                  })
-                ),
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const ProfilePage()));
+                            },
+                            child: const ListTile(
+                              leading: CircleAvatar(),
+                              trailing: Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
+                              title: Text("Customer Name"),
+                              subtitle: Text("Designation"),
+                            ),
+                          );
+                        })),
               ),
-               Container(
+              Container(
                 color: AppTheme.backColor,
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
                 child: SingleChildScrollView(
-                  child:ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 3,
-                    itemBuilder:( context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfilePage()));
-                    },
-                    child: ListTile(
-                      leading: CircleAvatar(),
-                      trailing: Icon(Icons.check_circle,color:Colors.green,),
-                      title: Text(
-                        "Customer Name"
-                      ),
-                      subtitle: Text("Designation"),
-                    ),
-                  );
-                  })
-                ),
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const ProfilePage()));
+                            },
+                            child: const ListTile(
+                              leading: CircleAvatar(),
+                              trailing: Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
+                              title: Text("Customer Name"),
+                              subtitle: Text("Designation"),
+                            ),
+                          );
+                        })),
               ),
             ],
           ),
