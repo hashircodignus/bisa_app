@@ -16,20 +16,15 @@ class DetailsTextFormField extends StatelessWidget {
       height: 59.h,
       width: 390.w,
       child: TextFormField(
+        readOnly: true,
         initialValue: initialValue,
         textInputAction: TextInputAction.next,
         style: AppTheme.labelTextBlack,
         cursorColor: AppTheme.textColor,
         decoration: InputDecoration(
-            enabledBorder:  UnderlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.smallText,width: 0.5.w,style: BorderStyle.solid)
-            ),
-            focusedBorder:  UnderlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.textColor,width: 0.5.w,style: BorderStyle.solid)
-            ),
-            errorBorder:   UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.red,width: 0.5.w,style: BorderStyle.solid)
-            ),
+            enabledBorder:  InputBorder.none,
+            focusedBorder:  InputBorder.none,
+            errorBorder:   InputBorder.none,
             labelText: labelText,
             labelStyle: AppTheme.smallHead
         ),
