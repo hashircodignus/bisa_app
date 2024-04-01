@@ -12,6 +12,7 @@ class AppTheme {
   static const Color textColor = Colors.black;
   static const Color smallText = Colors.grey;
   static const Color blueColor = Color(0xff4B73E1);
+  static const Color cardColor = Color(0xff43A047);
 
 //*************************************************
 //*************************************************
@@ -100,6 +101,12 @@ class AppTheme {
       fontSize: 16.sp,
       fontWeight: FontWeight.w600);
 
+  static TextStyle greenSubText = TextStyle(
+      color: cardColor,
+      fontFamily: figTreeFont.fontFamily,
+      fontSize: 18.sp,
+      fontWeight: FontWeight.w500);
+
   static TextStyle tabText = TextStyle(
       color: textColor,
       fontFamily: figTreeFont.fontFamily,
@@ -134,6 +141,12 @@ class AppTheme {
       fontFamily: figTreeFont.fontFamily,
       fontSize: 20.sp,
       fontWeight: FontWeight.w500);
+
+  static TextStyle smallTextHead = TextStyle(
+      color: smallText,
+      fontFamily: figTreeFont.fontFamily,
+      fontSize: 22.sp,
+      fontWeight: FontWeight.w600);
 
   static TextStyle pageHead = TextStyle(
       color: textColor,

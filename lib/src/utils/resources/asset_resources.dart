@@ -41,5 +41,7 @@ class AssetResources{
   static const briefcaseIcon = "assets/svg/briefcase_icon.svg";
   static const personIcon = "assets/svg/person.svg";
   static const editIcon = "assets/svg/edit_icon.svg";
+  static const cardBackground = "assets/svg/card_background.svg";
+  static const userImage = "assets/svg/user_image.svg";
 
 }
