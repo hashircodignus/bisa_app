@@ -1,5 +1,3 @@
-
-
 class AssetResources{
   static const appLogo = "assets/images/bisa_logo.png";
   static const appLogoWhite = "assets/images/bisa_logo_white.png";
@@ -31,6 +29,7 @@ class AssetResources{
   static const feedbackIcon = "assets/images/feedback.png";
   static const partnerWithUs = "assets/images/link.png";
   static const logOut = "assets/images/logout.png";
+  static const background = "assets/images/background.png";
 
   static const homeIcon = "assets/images/home_icon.png";
   static const dashboardIcon = "assets/images/dashboard.png";
@@ -41,6 +40,8 @@ class AssetResources{
 
   static const briefcaseIcon = "assets/svg/briefcase_icon.svg";
   static const personIcon = "assets/svg/person.svg";
-  static const notification = "assets/svg/notification.svg";
+  static const editIcon = "assets/svg/edit_icon.svg";
+  static const cardBackground = "assets/svg/card_background.svg";
+  static const userImage = "assets/svg/user_image.svg";
 
 }

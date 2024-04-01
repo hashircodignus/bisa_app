@@ -1,6 +1,5 @@
-import 'package:bisa_app/src/presentation/home_screen/bottom_nav_bar.dart';
-import 'package:bisa_app/src/presentation/home_screen/home_page.dart';
-import 'package:bisa_app/src/presentation/select_country_screen/select_country_page.dart';
+import 'package:bisa_app/src/presentation/select_country_screen/cubit/selected_country_cubit.dart';
+import 'package:bisa_app/src/presentation/select_country_screen/view/select_country_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,11 +24,15 @@ class MyApp extends StatelessWidget {
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return ScreenUtilInit(
       builder: (_, child) {
-        return MaterialApp(
-         
-          title: 'Flutter Demo',
-          debugShowCheckedModeBanner: false,
-          home:BottomNavBarPage(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => SelectedCountryCubit()),
+          ],
+          child: const MaterialApp(
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            home: SelectCountryPage(),
+          ),
         );
       },
       designSize: const Size(430, 932),
