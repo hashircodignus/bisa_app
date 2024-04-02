@@ -1,6 +1,7 @@
 import 'package:bisa_app/src/presentation/home_screen/bottom_nav_bar.dart';
 import 'package:bisa_app/src/presentation/home_screen/widget/menu_text_button_widget.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/my_card_page.dart';
+import 'package:bisa_app/src/presentation/more_screen/subscription/subscription.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,9 +43,8 @@ class MorePage extends StatelessWidget {
                SizedBox(height: 30.h,),
                MenuTextButtonWidget(buttonText: 'My Card', buttonImage: const AssetImage(AssetResources.myCard),onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>const MyCardPage())),),
               SizedBox(height: 30.h,),
-              const MenuTextButtonWidget(buttonText: 'Pay Now', buttonImage:AssetImage(AssetResources.payNow),),
-              SizedBox(height: 30.h,),
-              const MenuTextButtonWidget(buttonText: 'Notification', buttonImage:AssetImage(AssetResources.notificationIcon)),
+              
+               MenuTextButtonWidget(buttonText: 'Subscription', buttonImage:const AssetImage(AssetResources.subscription),onTap:() => Navigator.push(context, MaterialPageRoute(builder: (context)=> const SubscriptionPage())),),
               SizedBox(height: 30.h,),
               const MenuTextButtonWidget(buttonText: 'About Us', buttonImage: AssetImage(AssetResources.aboutUs)),
               SizedBox(height: 30.h,),

@@ -37,11 +37,13 @@ class AssetResources{
   static const successLottie = "assets/animation/success_lottie.json";
   static const otpIconLottie = "assets/animation/otplottie.json";
   static const otpLottie = "assets/animation/otp_lottie.json";
+  static const subscription= "assets/images/subscription_icon.png";
 
   static const briefcaseIcon = "assets/svg/briefcase_icon.svg";
   static const personIcon = "assets/svg/person.svg";
   static const editIcon = "assets/svg/edit_icon.svg";
   static const cardBackground = "assets/svg/card_background.svg";
   static const userImage = "assets/svg/user_image.svg";
+  
 
 }
