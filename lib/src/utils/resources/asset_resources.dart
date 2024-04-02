@@ -34,6 +34,8 @@ class AssetResources{
   static const homeIcon = "assets/images/home_icon.png";
   static const dashboardIcon = "assets/images/dashboard.png";
   static const moreIcon = "assets/images/more_icon.png";
+  static const subscription= "assets/images/subscription_icon.png";
+
   static const successLottie = "assets/lottie/success_lottie.json";
   static const otpIconLottie = "assets/lottie/otplottie.json";
   static const otpLottie = "assets/lottie/otp_lottie.json";
@@ -43,5 +45,6 @@ class AssetResources{
   static const editIcon = "assets/svg/edit_icon.svg";
   static const cardBackground = "assets/svg/card_background.svg";
   static const userImage = "assets/svg/user_image.svg";
+  
 
 }
