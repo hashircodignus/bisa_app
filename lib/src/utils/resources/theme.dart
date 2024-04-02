@@ -13,7 +13,7 @@ class AppTheme {
   static const Color smallText = Colors.grey;
   static const Color blueColor = Color(0xff4B73E1);
   static const Color cardColor = Color(0xff43A047);
-
+  static  Color cardColorlight = Color(0xff43A047).withOpacity(0.12);
 //*************************************************
 //*************************************************
 
@@ -164,6 +164,13 @@ class AppTheme {
       fontFamily: figTreeFont.fontFamily,
       fontSize: 22.sp,
       fontWeight: FontWeight.w600);
+       static TextStyle centertext = TextStyle(
+      color: Color(0xff000000),
+      fontFamily: figTreeFont.fontFamily,
+      fontSize: 25.sp,
+      fontWeight: FontWeight.w700);
+      
+
 }
 
 //************************************************
