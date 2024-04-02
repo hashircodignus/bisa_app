@@ -1,4 +1,4 @@
-import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_business_card_document_page.dart';
+import 'package:bisa_app/src/presentation/subscribe_page.dart';
 import 'package:bisa_app/src/presentation/widget/custom_data_textfield.dart';
 import 'package:bisa_app/src/presentation/widget/search_text_field.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
@@ -52,7 +52,7 @@ class CreateCardSecondPage extends StatelessWidget {
               ),
               InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const CreateBusinessCardDocumentPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const SubscribePage()));
                 },
                 child: Container(
                   height: 59.h,
@@ -227,8 +227,8 @@ class CreateCardSecondPage extends StatelessWidget {
                       prefixIconConstraints:  BoxConstraints(maxWidth: 50.w,maxHeight: 50.h),
                       prefixIcon: Center(
                         child: Container(
-                          height: 19.h,
-                          width: 19.w,
+                          height: 30.h,
+                          width: 30.w,
                           decoration: BoxDecoration(
                             image: const DecorationImage(image: AssetImage(AssetResources.faceBook)),
                             color: Colors.transparent,
@@ -330,8 +330,8 @@ class CreateCardSecondPage extends StatelessWidget {
                       prefixIconConstraints:  BoxConstraints(maxWidth: 50.w,maxHeight: 50.h),
                       prefixIcon: Center(
                         child: Container(
-                          height: 19.h,
-                          width: 19.w,
+                          height: 30.h,
+                          width: 30.w,
                           decoration: BoxDecoration(
                             // image: const DecorationImage(image: AssetImage(AssetResources.faceBook)),
                             color: Colors.transparent,
