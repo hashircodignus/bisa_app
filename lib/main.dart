@@ -1,4 +1,3 @@
-import 'package:bisa_app/src/presentation/more_screen/subscription/subscription.dart';
 import 'package:bisa_app/src/presentation/select_country_screen/cubit/selected_country_cubit.dart';
 import 'package:bisa_app/src/presentation/select_country_screen/view/select_country_page.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
           child: const MaterialApp(
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
-            home: SubscriptionPage(),
+            home: SelectCountryPage(),
           ),
         );
       },

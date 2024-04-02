@@ -1,4 +1,4 @@
-import 'package:bisa_app/src/presentation/subscribe_page.dart';
+import 'package:bisa_app/src/presentation/more_screen/subscription/subscribe_page.dart';
 import 'package:bisa_app/src/presentation/widget/custom_data_textfield.dart';
 import 'package:bisa_app/src/presentation/widget/search_text_field.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
