@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/more_screen/subscription/widgets/subscription_widget.dart';
 import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/success_screen.dart';
@@ -19,6 +20,7 @@ class SubscribePage extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: const SubscriptionWidget(),
       ),
       bottomNavigationBar: Padding(padding: EdgeInsets.only(bottom: 50.h,left: 20.w,right: 20.w),
       child:  ButtonWidget(buttonTextContent: "Payment",onPressed: (){
