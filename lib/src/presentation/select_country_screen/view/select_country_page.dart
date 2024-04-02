@@ -1,6 +1,7 @@
 import 'package:bisa_app/src/presentation/select_country_screen/cubit/selected_country_cubit.dart';
 import 'package:bisa_app/src/presentation/terms_and_conditions_screen/terms_and_conditions_page.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
+import 'package:bisa_app/src/presentation/widget/light_button_widget.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
     return BlocProvider(
       create: (context) => SelectedCountryCubit(),
       child: Scaffold(
+        backgroundColor: AppTheme.backColor,
           body: Container(
             padding: EdgeInsets.only(left: 20.w, right: 20.w),
             child: Column(
@@ -75,6 +77,7 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                   height: 59.h,
                   child: TextFormField(
                     onTap: () => showCountryPicker(
+                      useSafeArea: true,
                       countryListTheme: CountryListThemeData(
                           inputDecoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -136,15 +139,15 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
           ),
           bottomNavigationBar: Padding(
             padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
-            child: ButtonWidget(
+            child: countryController.text.isNotEmpty ?ButtonWidget(
               buttonTextContent: "GO AHEAD",
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => BlocBuilder<SelectedCountryCubit,
-                                    SelectedCountryState>(
-                                builder: (context, state) {
+                            SelectedCountryState>(
+                            builder: (context, state) {
                               if (state is SelectedCountryLoaded) {
                                 return TermsAndConditionsPage(
                                     flag: getFlagEmoji(),
@@ -153,7 +156,7 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                               return Container();
                             })));
               },
-            ),
+            ):const LightButtonWidget(buttonTextContent: "GO AHEAD"),
           )),
     );
   }
