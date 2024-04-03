@@ -213,8 +213,8 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const RegisterPage(
-                                        flag: '',
-                                        countryphoneCode: '',
+                                        // flag: '',
+                                        // countryphoneCode: '',
                                       ))),
                           child: Container(
                             decoration: const BoxDecoration(

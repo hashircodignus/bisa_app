@@ -8,13 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widget/appbar_back_button_widget.dart';
 
 class TermsAndConditionsPage extends StatefulWidget {
-  final String flag;
-  final String countryphoneCode;
-  const TermsAndConditionsPage({
-    super.key,
-    required this.flag,
-    required this.countryphoneCode,
-  });
+  const TermsAndConditionsPage({super.key,});
 
   @override
   State<TermsAndConditionsPage> createState() => _TermsAndConditionsPageState();
@@ -145,10 +139,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => RegisterPage(
-                                flag: widget.flag,
-                                countryphoneCode: widget.countryphoneCode,
-                              )));
+                          builder: (context) => RegisterPage()));
                 },
               )
             : const LightButtonWidget(buttonTextContent: "CONTINUE"),
