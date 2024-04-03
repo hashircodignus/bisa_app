@@ -97,6 +97,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const OTPPage()));
               } else if (state is RegisterPageOtpVerification) {
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.textColor,
+                  ),
+                );
                 _showSnackBar(state.verificationSend);
               } else if (state is RegisterPageCodeSent) {
                 _showSnackBar(state.codeSend);
@@ -118,7 +123,21 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (_signUpKey.currentState!.validate() &&
                         registerBloc.loginIdController.text.contains(RegExp(
                             r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
-                      registerBloc.register(context);
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context){
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: AppTheme.textColor,
+                              ),
+                            );
+                          },
+                      );
+                      Future.delayed(Duration(seconds: 2),(){
+                        Navigator.pop(context);
+                        registerBloc.register(context);
+                      });
                     }
                   });
             },
