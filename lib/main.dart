@@ -1,3 +1,5 @@
+import 'package:bisa_app/src/presentation/otp_screen/cubit/otp_page_cubit.dart';
+import 'package:bisa_app/src/presentation/register_screen/cubit/register_page_cubit.dart';
 import 'package:bisa_app/src/presentation/select_country_screen/cubit/selected_country_cubit.dart';
 import 'package:bisa_app/src/presentation/select_country_screen/view/select_country_page.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => SelectedCountryCubit()),
+            BlocProvider(create: (context)=> RegisterPageCubit()),
+            BlocProvider(create: (context)=> OtpPageCubit()),
           ],
           child: const MaterialApp(
             title: 'Flutter Demo',

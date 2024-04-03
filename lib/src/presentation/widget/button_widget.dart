@@ -6,7 +6,8 @@ import '../../utils/resources/theme.dart';
 class ButtonWidget extends StatelessWidget {
   final void Function()? onPressed;
   final String buttonTextContent;
-  const ButtonWidget({required this.buttonTextContent,this.onPressed,
+  final bool? isLoading;
+  const ButtonWidget({required this.buttonTextContent,this.onPressed, this.isLoading=false,
     super.key,
   });
 
@@ -22,7 +23,7 @@ class ButtonWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(30.r)
         ),
         child: Padding(padding:  EdgeInsets.symmetric(vertical: 20.h),
-        child: Center(child: Text(buttonTextContent,style: AppTheme.buttonText,)),
+        child: Center(child: isLoading == true ?const CircularProgressIndicator(color: Colors.white,):Text(buttonTextContent,style: AppTheme.buttonText,)),
         ),
       ),
     );
