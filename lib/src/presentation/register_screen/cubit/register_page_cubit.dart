@@ -12,38 +12,43 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
   TextEditingController loginIdController = TextEditingController();
   late String VerificationId = '';
 
-
-  register(BuildContext context) async{
+  register(BuildContext context) async {
     void _showSnackBar(String message) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating, content: Text(message)));
     }
+
     FirebaseAuth auth = FirebaseAuth.instance;
     final countryBloc = BlocProvider.of<SelectedCountryCubit>(context);
     emit(RegisterPageInitial());
     emit(RegisterPageLoading());
     try {
-      log("phone number = +${countryBloc.countryPhoneCode+loginIdController.text}");
-     await auth.verifyPhoneNumber(
-        phoneNumber: "+${countryBloc.countryPhoneCode+loginIdController.text}",
-         verificationCompleted: (PhoneAuthCredential credential){
-         emit(RegisterPageOtpVerification(verificationSend: "Verification completed"));
-          },
-          verificationFailed: (FirebaseAuthException e){
-          _showSnackBar(e.message.toString());
-          throw (e);
-          },
-          codeSent: (String verificationId, int? resendToken){
-          emit(RegisterPageCodeSent(codeSend: "OTP sent"));
-          VerificationId = verificationId;
-          },
-          codeAutoRetrievalTimeout: (String verificationId) {}).whenComplete(() =>emit(RegisterPageSuccess(successText: "Login Successful")) );
+      log("phone number = +${countryBloc.countryPhoneCode + loginIdController.text}");
+      await auth
+          .verifyPhoneNumber(
+              phoneNumber:
+                  "+${countryBloc.countryPhoneCode + loginIdController.text}",
+              verificationCompleted: (PhoneAuthCredential credential) {
+                emit(RegisterPageOtpVerification(
+                    verificationSend: "Verification completed"));
+              },
+              verificationFailed: (FirebaseAuthException e) {
+                _showSnackBar(e.message.toString());
+                throw (e);
+              },
+              codeSent: (String verificationId, int? resendToken) {
+                emit(RegisterPageCodeSent(codeSend: "OTP sent"));
+                VerificationId = verificationId;
+              },
+              codeAutoRetrievalTimeout: (String verificationId) {})
+          .whenComplete(
+              () => emit(RegisterPageSuccess(successText: "Login Successful")));
 
-   // FirebaseFirestore.instance.collection('userCredential').doc(uuid).set({
-   //   'id':uuid,
-   //   'phone number':loginIdController.toString(),
-   // });
-    }catch (e){
+      // FirebaseFirestore.instance.collection('userCredential').doc(uuid).set({
+      //   'id':uuid,
+      //   'phone number':loginIdController.toString(),
+      // });
+    } catch (e) {
       log(e.toString());
       emit(RegisterPageError(errorText: "Login Failed"));
     }

@@ -136,10 +136,24 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
             ? ButtonWidget(
                 buttonTextContent: "CONTINUE",
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RegisterPage()));
+                 showDialog(
+                     context: context,
+                     barrierDismissible: false,
+                     builder: (BuildContext context){
+                       return Center(
+                         child: CircularProgressIndicator(
+                           color: AppTheme.textColor,
+                         ),
+                       );
+                     },
+                 );
+                 Future.delayed(Duration(seconds: 2),(){
+                   Navigator.pop(context);
+                   Navigator.push(
+                       context,
+                       MaterialPageRoute(
+                           builder: (context) => RegisterPage()));
+                 });
                 },
               )
             : const LightButtonWidget(buttonTextContent: "CONTINUE"),

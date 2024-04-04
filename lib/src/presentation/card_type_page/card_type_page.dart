@@ -1,8 +1,11 @@
+import 'package:bisa_app/src/presentation/home_screen/bottom_nav_bar.dart';
 import 'package:bisa_app/src/presentation/kyc_create_page/kyc_create_page.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/light_button_widget.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,7 +38,8 @@ class _CardTypePageState extends State<CardTypePage> {
   @override
   void initState() {
     super.initState();
-    selectedIndex = -1;
+   // selectedIndex = -1;
+    checkIsSelected();
   }
 
   @override
@@ -126,7 +130,8 @@ class _CardTypePageState extends State<CardTypePage> {
         child: isButtonEnabled
             ? ButtonWidget(
                 buttonTextContent: "Confirm",
-                onPressed: () {
+                onPressed: ()async {
+                  await saveAccountType(selectedIndex);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -136,5 +141,31 @@ class _CardTypePageState extends State<CardTypePage> {
             : const LightButtonWidget(buttonTextContent: "Confirm"),
       ),
     );
+  }
+  Future<void> saveAccountType(int selectedIndex) async {
+    try{
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if(currentUser != null){
+        final userRef = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+        await userRef.set({'account type': cardDataList[selectedIndex]['title']}, SetOptions(merge: true));
+      }
+    }catch (error) {
+      print("Error saving account type to Firestore $error");
+    }
+  }
+
+  Future<void> checkIsSelected() async{
+    try{
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if(currentUser != null){
+        final userDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get();
+        if(userDoc.exists && userDoc['accountType'] != null){
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>BottomNavBarPage()), (route) => false);
+        }
+      }
+    }catch (error) {
+      print("Error checking user account type in Firestore: $error");
+
+    }
   }
 }

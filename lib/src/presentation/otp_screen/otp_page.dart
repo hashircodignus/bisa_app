@@ -99,7 +99,21 @@ class _OTPPageState extends State<OTPPage> {
             child: ButtonWidget(
                 buttonTextContent: "GO",
                 onPressed: () async {
-                  otpBloc.otpValidate(context);
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context){
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: AppTheme.textColor,
+                          ),
+                        );
+                      },
+                  );
+                  Future.delayed(Duration(seconds: 2),(){
+                    Navigator.pop(context);
+                    otpBloc.otpValidate(context);
+                  });
                 }),
           ),
         ),
