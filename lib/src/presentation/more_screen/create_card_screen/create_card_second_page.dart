@@ -32,7 +32,6 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
   }
   @override
   Widget build(BuildContext context) {
-    final cardBloc = BlocProvider.of<CreateCardCubit>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -184,52 +183,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         )
                       ],
                     )),
-                SizedBox(
-                  height: 20.h,
-                ),
-                CardDetailsContainer(
-                    cardHead: "Email address",
-                    // height: 132.h,
-                    widget: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        CustomDataTextField(
-                          prefixIcon: Icon(
-                            Icons.mail_outline_rounded,
-                            color: AppTheme.smallText,
-                            size: 19.sp,
-                          ),
-                          hintText: "Email Address",
-                          controller: cardBloc.emailController,
-                        ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(10.sp),
-                          height: 40.h,
-                          width: 109.w,
-                          decoration: BoxDecoration(
-                              color: AppTheme.cardColor,
-                              borderRadius: BorderRadius.circular(12.r)),
-                          child: Center(
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Add New",
-                                  style: AppTheme.smallHeadWhite,
-                                ),
-                                Icon(
-                                  Icons.add,
-                                  color: AppTheme.backColor,
-                                  size: 20.sp,
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    )),
+
                 SizedBox(
                   height: 20.h,
                 ),
@@ -248,7 +202,6 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: CustomDataTextField(
-                                  autofocus: true,
                                   controller: listControllerSocialMedia[index],
                                   onTap: () =>
                                    showModalBottomSheet(
