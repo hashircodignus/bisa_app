@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
 class CustomDataTextField extends StatelessWidget {
-  final bool? autofocus;
   final String? hintText;
   final Widget? prefixIcon;
   final Function()? onTap;
@@ -20,7 +19,6 @@ class CustomDataTextField extends StatelessWidget {
     this.onTap,
     this.fieldHead,
     super.key,
-    this.autofocus,
   });
 
   @override
@@ -54,7 +52,6 @@ class CustomDataTextField extends StatelessWidget {
                 }
                 return null;
               },
-              autofocus: autofocus!,
               onTap: onTap,
               textAlignVertical: TextAlignVertical.bottom,
               controller: controller,
