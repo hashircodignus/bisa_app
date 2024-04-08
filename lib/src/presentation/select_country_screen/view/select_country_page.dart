@@ -77,9 +77,11 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                   height: 59.h,
                   child: TextFormField(
                     onTap: () => showCountryPicker(
-                      useSafeArea: true,
+                 
                       countryListTheme: CountryListThemeData(
+                        padding: EdgeInsets.all(13),
                           inputDecoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(3),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(60.r),
                               ),

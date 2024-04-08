@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+   sdk: '>=3.1.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -49,12 +49,15 @@ dependencies:
   country_icons: ^3.0.0
   bloc: ^8.1.4
   flutter_bloc: ^8.1.5
-
+  google_sign_in: ^6.2.1
+  shared_preferences: ^2.2.2
 
 
 dev_dependencies:
+ 
   flutter_test:
     sdk: flutter
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

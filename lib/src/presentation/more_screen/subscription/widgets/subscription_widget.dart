@@ -1,5 +1,5 @@
 import 'package:bisa_app/src/utils/resources/theme.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,10 +16,10 @@ class _SubscriptionWidgetState extends State<SubscriptionWidget> {
   bool selected3 = false;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      height: 550.h,
-      //color: Colors.blue,
+      height: 520.h,
+     // color: Colors.blue,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

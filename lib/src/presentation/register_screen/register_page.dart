@@ -1,13 +1,14 @@
-
+import 'package:bisa_app/src/presentation/home_screen/bottom_nav_bar.dart';
+import 'package:bisa_app/src/presentation/home_screen/home_page.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/userid_textfield.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/asset_resources.dart';
 import '../otp_screen/otp_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
   final String flag;
@@ -24,11 +25,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final _signUpKey = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
-  }
+  
+ 
 
+ 
+
+  @override
+  void dispose() {
+    loginIdController.dispose();
+    super.dispose();
+  }
   // void verifyPhoneNumber() async {
   //   showDialog(
   //       context: context,
@@ -93,12 +99,6 @@ class _RegisterPageState extends State<RegisterPage> {
   // }
 
   @override
-  void dispose() {
-    loginIdController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -143,22 +143,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 60.h,
                   ),
                   UserIdTextField(
-                    controller: loginIdController,
-                    textInputAction: TextInputAction.done,
-                    flag: widget.flag,
-                    countryphoneCode: widget.countryphoneCode
-                    // onSubmitted: (value) {
-                    //   if (_signUpKey.currentState!.validate() &&
-                    //       loginIdController.text.contains(RegExp(
-                    //           r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
-                    //     verifyPhoneNumber();
-                    //   // } else if (_signUpKey.currentState!.validate() &&
-                    //   //     loginIdController.text.contains(RegExp(
-                    //   //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
-                    //   //   addEmail();
-                    //   }
-                    // },
-                  ),
+                      controller: loginIdController,
+                      textInputAction: TextInputAction.done,
+                      flag: widget.flag,
+                      countryphoneCode: widget.countryphoneCode
+                      // onSubmitted: (value) {
+                      //   if (_signUpKey.currentState!.validate() &&
+                      //       loginIdController.text.contains(RegExp(
+                      //           r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
+                      //     verifyPhoneNumber();
+                      //   // } else if (_signUpKey.currentState!.validate() &&
+                      //   //     loginIdController.text.contains(RegExp(
+                      //   //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
+                      //   //   addEmail();
+                      //   }
+                      // },
+                      ),
                 ],
               ),
             ),
@@ -174,8 +174,14 @@ class _RegisterPageState extends State<RegisterPage> {
               //         r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
               //   verifyPhoneNumber();
 
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const OTPPage()));
+              if (_signUpKey.currentState!.validate()) {
+               
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const OTPPage()));
+              }
+
+              //Navigator.push(context,
+              //MaterialPageRoute(builder: (context) => const OTPPage()));
 
               // } else if (_signUpKey.currentState!.validate() &&
               //     loginIdController.text.contains(RegExp(
