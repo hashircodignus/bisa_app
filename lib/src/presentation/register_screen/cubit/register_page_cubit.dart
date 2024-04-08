@@ -11,6 +11,7 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
   final uuid = '';
   TextEditingController loginIdController = TextEditingController();
   late String VerificationId = '';
+  late String phoneNumber = '';
 
   register(BuildContext context) async {
     void _showSnackBar(String message) {
@@ -23,11 +24,12 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
     emit(RegisterPageInitial());
     emit(RegisterPageLoading());
     try {
-      log("phone number = +${countryBloc.countryPhoneCode + loginIdController.text}");
+      phoneNumber= "+${countryBloc.countryPhoneCode + loginIdController.text}";
+      log("phone number = ${phoneNumber}");
       await auth
           .verifyPhoneNumber(
               phoneNumber:
-                  "+${countryBloc.countryPhoneCode + loginIdController.text}",
+                  "${phoneNumber}",
               verificationCompleted: (PhoneAuthCredential credential) {
                 emit(RegisterPageOtpVerification(
                     verificationSend: "Verification completed"));

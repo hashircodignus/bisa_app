@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
@@ -23,6 +22,11 @@ class UserIdTextField extends StatefulWidget {
 }
 
 class _UserIdTextFieldState extends State<UserIdTextField> {
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+  }
+
   bool isEmail(String input) => RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
       .hasMatch(input);
@@ -52,14 +56,19 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        _showSnackBar("Enter valid data");
+                      }
+                      return null;
+                    },
                     initialValue: " +${widget.countryphoneCode}",
                     readOnly: true,
                     style: AppTheme.fieldText,
                     decoration: InputDecoration(
                       prefixIcon: Text(widget.flag),
                       prefixIconConstraints: BoxConstraints(maxWidth: 70.w),
-                      suffixIcon:
-                          const Icon(Icons.keyboard_arrow_down_rounded),
+                      suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
                       suffixIconConstraints: BoxConstraints(maxWidth: 70.w),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -93,6 +102,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
             ),
             Expanded(
               child: TextFormField(
+                maxLength: 15,
                 keyboardType: TextInputType.phone,
                 onFieldSubmitted: widget.onSubmitted,
                 textInputAction: widget.textInputAction,

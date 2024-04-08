@@ -5,18 +5,21 @@ import '../../utils/resources/theme.dart';
 class CustomDataTextField extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
-  final String? initialValue;
   final Function()? onTap;
   final String? fieldHead;
   final TextEditingController? controller;
   final TextInputType? textInputType;
   final BoxConstraints? prefixIconConstraints;
-  const CustomDataTextField({ this.prefixIconConstraints,this.prefixIcon,this.hintText, this.controller,this.initialValue,this.textInputType,this.onTap,this.fieldHead,
+  const CustomDataTextField({ this.prefixIconConstraints,this.prefixIcon,this.hintText, this.controller,this.textInputType,this.onTap,this.fieldHead,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    void _showSnackBar(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+    }
     return Container(
       //height: 84.h,
      // color: Colors.red,
@@ -30,9 +33,14 @@ class CustomDataTextField extends StatelessWidget {
            // height: 59.h,
            // color: Colors.blue,
             child: TextFormField(
+              validator: (value) {
+                if (value!.isEmpty) {
+                  _showSnackBar("Enter valid data");
+                }
+                return null;
+              },
               onTap: onTap,
               textAlignVertical: TextAlignVertical.bottom,
-              initialValue: initialValue,
               controller: controller,
               cursorColor: AppTheme.textColor,
               style: AppTheme.titleText,

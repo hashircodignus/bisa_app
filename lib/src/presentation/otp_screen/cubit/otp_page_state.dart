@@ -13,3 +13,4 @@ class OtpPageError extends OtpPageState {
   final String errorText;
   OtpPageError({required this.errorText});
 }
+class OtpPageUserExists extends OtpPageState {}

@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/more_screen/subscription/model/subscription_model.dart';
 import 'package:bisa_app/src/presentation/more_screen/subscription/widgets/subscription_widget.dart';
 import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
@@ -14,7 +15,8 @@ class SubscriptionPage extends StatefulWidget {
 }
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
- 
+  SubscriptionPlan? selectedPlan;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +76,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  const SubscriptionWidget(),
+                   SubscriptionWidget(),
                 ],
               )
             ],

@@ -23,28 +23,28 @@ class OtpPageCubit extends Cubit<OtpPageState> {
           verificationId: registerBloc.VerificationId,
           smsCode: pinController.text);
 
-      UserCredential userCredential = await auth.signInWithCredential(credential);
+      UserCredential userCredential =
+          await auth.signInWithCredential(credential);
       User? user = userCredential.user;
 
-      bool userExists = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get().then((doc) => doc.exists);
+      // bool userExists = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get().then((doc) => doc.exists);
+      bool userExists = await FirebaseFirestore.instance
+          .collection('users')
+          .where('phone number',
+              isEqualTo:
+                  "+${selectCountryBloc.countryPhoneCode + registerBloc.loginIdController.text}")
+          .get()
+          .then((querySnapshot) => querySnapshot.docs.isNotEmpty);
 
-      if(!userExists){
-        await FirebaseFirestore.instance.collection('users').doc(user?.uid).set(
-            {
-              'uid': user?.uid,
-              'phone number': "+${selectCountryBloc.countryPhoneCode + registerBloc.loginIdController.text}"
-            });
+      if (userExists) {
+        emit(OtpPageUserExists());
+        return;
       }
-      // await FirebaseFirestore.instance
-      //     .collection('users')
-      //     .doc(auth.currentUser?.uid)
-      //     .set({
-      //   'phoneNumber':
-      //       "+${BlocProvider.of<SelectedCountryCubit>(context).countryPhoneCode + BlocProvider.of<RegisterPageCubit>(context).loginIdController.text}"
-      // });
-      // await auth.signInWithCredential(credential).then((value) {
-      //   emit(OtpPageSuccess(successText: "Login Successful"));
-      // });
+      await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
+        'uid': user?.uid,
+        'phone number':
+            "+${selectCountryBloc.countryPhoneCode + registerBloc.loginIdController.text}"
+      });
       emit(OtpPageSuccess(successText: "Login Successful"));
     } catch (e) {
       emit(OtpPageError(errorText: e.toString()));

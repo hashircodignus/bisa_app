@@ -78,7 +78,7 @@ class CreateIndividualCardSecondPage extends StatelessWidget {
                     cardHead: 'PHONE NUMBER',
                     widget: Column(
                       children: [
-                        CustomDataTextField(prefixIcon: Icon(Icons.phone_outlined,color: AppTheme.textColor,),initialValue: "1234567890",hintText: "Phone Number"),
+                        CustomDataTextField(prefixIcon: Icon(Icons.phone_outlined,color: AppTheme.textColor,),hintText: "Phone Number"),
                         CustomDataTextField(prefixIcon: Icon(Icons.phone_outlined,color: AppTheme.textColor,),hintText: "Phone Number"),
                       ],
                     )
@@ -97,7 +97,6 @@ class CreateIndividualCardSecondPage extends StatelessWidget {
                     cardHead: "SOCIAL MEDIA", widget: Column(
                   children: [
                     CustomDataTextField(
-                      initialValue: "Facebook.com/23345567876",
                       onTap: ()=>showModalBottomSheet(
                           backgroundColor: Colors.transparent,
                           context: context, builder: (BuildContext context){
