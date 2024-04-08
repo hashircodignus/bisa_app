@@ -22,6 +22,11 @@ class UserIdTextField extends StatefulWidget {
 }
 
 class _UserIdTextFieldState extends State<UserIdTextField> {
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+  }
+
   bool isEmail(String input) => RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
       .hasMatch(input);
@@ -44,13 +49,19 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            Container(
                 height: 65.h,
                 width: 97.w,
                 // color: Colors.red,
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        _showSnackBar("Enter valid data");
+                      }
+                      return null;
+                    },
                     initialValue: " +${widget.countryphoneCode}",
                     readOnly: true,
                     style: AppTheme.fieldText,
@@ -94,6 +105,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
             ),
             Expanded(
               child: TextFormField(
+                maxLength: 15,
                 keyboardType: TextInputType.phone,
                 onFieldSubmitted: widget.onSubmitted,
                 textInputAction: widget.textInputAction,

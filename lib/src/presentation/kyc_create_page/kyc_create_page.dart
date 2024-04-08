@@ -1,7 +1,11 @@
+import 'dart:io';
 import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/light_button_widget.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +24,7 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
   String? _selectedDocument;
   XFile? _image;
 
-  void _pickImage() async{
+  void _pickImage() async {
     final picker = ImagePicker();
 
     showModalBottomSheet(
@@ -110,14 +114,45 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
         });
   }
 
-  void _getImage(ImageSource source) async{
+  void _getImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: source);
-    if(pickedImage != null){
+    if (pickedImage != null) {
       setState(() {
         //  _image = XFile(pickedImage.name);
         _image = XFile(pickedImage.path);
       });
+    }
+  }
+
+  Future<void> _uploadData() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null && _image != null && _selectedDocument != null) {
+        String documentType;
+        if (_selectedDocument == "Aadhar Card") {
+          documentType = 'aadhar';
+        } else if (_selectedDocument == 'Pan Card') {
+          documentType = 'pan';
+        } else {
+          documentType = 'other';
+        }
+        final imageFileName =
+            'user_${currentUser.uid}_${documentType}_image.jpg';
+        final imageReference =
+            FirebaseStorage.instance.ref().child(imageFileName);
+        final uploadTask = await imageReference.putFile(File(_image!.path));
+        final imageUrl = await uploadTask.ref.getDownloadURL();
+
+        final userRef =
+            FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+        await userRef.set({
+          'documentType': _selectedDocument,
+          'imageUrl': imageUrl,
+        }, SetOptions(merge: true));
+      }
+    } catch (error) {
+      print("Error uploading data to Firestore: $error");
     }
   }
 
@@ -133,7 +168,10 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
         actions: [
           TextButton(
               onPressed: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BottomNavBarPage()), (route) => false);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => BottomNavBarPage()),
+                    (route) => false);
               },
               child: Text(
                 "Skip",
@@ -146,232 +184,321 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
         width: double.infinity,
         height: double.infinity,
         color: AppTheme.backColor,
-        child: Column(
-          children: [
-            SizedBox(height: 20.h,),
-            Container(
-              padding:  EdgeInsets.symmetric(horizontal: 20.w),
-              height: 59.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border.all(width: 0.5.w,color: AppTheme.smallText),
-                borderRadius: BorderRadius.circular(30.r),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20.h,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: DropdownButton<String>(
-                      dropdownColor: AppTheme.backColor,
-                      style:AppTheme.fieldText,
-                      elevation: 1,
-                      isExpanded: true,
-                      icon: const Icon(Icons.keyboard_arrow_down_outlined,color: AppTheme.smallText,size: 30,),
-                      hint:  Row(
-                        children: [
-                          const Icon(Icons.receipt_long_outlined),
-                          SizedBox(width: 10.w,),
-                          const Text("Choose Document")
-                        ],
-                      ),
-                      underline: Container(),
-                      value: _selectedDocument,
-                      items: [
-                        DropdownMenuItem<String>(
-                          value: "Aadhar Card",
-                          child: Row(
-                            children: [
-                              const Icon(Icons.check_circle,color: Colors.green,),
-                              SizedBox(width: 10.w,),
-                              const Text("Aadhar Card")
-                            ],
-                          ),),
-                        DropdownMenuItem<String>(
-                          value: "Pan Card",
-                          child:  Row(
-                            children: [
-                              const Icon(Icons.check_circle,color: Colors.green,),
-                              SizedBox(width: 10.w,),
-                              const Text("Pan Card")
-                            ],
-                          ),),
-                      ], onChanged: (String? value){
-                      setState(() {
-                        _selectedDocument = value;
-                      });
-                    },
-                    ),
-                  )
-                ],
-              ),
-            ),
-             SizedBox(height: 30.h,),
-            if(_selectedDocument == "Aadhar Card")
               Container(
-                height: 500.h,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                height: 59.h,
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  //color: Colors.blue,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 0.5.w, color: AppTheme.smallText),
+                  borderRadius: BorderRadius.circular(30.r),
                 ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text("Aadhar No.",style: AppTheme.smallHead,),
-                    SizedBox(
-                      height: 59.h,
-                     // color: Colors.red,
-                      child: TextFormField(
-                        initialValue: "2345667543567",
-                        cursorColor: AppTheme.textColor,
-                        style: AppTheme.tabText,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 15.h),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                            borderSide:
-                             BorderSide(color: AppTheme.smallText, width: 0.5.w),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                            borderSide:
-                             BorderSide(color: AppTheme.textColor, width: 0.5.w),
-                          ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        dropdownColor: AppTheme.backColor,
+                        style: AppTheme.fieldText,
+                        elevation: 1,
+                        isExpanded: true,
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          color: AppTheme.smallText,
+                          size: 30,
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 20.h,),
-                    _image != null ?
-                    ClipRect(
-                      //  child: Image.file(_image!,fit: BoxFit.contain,width: double.infinity,height: 400,),
-                      child: Row(
-                        children: [
-                           Icon(Icons.visibility_outlined,color: AppTheme.blueColor, size: 20.sp),
-                          InkWell(
-                            onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>DocumentViewPage(image: _image,))),
-                            child: Container(
-                                padding:  EdgeInsets.only(top: 10.h,bottom: 10.h),
-                                width: 300.w,
-                                //  color: Colors.red,
-                                child: Text(_image!.name.toString(),style: AppTheme.smallHeadBlue,)),
+                        hint: Row(
+                          children: [
+                            const Icon(Icons.receipt_long_outlined),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            const Text("Choose Document")
+                          ],
+                        ),
+                        underline: Container(),
+                        value: _selectedDocument,
+                        items: [
+                          DropdownMenuItem<String>(
+                            value: "Aadhar Card",
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                const Text("Aadhar Card")
+                              ],
+                            ),
                           ),
-                          Expanded(child: IconButton(onPressed: (){
-                            setState(() {
-                            });
-                          }, icon: const Icon(Icons.delete_outlined,color: AppTheme.textColor,)))
+                          DropdownMenuItem<String>(
+                            value: "Pan Card",
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                const Text("Pan Card")
+                              ],
+                            ),
+                          ),
                         ],
-                      ),
-                    ) :
-                    Align(
-                      alignment: Alignment.center,
-                      child: GestureDetector(
-                        onTap: (){
+                        onChanged: (String? value) {
                           setState(() {
-                            _pickImage();
+                            _selectedDocument = value;
                           });
                         },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          height: 39.h,
-                          width: 136.w,
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(30.r)
-                          ),
-                          child:  Row(
-                            children: [
-                              Icon(Icons.add_circle,color: AppTheme.backColor,size: 19.sp,),
-                              SizedBox(width: 10.w,),
-                              Text("Upload Doc",style: AppTheme.buttonText,)
-                            ],
-                          ),
-                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
-            if(_selectedDocument=="Pan Card")
-              Container(
-                height: 500.h,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  //color: Colors.blue,
-                ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Pan Card No.",style: AppTheme.smallHead,),
-                    SizedBox(
-                      height: 59.h,
-                      // color: Colors.red,
-                      child: TextFormField(
-                        initialValue: "ABCTY1234D",
-                        cursorColor: AppTheme.textColor,
-                        style: AppTheme.tabText,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 15.h),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                            borderSide:
-                            BorderSide(color: AppTheme.smallText, width: 0.5.w),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                            borderSide:
-                            BorderSide(color: AppTheme.textColor, width: 0.5.w),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.h,),
-                    _image != null ?
-                    ClipRect(
-                      //  child: Image.file(_image!,fit: BoxFit.contain,width: double.infinity,height: 400,),
-                      child: Row(
-                        children: [
-                          Icon(Icons.visibility_outlined,color: AppTheme.blueColor, size: 20.sp),
-                          InkWell(
-                            onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>DocumentViewPage(image: _image,))),
-                            child: Container(
-                                padding:  EdgeInsets.only(top: 10.h,bottom: 10.h),
-                                width: 300.w,
-                                //  color: Colors.red,
-                                child: Text(_image!.name.toString(),style: AppTheme.smallHeadBlue,)),
-                          ),
-                          Expanded(child: IconButton(onPressed: (){
-                            setState(() {
-                            });
-                          }, icon: const Icon(Icons.delete_outlined,color: AppTheme.textColor,)))
-                        ],
-                      ),
-                    ) :
-                    Align(
-                      alignment: Alignment.center,
-                      child: GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            _pickImage();
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          height: 39.h,
-                          width: 136.w,
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(30.r)
-                          ),
-                          child:  Row(
-                            children: [
-                              Icon(Icons.add_circle,color: AppTheme.backColor,size: 19.sp,),
-                              SizedBox(width: 10.w,),
-                              Text("Upload Doc",style: AppTheme.buttonText,)
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              SizedBox(
+                height: 30.h,
               ),
-          ],
+              if (_selectedDocument == "Aadhar Card")
+                Container(
+                  height: 500.h,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      //color: Colors.blue,
+                      ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Aadhar No.",
+                        style: AppTheme.smallHead,
+                      ),
+                      SizedBox(
+                        height: 59.h,
+                        // color: Colors.red,
+                        child: TextFormField(
+                          cursorColor: AppTheme.textColor,
+                          style: AppTheme.tabText,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 15.h),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.r),
+                              borderSide: BorderSide(
+                                  color: AppTheme.smallText, width: 0.5.w),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.r),
+                              borderSide: BorderSide(
+                                  color: AppTheme.textColor, width: 0.5.w),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      _image != null
+                          ? ClipRect(
+                              //  child: Image.file(_image!,fit: BoxFit.contain,width: double.infinity,height: 400,),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.visibility_outlined,
+                                      color: AppTheme.blueColor, size: 20.sp),
+                                  InkWell(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DocumentViewPage(
+                                                  image: _image,
+                                                ))),
+                                    child: Container(
+                                        padding: EdgeInsets.only(
+                                            top: 10.h, bottom: 10.h),
+                                        width: 300.w,
+                                        //  color: Colors.red,
+                                        child: Text(
+                                          _image!.name.toString(),
+                                          style: AppTheme.smallHeadBlue,
+                                        )),
+                                  ),
+                                  Expanded(
+                                      child: IconButton(
+                                          onPressed: () {
+                                            setState(() {});
+                                          },
+                                          icon: const Icon(
+                                            Icons.delete_outlined,
+                                            color: AppTheme.textColor,
+                                          )))
+                                ],
+                              ),
+                            )
+                          : Align(
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _pickImage();
+                                  });
+                                },
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  height: 39.h,
+                                  width: 136.w,
+                                  decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius:
+                                          BorderRadius.circular(30.r)),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.add_circle,
+                                        color: AppTheme.backColor,
+                                        size: 19.sp,
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Text(
+                                        "Upload Doc",
+                                        style: AppTheme.buttonText,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+              if (_selectedDocument == "Pan Card")
+                Container(
+                  height: 500.h,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      //color: Colors.blue,
+                      ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Pan Card No.",
+                        style: AppTheme.smallHead,
+                      ),
+                      SizedBox(
+                        height: 59.h,
+                        // color: Colors.red,
+                        child: TextFormField(
+                          cursorColor: AppTheme.textColor,
+                          style: AppTheme.tabText,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 15.h),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.r),
+                              borderSide: BorderSide(
+                                  color: AppTheme.smallText, width: 0.5.w),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.r),
+                              borderSide: BorderSide(
+                                  color: AppTheme.textColor, width: 0.5.w),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      _image != null
+                          ? ClipRect(
+                              //  child: Image.file(_image!,fit: BoxFit.contain,width: double.infinity,height: 400,),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.visibility_outlined,
+                                      color: AppTheme.blueColor, size: 20.sp),
+                                  InkWell(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DocumentViewPage(
+                                                  image: _image,
+                                                ))),
+                                    child: Container(
+                                        padding: EdgeInsets.only(
+                                            top: 10.h, bottom: 10.h),
+                                        width: 300.w,
+                                        //  color: Colors.red,
+                                        child: Text(
+                                          _image!.name.toString(),
+                                          style: AppTheme.smallHeadBlue,
+                                        )),
+                                  ),
+                                  Expanded(
+                                      child: IconButton(
+                                          onPressed: () {
+                                            setState(() {});
+                                          },
+                                          icon: const Icon(
+                                            Icons.delete_outlined,
+                                            color: AppTheme.textColor,
+                                          )))
+                                ],
+                              ),
+                            )
+                          : Align(
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _pickImage();
+                                  });
+                                },
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  height: 39.h,
+                                  width: 136.w,
+                                  decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius:
+                                          BorderRadius.circular(30.r)),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.add_circle,
+                                        color: AppTheme.backColor,
+                                        size: 19.sp,
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Text(
+                                        "Upload Doc",
+                                        style: AppTheme.buttonText,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Padding(
@@ -379,11 +506,27 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
         child: _image != null
             ? ButtonWidget(
                 buttonTextContent: "Submit",
-                onPressed: () => Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BottomNavBarPage()),
-                    (route) => false),
+                onPressed: () {
+                  _uploadData();
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return Center(
+                          child: CircularProgressIndicator(
+                            color: AppTheme.textColor,
+                          ));
+                    },
+                  );
+                  Future.delayed(Duration(seconds: 2),(){
+                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const BottomNavBarPage()),
+                            (route) => false);
+                  });
+                }
               )
             : const LightButtonWidget(buttonTextContent: "Submit"),
       ),

@@ -1,44 +1,48 @@
 import 'package:bisa_app/src/presentation/more_screen/subscription/subscribe_page.dart';
+import 'package:bisa_app/src/presentation/register_screen/cubit/register_page_cubit.dart';
 import 'package:bisa_app/src/presentation/widget/custom_data_textfield.dart';
 import 'package:bisa_app/src/presentation/widget/search_text_field.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
-
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/resources/theme.dart';
 import '../widget/card_details_container_widget.dart';
+import 'create_card_page/cubit/create_card_cubit.dart';
 
 class CreateCardSecondPage extends StatefulWidget {
-  const CreateCardSecondPage({
-    super.key,
-  });
+  const CreateCardSecondPage({super.key});
+
 
   @override
   State<CreateCardSecondPage> createState() => _CreateCardSecondPageState();
 }
 
 class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
-  List<TextEditingController> listcontroller = [TextEditingController()];
-  List<TextEditingController> listcontrolleremail = [TextEditingController()];
-  List<TextEditingController> listcontrollersocialmedia = [
-  TextEditingController()
-  ];
+  List<TextEditingController> listController = [TextEditingController()];
+  List<TextEditingController> listControllerEmail = [TextEditingController()];
+  List<TextEditingController> listControllerSocialMedia = [TextEditingController()];
   List<AssetImage?> selectedImages = [null];
+  final _phoneController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _phoneController.text = BlocProvider.of<RegisterPageCubit>(context).phoneNumber;
+  }
+  @override
   Widget build(BuildContext context) {
+    final cardBloc = BlocProvider.of<CreateCardCubit>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-       
-        resizeToAvoidBottomInset: true,
+               resizeToAvoidBottomInset: true,
         backgroundColor: AppTheme.backColor,
         appBar: AppBar(
           scrolledUnderElevation: 0.0,
           elevation: 0.h,
           backgroundColor: AppTheme.backColor,
-          titleSpacing: -18.w,
+          titleSpacing:-18.w,
           leadingWidth: 60.w,
           leading: IconButton(
               onPressed: () {
@@ -52,58 +56,6 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
           title: Text(
             "Create Card",
             style: AppTheme.pageHead,
-          ),
-        ),
-        bottomNavigationBar: Container(
-          padding: EdgeInsets.only(bottom: 20.h),
-          height: 90.h,
-          color: AppTheme.backColor,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    height: 59.h,
-                    width: 185.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.r),
-                        color: AppTheme.backColor,
-                        border: Border.all(
-                            width: 0.5.sp, color: AppTheme.textColor)),
-                    child: Center(
-                        child: Text(
-                      "Back",
-                      style: AppTheme.fieldText,
-                    )),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SubscribePage()));
-                  },
-                  child: Container(
-                    height: 59.h,
-                    width: 185.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.r),
-                        color: AppTheme.textColor),
-                    child: Center(
-                        child: Text(
-                      "Next",
-                      style: AppTheme.buttonText,
-                    )),
-                  ),
-                ),
-              ],
-            ),
           ),
         ),
         body: Container(
@@ -122,12 +74,12 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                           child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: listcontroller.length,
+                              itemCount: listController.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
-                                    controller: listcontroller[index],
+                                    controller: listController[index],
                                     hintText: "Phone Number",
                                     prefixIcon:
                                         const Icon(Icons.phone_outlined),
@@ -141,7 +93,69 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              listcontroller.add(TextEditingController());
+                              listController.add(TextEditingController());
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10.sp),
+                            height: 40.h,
+                            width: 109.w,
+                            decoration: BoxDecoration(
+                                color: AppTheme.cardColor,
+                                borderRadius: BorderRadius.circular(12.r)),
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Add New",
+                                    style: AppTheme.smallHeadWhite,
+                                  ),
+                                  Icon(
+                                    Icons.add,
+                                    color: AppTheme.backColor,
+                                    size: 20.sp,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
+                SizedBox(
+                  height: 20.h,),
+                CardDetailsContainer(
+                    cardHead: "Email address",
+                    // height: 132.h,
+                    widget: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          child: ListView.builder(
+                              itemCount: listControllerEmail.length,
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: CustomDataTextField(
+                                    controller: listControllerEmail[index],
+                                    hintText: "Email Address",
+                                    prefixIcon: Icon(
+                                      Icons.mail_outline,
+                                      size: 19.sp,
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              listControllerEmail.add(TextEditingController());
                             });
                           },
                           child: Container(
@@ -179,55 +193,38 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                     widget: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        SizedBox(
-                          child: ListView.builder(
-                              itemCount: listcontrolleremail.length,
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: CustomDataTextField(
-                                    controller: listcontrolleremail[index],
-                                    hintText: "Email Address",
-                                    prefixIcon: Icon(
-                                      Icons.mail_outline,
-                                      size: 19.sp,
-                                    ),
-                                  ),
-                                );
-                              }),
+                        CustomDataTextField(
+                          prefixIcon: Icon(
+                            Icons.mail_outline_rounded,
+                            color: AppTheme.smallText,
+                            size: 19.sp,
+                          ),
+                          hintText: "Email Address",
+                          controller: cardBloc.emailController,
                         ),
                         SizedBox(
                           height: 12.h,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              listcontrolleremail.add(TextEditingController());
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10.sp),
-                            height: 40.h,
-                            width: 109.w,
-                            decoration: BoxDecoration(
-                                color: AppTheme.cardColor,
-                                borderRadius: BorderRadius.circular(12.r)),
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Add New",
-                                    style: AppTheme.smallHeadWhite,
-                                  ),
-                                  Icon(
-                                    Icons.add,
-                                    color: AppTheme.backColor,
-                                    size: 20.sp,
-                                  )
-                                ],
-                              ),
+                        Container(
+                          padding: EdgeInsets.all(10.sp),
+                          height: 40.h,
+                          width: 109.w,
+                          decoration: BoxDecoration(
+                              color: AppTheme.cardColor,
+                              borderRadius: BorderRadius.circular(12.r)),
+                          child: Center(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Add New",
+                                  style: AppTheme.smallHeadWhite,
+                                ),
+                                Icon(
+                                  Icons.add,
+                                  color: AppTheme.backColor,
+                                  size: 20.sp,
+                                )
+                              ],
                             ),
                           ),
                         )
@@ -246,13 +243,13 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            itemCount: listcontrollersocialmedia.length,
+                            itemCount: listControllerSocialMedia.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: CustomDataTextField(
                                   autofocus: true,
-                                  controller: listcontrollersocialmedia[index],
+                                  controller: listControllerSocialMedia[index],
                                   onTap: () =>
                                    showModalBottomSheet(
                                       isScrollControlled: true,
@@ -510,7 +507,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              listcontrollersocialmedia
+                              listControllerSocialMedia
                                   .add(TextEditingController());
                               selectedImages.add(null);
                             });
@@ -545,7 +542,72 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
             ),
           ),
         ),
-      ),
-    );
+        bottomNavigationBar: Container(
+          padding: EdgeInsets.only(bottom: 20.h),
+          height: 90.h,
+          color: AppTheme.backColor,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: 59.h,
+                    width: 185.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.r),
+                        color: AppTheme.backColor,
+                        border: Border.all(
+                            width: 0.5.sp, color: AppTheme.textColor)),
+                    child: Center(
+                        child: Text(
+                      "Back",
+                      style: AppTheme.fieldText,
+                    )),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                   showDialog(context: context,
+                       barrierDismissible: false,
+                       builder: (BuildContext context){
+                     return Center(
+                       child: CircularProgressIndicator(color: AppTheme.textColor,),
+                     );
+                       }
+                   );
+                   Future.delayed(Duration(seconds: 2),(){
+                     Navigator.pop(context);
+                     Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                             builder: (context) => const SubscribePage()));
+                   });
+                  },
+                  child: Container(
+                    height: 59.h,
+                    width: 185.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.r),
+                        color: AppTheme.textColor),
+                    child: Center(
+                        child: Text(
+                      "Next",
+                      style: AppTheme.buttonText,
+                    )),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+    ),
+      );
   }
 }
+
+
