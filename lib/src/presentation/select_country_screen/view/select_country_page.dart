@@ -61,8 +61,8 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                 height: 59.h,
                 child: TextFormField(
                   onTap: () => showCountryPicker(
+                    useSafeArea: true,
                     countryListTheme: CountryListThemeData(
-                        padding: EdgeInsets.only(top: 30.h),
                         inputDecoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(60.r),
@@ -76,7 +76,7 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                     context: context,
                     onSelect: (Country value) {
                       final selectedCountryCubit =
-                          context.read<SelectedCountryCubit>();
+                      context.read<SelectedCountryCubit>();
                       selectedCountryCubit.updateSelectedCountry(
                           value.countryCode, value.name, value.phoneCode);
                       bloc.countryController.text = value.name;
@@ -85,6 +85,36 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                         bloc.selectedCountryCode = value.countryCode;
                       });
                     },
+                  ),
+                  controller: bloc.countryController,
+                  cursorColor: AppTheme.textColor,
+                  style: AppTheme.labelTextBlack,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          bloc.getFlagEmoji(),
+                          style: const TextStyle(fontSize: 24),
+                        )),
+                    suffixIcon: const Icon(
+                      Icons.arrow_forward_rounded,
+                      color: AppTheme.smallText,
+                    ),
+                    hintText: "Select Country",
+                    hintStyle: AppTheme.smallHead,
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4.r),
+                      borderSide:
+                      const BorderSide(color: AppTheme.smallText, width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4.r),
+                      borderSide:
+                      const BorderSide(color: AppTheme.textColor, width: 1),
+                    ),
                   ),
                 ),
               )
@@ -95,38 +125,38 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
           padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
           child: bloc.countryController.text.isNotEmpty
               ? ButtonWidget(
-                  buttonTextContent: "GO AHEAD",
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return Center(
-                            child: CircularProgressIndicator(
-                          color: AppTheme.textColor,
-                        ));
-                      },
-                    );
+            buttonTextContent: "GO AHEAD",
+            onPressed: () {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return Center(
+                      child: CircularProgressIndicator(
+                        color: AppTheme.textColor,
+                      ));
+                },
+              );
 
-                    Future.delayed(Duration(seconds: 2), () {
-                      Navigator.pop(context); // Close the dialog
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BlocBuilder<
-                              SelectedCountryCubit, SelectedCountryState>(
-                            builder: (context, state) {
-                              if (state is SelectedCountryLoaded) {
-                                return const TermsAndConditionsPage();
-                              }
-                              return Container();
-                            },
-                          ),
-                        ),
-                      );
-                    });
-                  },
-                )
+              Future.delayed(Duration(seconds: 2), () {
+                Navigator.pop(context); // Close the dialog
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BlocBuilder<
+                        SelectedCountryCubit, SelectedCountryState>(
+                      builder: (context, state) {
+                        if (state is SelectedCountryLoaded) {
+                          return const TermsAndConditionsPage();
+                        }
+                        return Container();
+                      },
+                    ),
+                  ),
+                );
+              });
+            },
+          )
               : const LightButtonWidget(buttonTextContent: "GO AHEAD"),
         ));
   }

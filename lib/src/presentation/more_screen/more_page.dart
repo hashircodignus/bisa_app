@@ -2,7 +2,6 @@ import 'package:bisa_app/src/presentation/home_screen/bottom_nav_bar.dart';
 import 'package:bisa_app/src/presentation/home_screen/widget/menu_text_button_widget.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/my_card_page.dart';
 import 'package:bisa_app/src/presentation/more_screen/subscription/subscription.dart';
-import 'package:bisa_app/src/presentation/select_country_screen/view/select_country_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
