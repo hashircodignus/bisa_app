@@ -91,7 +91,7 @@ class _SubscriptionWidgetState extends State<SubscriptionWidget> {
                         ),
                         Text(
                           "${plan.amount}",
-                          style: AppTheme.centertext,
+                          style: AppTheme.centerText,
                         ),
                         index == selectedIndex
                             ? Container(

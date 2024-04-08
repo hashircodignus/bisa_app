@@ -164,12 +164,17 @@ class AppTheme {
       fontFamily: figTreeFont.fontFamily,
       fontSize: 22.sp,
       fontWeight: FontWeight.w600);
-       static TextStyle centertext = TextStyle(
-      color: Color(0xff000000),
+       static TextStyle centerText = TextStyle(
+      color: textColor,
       fontFamily: figTreeFont.fontFamily,
       fontSize: 25.sp,
       fontWeight: FontWeight.w700);
-      
+       static TextStyle centerTextWhite = TextStyle(
+      color: backColor,
+      fontFamily: figTreeFont.fontFamily,
+      fontSize: 25.sp,
+      fontWeight: FontWeight.w700);
+
 
 }
 
