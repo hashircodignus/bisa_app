@@ -1,11 +1,11 @@
 import 'package:bisa_app/src/presentation/more_screen/subscription/model/subscription_model.dart';
 import 'package:bisa_app/src/presentation/more_screen/subscription/widgets/subscription_widget.dart';
 import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
+import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../widget/button_widget.dart';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({super.key});
@@ -34,14 +34,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 child: Container(
                   height: 131.h,
                   decoration: BoxDecoration(
-                      color: AppTheme.cardColorlight,
+                    image: DecorationImage(image: AssetImage(AssetResources.backgroundcard),fit: BoxFit.cover),
                       borderRadius: BorderRadiusDirectional.circular(30)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "200.00",
-                        style: AppTheme.centertext,
+                        style: AppTheme.centerTextWhite,
                       ),
                       Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 20.w),
@@ -64,7 +64,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 ),
               ),
               SizedBox(
-                height: 73.h,
+                height: 20.h,
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -79,11 +79,12 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                    SubscriptionWidget(),
                 ],
               ),
-             ButtonWidget(buttonTextContent: "Update")
             ],
           ),
         ),
       ),
+      bottomNavigationBar: Padding(padding: EdgeInsets.only(bottom: 50.h,left: 20.w,right: 20.w),
+      child: ButtonWidget(buttonTextContent: "Update"),),
     );
   }
 }
