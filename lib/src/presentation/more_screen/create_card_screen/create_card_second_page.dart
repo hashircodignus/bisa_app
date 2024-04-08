@@ -31,9 +31,11 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+       
         resizeToAvoidBottomInset: true,
         backgroundColor: AppTheme.backColor,
         appBar: AppBar(
+          scrolledUnderElevation: 0.0,
           elevation: 0.h,
           backgroundColor: AppTheme.backColor,
           titleSpacing: -18.w,

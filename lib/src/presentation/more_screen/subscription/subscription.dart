@@ -20,6 +20,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     return Scaffold(
       backgroundColor: AppTheme.backColor,
       appBar: AppBar(
+          backgroundColor: AppTheme.backColor,
         title: const AppBarTitleWidget(text: "Subscription"),
         automaticallyImplyLeading: false,
       ),

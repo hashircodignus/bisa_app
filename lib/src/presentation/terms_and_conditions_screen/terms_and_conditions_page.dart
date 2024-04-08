@@ -27,6 +27,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
     return Scaffold(
       backgroundColor: AppTheme.backColor,
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         backgroundColor: AppTheme.backColor,
         automaticallyImplyLeading: false,
         centerTitle: false,

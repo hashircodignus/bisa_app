@@ -13,8 +13,10 @@ import '../card_type_page/card_type_page.dart';
 class OTPPage extends StatefulWidget {
   final String? phoneNumber;
   //final String verificationId;
-  const OTPPage({super.key, this.phoneNumber,
-  //  required this.verificationId
+  const OTPPage({
+    super.key,
+    this.phoneNumber,
+    //  required this.verificationId
   });
 
   @override
@@ -30,7 +32,9 @@ class _OTPPageState extends State<OTPPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: AppTheme.backColor,
         appBar: AppBar(
+          backgroundColor: AppTheme.backColor,
           automaticallyImplyLeading: false,
           title: const AppBarBackButton(),
         ),
@@ -95,10 +99,13 @@ class _OTPPageState extends State<OTPPage> {
                 //       context) =>  const CardTypePage()));
                 // });
 
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const CardTypePage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CardTypePage()));
               }),
         ),
       ),
-    ); 
+    );
   }
 }

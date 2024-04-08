@@ -51,7 +51,6 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: TextFormField(
-                    
                     initialValue: " +${widget.countryphoneCode}",
                     readOnly: true,
                     style: AppTheme.fieldText,
@@ -95,7 +94,6 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
             ),
             Expanded(
               child: TextFormField(
-               
                 keyboardType: TextInputType.phone,
                 onFieldSubmitted: widget.onSubmitted,
                 textInputAction: widget.textInputAction,

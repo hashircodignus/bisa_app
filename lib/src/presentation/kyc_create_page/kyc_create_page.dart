@@ -124,7 +124,10 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backColor,
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
+        backgroundColor: AppTheme.backColor,
         automaticallyImplyLeading: false,
         title: const AppBarTitleWidget(text: "KYC Create"),
         actions: [
