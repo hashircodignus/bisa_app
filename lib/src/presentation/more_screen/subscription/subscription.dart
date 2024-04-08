@@ -78,7 +78,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   ),
                    SubscriptionWidget(),
                 ],
-              )
+              ),
+             ButtonWidget(buttonTextContent: "Update")
             ],
           ),
         ),

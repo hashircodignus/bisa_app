@@ -10,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 
 class SubscriptionWidget extends StatefulWidget {
-  const SubscriptionWidget({super.key,});
+  const SubscriptionWidget({super.key});
 
   @override
   State<SubscriptionWidget> createState() => _SubscriptionWidgetState();

@@ -66,9 +66,12 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                     readOnly: true,
                     style: AppTheme.fieldText,
                     decoration: InputDecoration(
+                      contentPadding:
+                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                       prefixIcon: Text(widget.flag),
                       prefixIconConstraints: BoxConstraints(maxWidth: 70.w),
-                      suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                      suffixIcon:
+                          const Icon(Icons.keyboard_arrow_down_rounded),
                       suffixIconConstraints: BoxConstraints(maxWidth: 70.w),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(

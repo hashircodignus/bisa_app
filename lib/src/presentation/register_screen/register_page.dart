@@ -21,6 +21,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _signUpKey = GlobalKey<FormState>();
+  
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));

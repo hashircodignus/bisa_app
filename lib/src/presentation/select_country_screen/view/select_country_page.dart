@@ -86,20 +86,40 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                       });
                     },
                   ),
-                  controller: bloc.countryController,
-                  cursorColor: AppTheme.textColor,
-                  style: AppTheme.labelTextBlack,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    prefixIcon: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          bloc.getFlagEmoji(),
-                          style: const TextStyle(fontSize: 24),
-                        )),
-                    suffixIcon: const Icon(
-                      Icons.arrow_forward_rounded,
-                      color: AppTheme.smallText,
+                ),
+                SizedBox(
+                  height: 60.h,
+                ),
+                SizedBox(
+                  height: 59.h,
+                  child: TextFormField(
+                    onTap: () => showCountryPicker(
+                 
+                      countryListTheme: CountryListThemeData(
+                        padding: EdgeInsets.all(13),
+                          inputDecoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(3),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(60.r),
+                              ),
+                              prefixIcon: const Icon(Icons.search),
+                              hintText: "Search Country",
+                              hintStyle: AppTheme.smallHead),
+                          backgroundColor: Colors.white,
+                          bottomSheetHeight: double.infinity,
+                          borderRadius: BorderRadius.zero),
+                      context: context,
+                      onSelect: (Country value) {
+                        final selectedCountryCubit =
+                            context.read<SelectedCountryCubit>();
+                        selectedCountryCubit.updateSelectedCountry(
+                            value.countryCode, value.name, value.phoneCode);
+                        countryController.text = value.name;
+                        setState(() {
+                          selectedCountryCode = value.countryCode;
+                        });
+                      },
+
                     ),
                     hintText: "Select Country",
                     hintStyle: AppTheme.smallHead,
