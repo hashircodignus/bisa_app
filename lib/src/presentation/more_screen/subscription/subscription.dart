@@ -1,9 +1,10 @@
+import 'package:bisa_app/src/presentation/more_screen/subscription/model/subscription_model.dart';
 import 'package:bisa_app/src/presentation/more_screen/subscription/widgets/subscription_widget.dart';
 import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
-import 'package:bisa_app/src/presentation/widget/button_widget.dart';
-import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SubscriptionPage extends StatefulWidget {
@@ -14,7 +15,8 @@ class SubscriptionPage extends StatefulWidget {
 }
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
- 
+  SubscriptionPlan? selectedPlan;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,17 +33,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               Center(
                 child: Container(
                   height: 131.h,
-                  
-                  decoration:BoxDecoration(
-                    
-                    image:DecorationImage(image: AssetImage(AssetResources.backgroundcard))
-                  ),
+                  decoration: BoxDecoration(
+                      color: AppTheme.cardColorlight,
+                      borderRadius: BorderRadiusDirectional.circular(30)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "200.00",
-                        style: AppTheme.buttonText
+                        style: AppTheme.centertext,
                       ),
                       Padding(
                         padding:  EdgeInsets.symmetric(horizontal: 20.w),
@@ -64,7 +64,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 ),
               ),
               SizedBox(
-                height: 23.h,
+                height: 73.h,
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -74,10 +74,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     style: AppTheme.tabText,
                   ),
                   SizedBox(
-                    height: 14.h,
+                    height: 20.h,
                   ),
-                  const SubscriptionWidget(),
-                  
+                   SubscriptionWidget(),
                 ],
               ),
              ButtonWidget(buttonTextContent: "Update")

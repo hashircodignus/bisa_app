@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/home_screen/bottom_nav_bar.dart';
 import 'package:bisa_app/src/presentation/otp_screen/cubit/otp_page_cubit.dart';
 import 'package:bisa_app/src/presentation/widget/appbar_back_button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
@@ -32,6 +33,7 @@ class _OTPPageState extends State<OTPPage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: AppTheme.backColor,
           automaticallyImplyLeading: false,
           title: const AppBarBackButton(),
         ),
@@ -79,11 +81,20 @@ class _OTPPageState extends State<OTPPage> {
           child: BlocListener<OtpPageCubit, OtpPageState>(
             listener: (context, state) {
               if (state is OtpPageLoading) {
-                const Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.textColor,
-                  ),
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context){
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.textColor,
+                        ),
+                      );
+                    }
                 );
+              }
+              if(state is OtpPageUserExists){
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>BottomNavBarPage()), (route) => false);
               }
               if (state is OtpPageSuccess) {
                 Navigator.pushAndRemoveUntil(
