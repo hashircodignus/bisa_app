@@ -52,7 +52,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                   alignment: Alignment.bottomCenter,
                   child: TextFormField(
                     initialValue: " +${widget.countryphoneCode}",
-                    readOnly: true,
+                  
                     style: AppTheme.fieldText,
                     decoration: InputDecoration(
                       contentPadding:

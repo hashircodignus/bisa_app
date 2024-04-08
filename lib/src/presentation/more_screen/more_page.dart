@@ -123,7 +123,10 @@ class MorePage extends StatelessWidget {
               MenuTextButtonWidget(
                 buttonText: 'Logout',
                 buttonImage: const AssetImage(AssetResources.logOut),
-                onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SelectCountryPage())),
+                onTap: ()
+              {
+                signUserOut();
+              }
               ),
               SizedBox(
                 height: 30.h,
