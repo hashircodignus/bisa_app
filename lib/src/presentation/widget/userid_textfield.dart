@@ -63,7 +63,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                       return null;
                     },
                     initialValue: " +${widget.countryphoneCode}",
-                    readOnly: true,
+                  
                     style: AppTheme.fieldText,
                     decoration: InputDecoration(
                       contentPadding:
