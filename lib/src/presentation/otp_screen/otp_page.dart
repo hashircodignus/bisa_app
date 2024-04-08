@@ -1,20 +1,18 @@
+import 'package:bisa_app/src/presentation/otp_screen/cubit/otp_page_cubit.dart';
 import 'package:bisa_app/src/presentation/widget/appbar_back_button_widget.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
-
 import '../card_type_page/card_type_page.dart';
 
 class OTPPage extends StatefulWidget {
-  final String? phoneNumber;
-  //final String verificationId;
-  const OTPPage({super.key, this.phoneNumber,
-  //  required this.verificationId
+  const OTPPage({
+    super.key,
   });
 
   @override
@@ -22,11 +20,14 @@ class OTPPage extends StatefulWidget {
 }
 
 class _OTPPageState extends State<OTPPage> {
-  final TextEditingController _pinController = TextEditingController();
-  FirebaseAuth auth = FirebaseAuth.instance;
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+  }
 
   @override
   Widget build(BuildContext context) {
+    final otpBloc = BlocProvider.of<OtpPageCubit>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -60,12 +61,12 @@ class _OTPPageState extends State<OTPPage> {
                 SizedBox(
                   height: 60.h,
                 ),
-                Container(
+                SizedBox(
                   height: 59.h,
                   width: double.infinity,
                   //color: Colors.blue,
                   child: Pinput(
-                    controller: _pinController,
+                    controller: otpBloc.pinController,
                     length: 6,
                   ),
                 ),
@@ -75,28 +76,46 @@ class _OTPPageState extends State<OTPPage> {
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
-          child: ButtonWidget(
-              buttonTextContent: "GO",
-              onPressed: () async {
-                // showDialog(context: context, builder: (context){
-                //   return const Center(child: CircularProgressIndicator(
-                //     color: AppTheme.textColor,
-                //   ));
-                // });
-                // PhoneAuthCredential credential = PhoneAuthProvider.credential(
-                //     verificationId: widget.verificationId,
-                //     smsCode: _pinController.text);
-                // await FirebaseFirestore.instance.collection('users').add(
-                //     {
-                //       'phoneNumber':widget.phoneNumber
-                //     });
-                // await auth.signInWithCredential(credential).then((value) {
-                //   Navigator.push(context, MaterialPageRoute(builder: (
-                //       context) =>  const CardTypePage()));
-                // });
-
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const CardTypePage()));
-              }),
+          child: BlocListener<OtpPageCubit, OtpPageState>(
+            listener: (context, state) {
+              if (state is OtpPageLoading) {
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.textColor,
+                  ),
+                );
+              }
+              if (state is OtpPageSuccess) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CardTypePage()),
+                    (route) => false);
+              }
+              if (state is OtpPageError) {
+                _showSnackBar(state.errorText);
+              }
+            },
+            child: ButtonWidget(
+                buttonTextContent: "GO",
+                onPressed: () async {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context){
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: AppTheme.textColor,
+                          ),
+                        );
+                      },
+                  );
+                  Future.delayed(Duration(seconds: 2),(){
+                    Navigator.pop(context);
+                    otpBloc.otpValidate(context);
+                  });
+                }),
+          ),
         ),
       ),
     ); 

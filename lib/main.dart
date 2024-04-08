@@ -35,6 +35,8 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => SelectedCountryCubit()),
+            BlocProvider(create: (context)=> RegisterPageCubit()),
+            BlocProvider(create: (context)=> OtpPageCubit()),
           ],
           child:  const MaterialApp(
             title: 'Flutter Demo',
