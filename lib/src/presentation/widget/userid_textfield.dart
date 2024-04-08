@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
@@ -45,17 +44,20 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
                 height: 65.h,
                 width: 97.w,
                 // color: Colors.red,
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: TextFormField(
+                    
                     initialValue: " +${widget.countryphoneCode}",
                     readOnly: true,
                     style: AppTheme.fieldText,
                     decoration: InputDecoration(
+                      contentPadding:
+                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                       prefixIcon: Text(widget.flag),
                       prefixIconConstraints: BoxConstraints(maxWidth: 70.w),
                       suffixIcon:
@@ -93,6 +95,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
             ),
             Expanded(
               child: TextFormField(
+               
                 keyboardType: TextInputType.phone,
                 onFieldSubmitted: widget.onSubmitted,
                 textInputAction: widget.textInputAction,

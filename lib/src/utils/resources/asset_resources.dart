@@ -38,6 +38,7 @@ class AssetResources{
   static const otpIconLottie = "assets/animation/otplottie.json";
   static const otpLottie = "assets/animation/otp_lottie.json";
   static const subscription= "assets/images/subscription_icon.png";
+  static const backgroundcard= "assets/images/backgroundcard.png";
 
   static const briefcaseIcon = "assets/svg/briefcase_icon.svg";
   static const personIcon = "assets/svg/person.svg";

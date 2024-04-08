@@ -79,7 +79,7 @@ class CreateCardPage extends StatelessWidget {
         bottomNavigationBar: Padding(
           padding:  EdgeInsets.only(left: 20.w,right: 20.w,bottom: 50.h),
           child: ButtonWidget(buttonTextContent: "NEXT",onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>const CreateCardSecondPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateCardSecondPage()));
           },),
         ),
       ),

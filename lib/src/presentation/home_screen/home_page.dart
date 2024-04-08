@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/home_screen/widget/tabwidget.dart';
 import 'package:bisa_app/src/presentation/more_screen/more_page.dart';
 import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
@@ -16,6 +17,7 @@ class HomePage extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             elevation: 0,
             title: GestureDetector(
                 onTap: () => Navigator.push(context,
@@ -64,26 +66,14 @@ class HomePage extends StatelessWidget {
                                     BorderRadiusDirectional.circular(5)),
                             unselectedLabelColor:
                                 const Color.fromARGB(255, 118, 116, 116),
-                            labelStyle: const TextStyle(color: AppTheme.backColor),
+                            labelStyle:
+                                const TextStyle(color: AppTheme.backColor),
                             dividerColor: Colors.transparent,
                             indicatorColor: Colors.transparent,
-                            tabs: [
-                              SizedBox(
-                                height: 46.h,
-                                width: 117.w,
-                                child: const Tab(
-                                    child: Text(
-                                  'Recent',
-                                )),
-                              ),
-                              SizedBox(
-                                  height: 46.h,
-                                  width: 116.w,
-                                  child: const Tab(child: Text('Saved'))),
-                              SizedBox(
-                                  height: 46.h,
-                                  width: 117.w,
-                                  child: const Tab(child: Text('Promotions'))),
+                            tabs: const [
+                            TabWidget(txt: 'Recent',),
+                             TabWidget(txt: 'Saved'),
+                              TabWidget(txt: 'Promotions')
                             ]),
                       ),
                     ),
@@ -94,7 +84,7 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               Container(
                 color: AppTheme.backColor,
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                //padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
                 child: SingleChildScrollView(
                     child: ListView.builder(
@@ -107,7 +97,8 @@ class HomePage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const ProfilePage()));
+                                      builder: (context) =>
+                                          const ProfilePage()));
                             },
                             child: const ListTile(
                               leading: CircleAvatar(),
@@ -123,7 +114,7 @@ class HomePage extends StatelessWidget {
               ),
               Container(
                 color: AppTheme.backColor,
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+               // padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
                 child: SingleChildScrollView(
                     child: ListView.builder(
@@ -136,7 +127,8 @@ class HomePage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const ProfilePage()));
+                                      builder: (context) =>
+                                          const ProfilePage()));
                             },
                             child: const ListTile(
                               leading: CircleAvatar(),
@@ -152,7 +144,7 @@ class HomePage extends StatelessWidget {
               ),
               Container(
                 color: AppTheme.backColor,
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                //padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
                 child: SingleChildScrollView(
                     child: ListView.builder(
@@ -165,7 +157,8 @@ class HomePage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const ProfilePage()));
+                                      builder: (context) =>
+                                          const ProfilePage()));
                             },
                             child: const ListTile(
                               leading: CircleAvatar(),

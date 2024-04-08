@@ -14,12 +14,12 @@ class SearchPage extends StatelessWidget {
         bottom: PreferredSize(
             preferredSize: Size.square(30.h),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Container(
-                  height: 50.h,
-                  width: 350.w,
+                  height: 60.h,
+                 
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadiusDirectional.circular(60.r),
+                   borderRadius: BorderRadiusDirectional.circular(30.r),
                       color: Colors.black),
                   child: SearchTextField(
                     hintText: "Search Message",
@@ -42,6 +42,7 @@ class SearchPage extends StatelessWidget {
           SizedBox(
             height: 640.h,
             child: ListView.builder(
+              // padding: const EdgeInsets.all(20),
                 shrinkWrap: true,
                 itemCount: 2,
                 itemBuilder: (context, index) {
