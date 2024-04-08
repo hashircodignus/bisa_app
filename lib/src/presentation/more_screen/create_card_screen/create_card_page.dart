@@ -18,6 +18,7 @@ class CreateCardPage extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+         backgroundColor: AppTheme.backColor,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0.h,
@@ -34,6 +35,7 @@ class CreateCardPage extends StatelessWidget {
           // padding:  EdgeInsets.symmetric(horizontal: 20.w),
           color: AppTheme.backColor,
           child: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 Container(

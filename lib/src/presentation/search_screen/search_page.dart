@@ -10,6 +10,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: AppTheme.backColor,
       appBar: AppBar(
         bottom: PreferredSize(
             preferredSize: Size.square(30.h),
@@ -40,7 +41,7 @@ class SearchPage extends StatelessWidget {
             height: 10.h,
           ),
           SizedBox(
-            height: 640.h,
+            height: 648.h,
             child: ListView.builder(
               // padding: const EdgeInsets.all(20),
                 shrinkWrap: true,

@@ -11,15 +11,17 @@ class AppBarBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=>Navigator.of(context).pop(),
+      onTap: () => Navigator.of(context).pop(),
       child: Container(
         height: 26.h,
         width: 26.w,
-        decoration: BoxDecoration(
-            color: AppTheme.smallText,
-            borderRadius: BorderRadius.circular(50.r)
+        child: Center(
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: AppTheme.textColor,
+            size: 20,
+          ),
         ),
-        child: Center(child: Icon(Icons.arrow_back_ios_new_rounded,color: AppTheme.textColor,size: 16.sp,)),
       ),
     );
   }

@@ -12,6 +12,7 @@ import 'package:pinput/pinput.dart';
 import '../card_type_page/card_type_page.dart';
 
 class OTPPage extends StatefulWidget {
+  //final String verificationId;
   const OTPPage({
     super.key,
   });
@@ -32,6 +33,7 @@ class _OTPPageState extends State<OTPPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: AppTheme.backColor,
         appBar: AppBar(
           backgroundColor: AppTheme.backColor,
           automaticallyImplyLeading: false,
@@ -129,6 +131,6 @@ class _OTPPageState extends State<OTPPage> {
           ),
         ),
       ),
-    ); 
+    );
   }
 }

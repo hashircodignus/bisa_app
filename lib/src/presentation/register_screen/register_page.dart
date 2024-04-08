@@ -18,7 +18,6 @@ class RegisterPage extends StatefulWidget {
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
-
 class _RegisterPageState extends State<RegisterPage> {
   final _signUpKey = GlobalKey<FormState>();
   

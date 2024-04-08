@@ -45,7 +45,9 @@ class _CardTypePageState extends State<CardTypePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backColor,
       appBar: AppBar(
+        backgroundColor: AppTheme.backColor,
         automaticallyImplyLeading: false,
         title: const AppBarTitleWidget(
           text: 'Choose Account',
