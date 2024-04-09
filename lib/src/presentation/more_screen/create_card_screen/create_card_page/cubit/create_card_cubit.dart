@@ -1,5 +1,5 @@
+import 'dart:developer';
 import 'dart:io';
-
 import 'package:bisa_app/src/presentation/more_screen/subscription/model/subscription_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +20,8 @@ class CreateCardCubit extends Cubit<CreateCardState> {
   final TextEditingController socialController = TextEditingController();
 
   SubscriptionPlan? selectedPlan;
+  File? image;
+
 
   void clearCardData() {
     nameController.clear();
@@ -31,12 +33,29 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     socialController.clear();
   }
 
-  void updateCardData() async {
+   updateCardData() async {
     emit(CreateCardInitial());
     emit(CreateCardLoading());
 
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
+      if(currentUser == null){
+        throw Exception('User not loggede in');
+      }
+      if(nameController.text.isEmpty || professionController.text.isEmpty || addressController.text.isEmpty){
+        throw Exception('Name, Profession, and Address are required fields');
+      }
+      log(nameController.text);
+      log(professionController.text);
+      log(addressController.text);
+      log(websiteController.text);
+
+      String fileName = 'user_${currentUser.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      Reference ref = FirebaseStorage.instance.ref('images/$fileName');
+      await ref.putFile(image!);
+
+      String imageUrl = await ref.getDownloadURL();
+
       Map<String, String> cardData = {
         'name': nameController.text,
         'profession': professionController.text,
@@ -47,8 +66,12 @@ class CreateCardCubit extends Cubit<CreateCardState> {
         'social': socialController.text,
         'subscriptionPlan': selectedPlan?.name ?? '',
         'subscriptionAmount': ' ${selectedPlan?.amount}',
-        'uid': currentUser!.uid,
+        'uid': currentUser.uid,
+        'imageUrl' : imageUrl,
       };
+
+
+
 
       if (selectedPlan != null) {
         cardData['subscriptionPlan'] = selectedPlan?.name ?? '';
@@ -57,7 +80,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
       DocumentReference cardDocRef =
           FirebaseFirestore.instance.collection('cards').doc();
 
-      await cardDocRef.set(cardData);
+     await cardDocRef.set(cardData);
 
       emit(CreateCardLoaded());
     } catch (e) {
@@ -69,26 +92,30 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     selectedPlan = plan;
   }
 
-   uploadImage(File image)async {
-    emit(CreateCardLoading());
 
-    try{
-      final currentUser = FirebaseAuth.instance.currentUser;
+  //   uploadImage()async {
+  //   emit(CreateCardLoading());
+  //
+  //   try{
+  //     final currentUser = FirebaseAuth.instance.currentUser;
+  //     if(currentUser == null){
+  //       throw Exception('User not logged in');
+  //     }
+  //
+  //     String fileName = 'user_${currentUser.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+  //     Reference ref = FirebaseStorage.instance.ref('images/$fileName');
+  //     await ref.putFile(image!);
+  //
+  //     String imageUrl = await ref.getDownloadURL();
+  //
+  //    DocumentReference cardDocRef = FirebaseFirestore.instance.collection('cards').doc();
+  //    await cardDocRef.set({
+  //      'imageUrl': imageUrl
+  //    },SetOptions(merge:  true));
+  //     emit(CreateCardLoaded());
+  //   } catch (e) {
+  //     emit(CreateCardError(errorText: e.toString()));
+  //   }
+  // }
 
-      String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-      Reference ref = FirebaseStorage.instance.ref('images/$fileName');
-      await ref.putFile(image);
-
-      String imageUrl = await ref.getDownloadURL();
-
-      final cardData = {
-        'imageUrl' :imageUrl,
-      };
-      await FirebaseFirestore.instance.collection('cards').doc(currentUser?.uid).collection('images').add(cardData);
-
-      emit(CreateCardImageUploaded());
-    } catch (e) {
-      emit(CreateCardError(errorText: e.toString()));
-    }
-  }
 }

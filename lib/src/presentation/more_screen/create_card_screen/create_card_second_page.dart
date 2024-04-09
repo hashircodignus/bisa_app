@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/resources/theme.dart';
+import '../../widget/app_bar_title_widget.dart';
 import '../widget/card_details_container_widget.dart';
-import 'create_card_page/cubit/create_card_cubit.dart';
 
 class CreateCardSecondPage extends StatefulWidget {
   const CreateCardSecondPage({super.key});
@@ -41,21 +41,8 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
           scrolledUnderElevation: 0.0,
           elevation: 0.h,
           backgroundColor: AppTheme.backColor,
-          titleSpacing:-18.w,
-          leadingWidth: 60.w,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.keyboard_arrow_left_rounded,
-                color: AppTheme.textColor,
-                size: 30.sp,
-              )),
-          title: Text(
-            "Create Card",
-            style: AppTheme.pageHead,
-          ),
+          title: AppBarTitleWidget(text: "Create Card"),
+          automaticallyImplyLeading: false,
         ),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w),

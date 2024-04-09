@@ -67,10 +67,10 @@ class SubscribePage extends StatelessWidget {
                         ),
                       );
                     });
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(Duration(seconds: 2), () async {
                   Navigator.pop(context);
-                  cardBloc.updateCardData();
-                  cardBloc.clearCardData();
+                  await cardBloc.updateCardData();
+                  // cardBloc.clearCardData();
                 });
               } else {
                 _showSnackBar("Please select a subscription plan.");

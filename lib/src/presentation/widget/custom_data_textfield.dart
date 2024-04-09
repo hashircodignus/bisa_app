@@ -7,6 +7,7 @@ class CustomDataTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final Function()? onTap;
   final String? fieldHead;
+  final FormFieldValidator<String>? validator;
   final TextEditingController? controller;
   final TextInputType? textInputType;
   final BoxConstraints? prefixIconConstraints;
@@ -19,14 +20,11 @@ class CustomDataTextField extends StatelessWidget {
     this.onTap,
     this.fieldHead,
     super.key,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    void _showSnackBar(String message) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          behavior: SnackBarBehavior.floating, content: Text(message)));
-    }
 
     return Container(
       child: Column(
@@ -42,19 +40,14 @@ class CustomDataTextField extends StatelessWidget {
           ),
           Container(
             child: TextFormField(
-              validator: (value) {
-                if (value!.isEmpty) {
-                  _showSnackBar("Enter valid data");
-                }
-                return null;
-              },
+              validator: validator,
               onTap: onTap,
               textAlignVertical: TextAlignVertical.bottom,
               controller: controller,
               cursorColor: AppTheme.textColor,
               style: AppTheme.titleText,
               decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(bottom: 40.h),
+                  contentPadding: EdgeInsets.symmetric(vertical: 20.h),
                   prefixIcon: prefixIcon,
                   prefixIconConstraints: prefixIconConstraints,
                   // suffix: IconButton(onPressed: (){}, icon:  Icon(Icons.clear,color: AppTheme.textColor,size: 20.sp,),alignment: const Alignment(0, -1),),
@@ -68,7 +61,21 @@ class CustomDataTextField extends StatelessWidget {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
                       borderSide:
-                          BorderSide(color: AppTheme.textColor, width: 1.w))),
+                          BorderSide(color: AppTheme.textColor, width: 1.w)),
+                errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(12.r),
+    borderSide: BorderSide(
+    color: Colors.red,
+    width: 1.w,
+    ),
+    ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide:
+                    BorderSide(color: AppTheme.textColor, width: 1.w)),
+
+              ),
+
             ),
           )
         ],
