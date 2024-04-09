@@ -1,4 +1,4 @@
-class AssetResources{
+class AssetResources {
   static const appLogo = "assets/images/bisa_logo.png";
   static const appLogoWhite = "assets/images/bisa_logo_white.png";
   static const appLogoWhiteLarge = "assets/images/bisalogo_white.png";
@@ -37,14 +37,16 @@ class AssetResources{
   static const successLottie = "assets/animation/success_lottie.json";
   static const otpIconLottie = "assets/animation/otplottie.json";
   static const otpLottie = "assets/animation/otp_lottie.json";
-  static const subscription= "assets/images/subscription_icon.png";
-  static const backgroundcard= "assets/images/backgroundcard.png";
+  static const subscription = "assets/images/subscription_icon.png";
+  static const backgroundcard = "assets/images/backgroundcard.png";
 
   static const briefcaseIcon = "assets/svg/briefcase_icon.svg";
   static const personIcon = "assets/svg/person.svg";
   static const editIcon = "assets/svg/edit_icon.svg";
   static const cardBackground = "assets/svg/card_background.svg";
   static const userImage = "assets/svg/user_image.svg";
-  
-
+  static const location = "assets/svg/location.svg";
+  static const website = "assets/svg/website.svg";
+  static const phone = "assets/svg/phone.svg";
+  static const email = "assets/svg/email.svg";
 }
