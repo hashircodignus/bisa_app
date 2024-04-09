@@ -29,8 +29,6 @@ class CustomDataTextField extends StatelessWidget {
     }
 
     return Container(
-      //height: 84.h,
-      // color: Colors.red,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -43,8 +41,6 @@ class CustomDataTextField extends StatelessWidget {
             height: 6.h,
           ),
           Container(
-            // height: 59.h,
-            // color: Colors.blue,
             child: TextFormField(
               validator: (value) {
                 if (value!.isEmpty) {

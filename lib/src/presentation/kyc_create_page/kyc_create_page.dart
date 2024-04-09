@@ -32,13 +32,13 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
         context: context,
         builder: (BuildContext context) {
           return Container(
-            padding: const EdgeInsets.only(left: 30, right: 20),
-            decoration: const BoxDecoration(
+            padding:  EdgeInsets.symmetric(horizontal: 20.w),
+            decoration:  BoxDecoration(
                 color: AppTheme.backColor,
                 borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(26),
-                    topLeft: Radius.circular(26))),
-            height: 130,
+                    topRight: Radius.circular(26.r),
+                    topLeft: Radius.circular(26.r))),
+            height: 130.h,
             child: Row(
               children: [
                 //Text("Select Image Source",style: AppTheme.buttonText,),
@@ -48,8 +48,8 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
                     _getImage(ImageSource.camera);
                   },
                   child: Container(
-                    height: 78,
-                    width: 58,
+                    height: 78.h,
+                    width: 58.w,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(AssetResources.camera),
@@ -62,8 +62,8 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
                         )),
                   ),
                 ),
-                const SizedBox(
-                  width: 20,
+                 SizedBox(
+                  width: 20.w,
                 ),
                 InkWell(
                   onTap: () {
@@ -71,8 +71,8 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
                     _getImage(ImageSource.gallery);
                   },
                   child: Container(
-                    height: 78,
-                    width: 58,
+                    height: 78.h,
+                    width: 58.w,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(AssetResources.gallery),
@@ -85,8 +85,8 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
                         )),
                   ),
                 ),
-                const SizedBox(
-                  width: 20,
+                 SizedBox(
+                  width: 20.w,
                 ),
                 InkWell(
                   onTap: () {
@@ -94,8 +94,8 @@ class _KYCCreatePageState extends State<KYCCreatePage> {
                     //  _getImage(ImageSource);
                   },
                   child: Container(
-                    height: 78,
-                    width: 58,
+                    height: 78.h,
+                    width: 58.w,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(AssetResources.document),

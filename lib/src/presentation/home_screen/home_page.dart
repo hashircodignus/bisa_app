@@ -3,6 +3,7 @@ import 'package:bisa_app/src/presentation/more_screen/more_page.dart';
 import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -87,30 +88,54 @@ class HomePage extends StatelessWidget {
                 //padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
                 child: SingleChildScrollView(
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 20,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfilePage()));
-                            },
-                            child: const ListTile(
-                              leading: CircleAvatar(),
-                              trailing: Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                              ),
-                              title: Text("Customer Name"),
-                              subtitle: Text("Designation"),
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance.collection('cards').snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+                        if(snapshot.connectionState == ConnectionState.waiting){
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: AppTheme.textColor,
                             ),
                           );
-                        })),
+                        }else if(snapshot.hasError){
+                          return Text('Error: ${snapshot.error}');
+                        }else {
+                          return ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                var cardData = snapshot.data!.docs[index].data();
+                                var imageUrl = (cardData as Map<String, dynamic>)['imageUrl'] ?? '';
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const ProfilePage()));
+                                  },
+                                  child:  ListTile(
+                                    leading: Container(
+                                      height: 49.h,
+                                      width: 49.h,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(image: cardData['imageUrl'])
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.check_circle,
+                                      color: Colors.green,
+                                    ),
+                                    title: Text((cardData)['name'] ?? 'No name'),
+                                    subtitle: Text((cardData)['profession'] ?? 'Unknown'),
+
+                                  ),
+                                );
+                              });
+                        }
+                      },
+                    )),
               ),
               Container(
                 color: AppTheme.backColor,
