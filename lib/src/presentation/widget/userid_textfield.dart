@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
@@ -105,7 +106,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
             ),
             Expanded(
               child: TextFormField(
-                maxLength: 15,
+                inputFormatters: [LengthLimitingTextInputFormatter(15)],
                 keyboardType: TextInputType.phone,
                 onFieldSubmitted: widget.onSubmitted,
                 textInputAction: widget.textInputAction,

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_second_page.dart';
+import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
@@ -19,6 +20,8 @@ class CreateCardPage extends StatefulWidget {
 
 class _CreateCardPageState extends State<CreateCardPage> {
   File? _image;
+  final _cardKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _pickImage() async {
     final picker = ImagePicker();
@@ -113,22 +116,18 @@ class _CreateCardPageState extends State<CreateCardPage> {
   void _getImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: source);
-
     if (pickedImage != null) {
       setState(() {
         _image = File(pickedImage.path);
+        BlocProvider.of<CreateCardCubit>(context).image = _image;
       });
-
-      final cardCubit = context.read<CreateCardCubit>();
-
-      try {
-        await cardCubit.uploadImage(_image!);
-      } catch (e) {
-        print('Error uploading image: $e');
-      }
     }
   }
 
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating, content: Text(message)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,117 +135,128 @@ class _CreateCardPageState extends State<CreateCardPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        key: _scaffoldKey,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0.h,
           backgroundColor: Colors.transparent,
-          titleSpacing: -18.w,
-          leadingWidth: 60.w,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.keyboard_arrow_left_rounded,
-                color: AppTheme.textColor,
-                size: 30.sp,
-              )),
-          title: Text(
-            "Create Card",
-            style: AppTheme.pageHead,
-          ),
+          title: AppBarTitleWidget(text: "Create Card"),
+          automaticallyImplyLeading: false,
           forceMaterialTransparency: true,
         ),
         body: Container(
-          // padding:  EdgeInsets.symmetric(horizontal: 20.w),
           color: AppTheme.backColor,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  height: 250.h,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(AssetResources.background),
-                          fit: BoxFit.cover)),
-                  child: InkWell(
-                    onTap: (){
-                      setState(() {
-                        _pickImage();
-                      });
-                    },
-                    child: Align(
-                      alignment: const Alignment(0, 0.5),
-                      child: Container(
-                        height: 82.h,
-                        width: 82.w,
-                        decoration: BoxDecoration(
-                          image: const DecorationImage(
-                              image: AssetImage(AssetResources.userDp)),
-                          border:
-                          Border.all(color: AppTheme.smallText, width: 1.w),
-                          borderRadius: BorderRadius.circular(100.r),
+          child: Form(
+            key: _cardKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: 250.h,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(AssetResources.background),
+                            fit: BoxFit.cover)),
+                    child: InkWell(
+                      onTap: (){
+                        setState(() {
+                          _pickImage();
+                        });
+                      },
+                      child: Align(
+                        alignment: const Alignment(0, 0.5),
+                        child: Container(
+                          height: 82.h,
+                          width: 82.w,
+                          decoration: BoxDecoration(
+                            image: const DecorationImage(
+                                image: AssetImage(AssetResources.userDp)),
+                            border:
+                            Border.all(color: AppTheme.smallText, width: 1.w),
+                            borderRadius: BorderRadius.circular(100.r),
+                          ),
+                          child: _image !=null ?
+                          ClipOval(
+                            child: Image.file(_image as File,fit: BoxFit.cover,),
+                          ):
+                          Container(),
                         ),
-                        child: _image !=null ?
-                        ClipOval(
-                          child: Image.file(_image as File,fit: BoxFit.cover,),
-                        ):
-                        Container(),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomDataTextField(
-                        prefixIcon: Icon(Icons.person_outline_outlined,
-                            color: AppTheme.textColor, size: 19.sp),
-                        hintText: "Full Name",
-                        controller: cardBloc.nameController,
-                        fieldHead: 'Name',
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomDataTextField(
-                        prefixIcon: Icon(Icons.account_balance_outlined,
-                            color: AppTheme.textColor, size: 19.sp),
-                        hintText: "Professions",
-                        controller: cardBloc.professionController,
-                        fieldHead: 'Professions',
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomDataTextField(
-                        prefixIcon: Icon(Icons.location_on_outlined,
-                            color: AppTheme.textColor, size: 19.sp),
-                        hintText: "Address",
-                        controller: cardBloc.addressController,
-                        fieldHead: 'Address',
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomDataTextField(
-                        prefixIcon: Icon(Icons.language_rounded,
-                            color: AppTheme.textColor, size: 19.sp),
-                        hintText: "Website",
-                        controller: cardBloc.websiteController,
-                        fieldHead: 'Website',
-                      ),
-                      SizedBox(
-                        height: 83.h,
-                      ),
-                    ],
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        CustomDataTextField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                             return 'Enter valid data';
+                            }
+                            return null;
+                          },
+                          prefixIcon: Icon(Icons.person_outline_outlined,
+                              color: AppTheme.textColor, size: 19.sp),
+                          hintText: "Full Name",
+                          controller: cardBloc.nameController,
+                          fieldHead: 'Name',
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        CustomDataTextField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter valid data';
+                            }
+                            return null;
+                          },
+                          prefixIcon: Icon(Icons.account_balance_outlined,
+                              color: AppTheme.textColor, size: 19.sp),
+                          hintText: "Professions",
+                          controller: cardBloc.professionController,
+                          fieldHead: 'Professions',
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        CustomDataTextField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter valid data';
+                            }
+                            return null;
+                          },
+                          prefixIcon: Icon(Icons.location_on_outlined,
+                              color: AppTheme.textColor, size: 19.sp),
+                          hintText: "Address",
+                          controller: cardBloc.addressController,
+                          fieldHead: 'Address',
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        CustomDataTextField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter valid data';
+                            }
+                            return null;
+                          },
+                          prefixIcon: Icon(Icons.language_rounded,
+                              color: AppTheme.textColor, size: 19.sp),
+                          hintText: "Website",
+                          controller: cardBloc.websiteController,
+                          fieldHead: 'Website',
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -254,24 +264,30 @@ class _CreateCardPageState extends State<CreateCardPage> {
           padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
           child: ButtonWidget(
             buttonTextContent: "NEXT",
-            onPressed: () {
-              showDialog(context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context){
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.textColor,
-                  ),
+            onPressed: () async{
+              if(_image == null){
+                _showSnackBar("Please select an image");
+                return;
+              }
+              if(_cardKey.currentState!.validate()){
+                showDialog(context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context){
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.textColor,
+                        ),
+                      );
+                    }
                 );
-                  }
-              );
-              Future.delayed(Duration(seconds: 2),(){
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CreateCardSecondPage()));
-              });
+                Future.delayed(Duration(seconds: 2),(){
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CreateCardSecondPage()));
+                });
+              }
             },
           ),
         ),

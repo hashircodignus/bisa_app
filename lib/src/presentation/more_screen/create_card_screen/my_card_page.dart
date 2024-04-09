@@ -1,6 +1,5 @@
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/create_card_page.dart';
 import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
-import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,13 +49,13 @@ class MyCardPage extends StatelessWidget {
                   return Flexible(
                     child: ListView.separated(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       itemCount: docs.length,
                       itemBuilder: (BuildContext context, int index) {
                         final doc = docs[index];
                         final name = doc['name'];
                         final designation = doc['profession'];
-                        //final cardImageDp = doc['cardImageDp'];
+                        final cardImageDp = doc['imageUrl'];
                         return Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 20.w, vertical: 24.h),
@@ -72,15 +71,15 @@ class MyCardPage extends StatelessWidget {
                                 width: 63.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50.r),
-                                  color: Colors.red,
+                                  //color: Colors.red,
                                   border: Border.all(
                                       width: 3.w, color: AppTheme.backColor),
                                 ),
-                                //child: Image.network(imageUrl, fit: BoxFit.cover),
-                                child: Image.asset(
-                                  AssetResources.user2Dp,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: Image.network(cardImageDp, fit: BoxFit.cover),
+                                // child: Image.asset(
+                                //   AssetResources.user2Dp,
+                                //   fit: BoxFit.cover,
+                                // ),
                               ),
                               SizedBox(
                                 width: 10.w,
