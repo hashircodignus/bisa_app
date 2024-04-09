@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:bisa_app/src/presentation/more_screen/subscription/model/subscription_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 part 'create_card_state.dart';
 
@@ -64,5 +67,28 @@ class CreateCardCubit extends Cubit<CreateCardState> {
 
   void selectPlan(SubscriptionPlan plan) {
     selectedPlan = plan;
+  }
+
+   uploadImage(File image)async {
+    emit(CreateCardLoading());
+
+    try{
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+      Reference ref = FirebaseStorage.instance.ref('images/$fileName');
+      await ref.putFile(image);
+
+      String imageUrl = await ref.getDownloadURL();
+
+      final cardData = {
+        'imageUrl' :imageUrl,
+      };
+      await FirebaseFirestore.instance.collection('cards').doc(currentUser?.uid).collection('images').add(cardData);
+
+      emit(CreateCardImageUploaded());
+    } catch (e) {
+      emit(CreateCardError(errorText: e.toString()));
+    }
   }
 }
