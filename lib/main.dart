@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/full_card_view/cubit/card_view_cubit.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 import 'package:bisa_app/src/presentation/otp_screen/cubit/otp_page_cubit.dart';
 import 'package:bisa_app/src/presentation/register_screen/cubit/register_page_cubit.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (context)=> RegisterPageCubit()),
             BlocProvider(create: (context)=> OtpPageCubit()),
             BlocProvider(create: (context)=> CreateCardCubit()),
+            BlocProvider(create: (context)=> CardViewCubit()),
           ],
           child: MaterialApp(
             theme: ThemeData(
