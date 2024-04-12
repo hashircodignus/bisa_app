@@ -69,10 +69,6 @@ class CreateCardCubit extends Cubit<CreateCardState> {
         'uid': currentUser.uid,
         'imageUrl' : imageUrl,
       };
-
-
-
-
       if (selectedPlan != null) {
         cardData['subscriptionPlan'] = selectedPlan?.name ?? '';
         cardData['subscriptionAmount'] = selectedPlan!.amount.toString();
@@ -91,31 +87,4 @@ class CreateCardCubit extends Cubit<CreateCardState> {
   void selectPlan(SubscriptionPlan plan) {
     selectedPlan = plan;
   }
-
-
-  //   uploadImage()async {
-  //   emit(CreateCardLoading());
-  //
-  //   try{
-  //     final currentUser = FirebaseAuth.instance.currentUser;
-  //     if(currentUser == null){
-  //       throw Exception('User not logged in');
-  //     }
-  //
-  //     String fileName = 'user_${currentUser.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-  //     Reference ref = FirebaseStorage.instance.ref('images/$fileName');
-  //     await ref.putFile(image!);
-  //
-  //     String imageUrl = await ref.getDownloadURL();
-  //
-  //    DocumentReference cardDocRef = FirebaseFirestore.instance.collection('cards').doc();
-  //    await cardDocRef.set({
-  //      'imageUrl': imageUrl
-  //    },SetOptions(merge:  true));
-  //     emit(CreateCardLoaded());
-  //   } catch (e) {
-  //     emit(CreateCardError(errorText: e.toString()));
-  //   }
-  // }
-
 }

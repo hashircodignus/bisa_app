@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/full_card_view/full_card_view.dart';
 import 'package:bisa_app/src/presentation/home_screen/widget/tabwidget.dart';
 import 'package:bisa_app/src/presentation/more_screen/more_page.dart';
 import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
@@ -53,7 +54,6 @@ class HomePage extends StatelessWidget {
                     Container(
                       height: 59.h,
                       width: double.infinity,
-                      //padding: const EdgeInsets.only(left: 10,right: 10),
                       decoration: const BoxDecoration(
                         color: AppTheme.backColor,
                         // color: Colors.amber,
@@ -124,7 +124,7 @@ class HomePage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                      const ProfilePage()));
+                                          FullCardView(cardId: doc.id,)));
                             },
                             child: ListTile(
                               leading: Container(
