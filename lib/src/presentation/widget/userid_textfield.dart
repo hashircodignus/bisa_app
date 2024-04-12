@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
+
 class UserIdTextField extends StatefulWidget {
   final String flag;
   final String countryphoneCode;
@@ -64,7 +65,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                       return null;
                     },
                     initialValue: " +${widget.countryphoneCode}",
-                  
+                  readOnly: true,
                     style: AppTheme.fieldText,
                     decoration: InputDecoration(
                       contentPadding:
@@ -124,7 +125,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                   //errorStyle: AppTheme.errorTextRed,
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-                  helperText: " ",
+                  
                   hintText: "Enter here...",
                   hintStyle: AppTheme.smallHead,
                   enabledBorder: UnderlineInputBorder(

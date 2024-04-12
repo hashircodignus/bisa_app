@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
             ),
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
-            home:FullCardView()
+            home: AuthPage(),
           ),
         );
       },
