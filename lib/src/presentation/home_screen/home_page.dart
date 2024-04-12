@@ -130,7 +130,11 @@ class HomePage extends StatelessWidget {
                               leading: Container(
                                 height: 49.h,
                                 width: 49.h,
-                                child: Image.network(cardImageDp,fit: BoxFit.cover,),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50.r),
+                                  image: DecorationImage(image: NetworkImage(cardImageDp),fit: BoxFit.cover)
+                                ),
+                              //  child: Image.network(cardImageDp,fit: BoxFit.cover,),
                               ),
                               trailing: Icon(
                                 Icons.check_circle,
