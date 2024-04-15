@@ -106,7 +106,7 @@ class HomePage extends StatelessWidget {
                     final docs = snapshot.data?.docs;
 
                     if(docs == null || docs.isEmpty){
-                      return Text("No data available");
+                      return Center(child: Text("No data available"));
                     }
                     return ListView.builder(
                         physics: const BouncingScrollPhysics(),
