@@ -3,16 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
 class PopUpTextField extends StatelessWidget {
-  final String initialValue;
   final ImageProvider<Object> image;
+  final TextEditingController? controller;
   final Widget? prefix;
   final BoxConstraints? prefixIconConstraints;
-  const PopUpTextField({required this.initialValue, required this.image,this.prefix,super.key,this.prefixIconConstraints});
+  const PopUpTextField({ this.controller,required this.image,this.prefix,super.key,this.prefixIconConstraints});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: initialValue,
+      controller: controller,
       cursorColor: AppTheme.backColor,
       style: AppTheme.labelTextWhite,
       decoration:  InputDecoration(

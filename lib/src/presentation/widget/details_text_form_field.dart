@@ -4,8 +4,8 @@ import '../../utils/resources/theme.dart';
 
 class DetailsTextFormField extends StatelessWidget {
   final String? labelText;
-  final String? initialValue;
-  const DetailsTextFormField({ this.labelText,this.initialValue,
+  final TextEditingController? controller;
+  const DetailsTextFormField({ this.labelText,this.controller,
     super.key,
   });
 
@@ -16,8 +16,8 @@ class DetailsTextFormField extends StatelessWidget {
       height: 59.h,
       width: 390.w,
       child: TextFormField(
+        controller: controller,
         readOnly: true,
-        initialValue: initialValue,
         textInputAction: TextInputAction.next,
         style: AppTheme.labelTextBlack,
         cursorColor: AppTheme.textColor,
