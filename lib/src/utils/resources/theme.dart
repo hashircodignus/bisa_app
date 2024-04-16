@@ -13,6 +13,7 @@ class AppTheme {
   static const Color smallText = Colors.grey;
   static const Color blueColor = Color(0xff4B73E1);
   static const Color cardColor = Color(0xff43A047);
+  static const Color pinkColor = Color(0xffFF7979);
   static  Color cardColorlight = Color(0xff43A047).withOpacity(0.12);
 //*************************************************
 //*************************************************

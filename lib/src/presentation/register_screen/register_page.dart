@@ -85,65 +85,95 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
-          child: BlocConsumer<RegisterPageCubit, RegisterPageState>(
-            listener: (context, state) {
-              log("register state =>$state");
-              if (state is RegisterPageLoading) {
-                const Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.textColor,
-                  ),
-                );
-              }
-              if (state is RegisterPageSuccess) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const OTPPage()));
-              } else if (state is RegisterPageOtpVerification) {
-                const Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.textColor,
-                  ),
-                );
-                _showSnackBar(state.verificationSend);
-              } else if (state is RegisterPageCodeSent) {
-                _showSnackBar(state.codeSend);
-              } else if (state is RegisterPageError) {
-                _showSnackBar(state.errorText);
-              }
-            },
-            builder: (context, state) {
-              log("state is ${state.toString()}");
-              if (state is RegisterPageLoading) {
-                return ButtonWidget(
-                    buttonTextContent: '',
-                    isLoading: true,
-                    onPressed: () async {});
-              }
-              return ButtonWidget(
-                  buttonTextContent: "GET START",
-                  onPressed: () async {
-                    if (_signUpKey.currentState!.validate() &&
-                        registerBloc.loginIdController.text.contains(RegExp(
-                            r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context){
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: AppTheme.textColor,
-                              ),
-                            );
-                          },
+          child: BlocListener<RegisterPageCubit , RegisterPageState>(
+              listener: (context, state){
+                log(state.toString());
+                if(state is RegisterPageLoading){
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context){
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.textColor,
+                        ),
                       );
-                      Future.delayed(Duration(seconds: 2),(){
-                        Navigator.pop(context);
-                        registerBloc.register(context);
-                      });
-                    }
-                  });
-            },
+                    },
+                  );
+                }
+                if(state is RegisterPageCodeSent){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const OTPPage()));
+                } if(state is RegisterPageError){
+                  Navigator.pop(context);
+                  _showSnackBar(state.errorText);
+                }
+              },
+            child:  ButtonWidget(
+            buttonTextContent: "GET START",
+            onPressed: () async {
+              if (_signUpKey.currentState!.validate() &&
+                  registerBloc.loginIdController.text.contains(RegExp(
+                      r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
+                  registerBloc.register(context);
+              }
+            }),
           ),
+          // child: BlocConsumer<RegisterPageCubit, RegisterPageState>(
+          //   listener: (context, state) {
+          //     log("register state =>$state");
+          //     if (state is RegisterPageLoading) {
+          //       const Center(
+          //         child: CircularProgressIndicator(
+          //           color: AppTheme.textColor,
+          //         ),
+          //       );
+          //     }
+          //     if (state is RegisterPageSuccess) {
+          //       Navigator.push(context,
+          //           MaterialPageRoute(builder: (context) => const OTPPage()));
+          //     } else if (state is RegisterPageOtpVerification) {
+          //       const Center(
+          //         child: CircularProgressIndicator(
+          //           color: AppTheme.textColor,
+          //         ),
+          //       );
+          //       _showSnackBar(state.verificationSend);
+          //     } else if (state is RegisterPageCodeSent) {
+          //       _showSnackBar(state.codeSend);
+          //     } else if (state is RegisterPageError) {
+          //       _showSnackBar(state.errorText);
+          //     }
+          //   },
+          //   builder: (context, state) {
+          //     log("state is ${state.toString()}");
+          //     if (state is RegisterPageLoading) {
+          //       return ButtonWidget(
+          //           buttonTextContent: '',
+          //           isLoading: true,
+          //           onPressed: () async {});
+          //     }
+          //     return ButtonWidget(
+          //         buttonTextContent: "GET START",
+          //         onPressed: () async {
+          //           if (_signUpKey.currentState!.validate() &&
+          //               registerBloc.loginIdController.text.contains(RegExp(
+          //                   r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'))) {
+          //             showDialog(
+          //                 context: context,
+          //                 barrierDismissible: false,
+          //                 builder: (BuildContext context){
+          //                   return Center(
+          //                     child: CircularProgressIndicator(
+          //                       color: AppTheme.textColor,
+          //                     ),
+          //                   );
+          //                 },
+          //             );
+          //               registerBloc.register(context);
+          //           }
+          //         });
+          //   },
+          // ),
         ),
       ),
     );
