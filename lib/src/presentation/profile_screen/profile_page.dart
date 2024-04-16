@@ -17,7 +17,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   @override
   void initState() {
     super.initState();
@@ -26,356 +25,417 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CardViewCubit,CardViewState>(
-        builder: (context , CardViewState){
-          if(CardViewState is CardViewLoading){
-            return Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(
-                  color: AppTheme.textColor,
-                ),
-              ),
-            );
-          }
-          else if(CardViewState is CardViewLoaded) {
-            final cardData = CardViewState.cardData.data();
-            return GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Scaffold(
-                body: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 0.w),
-                        height: 294.h,
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                            color: AppTheme.backColor,
-                            image: DecorationImage(
-                                image: AssetImage(AssetResources.background),
-                                fit: BoxFit.cover)),
-                        child: Column(
+    return BlocBuilder<CardViewCubit, CardViewState>(
+        builder: (context, CardViewState) {
+      if (CardViewState is CardViewLoading) {
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(
+              color: AppTheme.textColor,
+            ),
+          ),
+        );
+      } else if (CardViewState is CardViewLoaded) {
+        final cardData = CardViewState.cardData.data();
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0.w),
+                    height: 294.h,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        color: AppTheme.backColor,
+                        image: DecorationImage(
+                            image: AssetImage(AssetResources.background),
+                            fit: BoxFit.cover)),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 40.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
-                              height: 40.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: Icon(
-                                      Icons.arrow_back_ios_new_rounded,
-                                      size: 20.sp,
-                                    )),
-                                Text(
-                                  "Profile",
-                                  style: AppTheme.pageHead,
-                                ),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.share_outlined,
-                                      color: AppTheme.textColor,
-                                      size: 25.sp,
-                                    ))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 25.h,
-                            ),
-                            Container(
-                              height: 80.h,
-                              width: 80.w,
-                              decoration: BoxDecoration(
-                                border:
-                                Border.all(color: AppTheme.smallText, width: 0.5.w),
-                                image:  DecorationImage(
-                                    image: NetworkImage(cardData?['imageUrl']),
-                                    fit: BoxFit.cover),
-                                // color: Colors.blue,
-                                borderRadius: BorderRadius.circular(100.r),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 12.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                 cardData?['name'],
-                                  style: AppTheme.pageHead,
-                                ),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                                Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios_new_rounded,
                                   size: 20.sp,
-                                )
-                              ],
-                            ),
+                                )),
                             Text(
-                              cardData?['profession'],
-                              style: AppTheme.smallHead,
+                              "Profile",
+                              style: AppTheme.pageHead,
                             ),
-                            Text(
-                              "Verified",
-                              style: AppTheme.smallHeadGreen,
-                            ),
-                            SizedBox(
-                              height: 12.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15.h, horizontal: 30.w),
-                              height: 75.h,
-                              decoration: BoxDecoration(
+                            IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.share_outlined,
                                   color: AppTheme.textColor,
-                                  borderRadius: BorderRadius.circular(8.r)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () => showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: MediaQuery.of(context)
-                                                    .viewInsets
-                                                    .bottom),
-                                            child: Container(
-                                              height: 287.h,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w,vertical: 30.h),
-                                              decoration: BoxDecoration(
-                                                  color: AppTheme.textColor,
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(26.r),
-                                                      topRight: Radius.circular(26.r))),
-                                              child: ListView.builder(
-                                                itemCount: cardData != null && cardData['phone']!= null ? cardData['phone'].length :0,
-                                                itemBuilder: (context, index){
-                                                  return Padding(padding: EdgeInsets.symmetric(vertical: 15.h),
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(Icons.phone_outlined,color: AppTheme.backColor,size: 18.sp,),
-                                                      SizedBox(width: 20.w,),
-                                                      Text(cardData!['phone'][index].toString(),style: AppTheme.buttonText,),
-                                                    ],
-                                                  ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          Icons.phone_outlined,
-                                          color: AppTheme.backColor,
-                                          size: 18.sp,
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Text(
-                                          "Mobile",
-                                          style: AppTheme.buttonText,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const VerticalDivider(
-                                    color: AppTheme.backColor,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () => showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: MediaQuery.of(context)
-                                                    .viewInsets
-                                                    .bottom),
-                                            child: Container(
-                                              height: 287.h,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w,vertical: 30.h),
-                                              decoration: BoxDecoration(
-                                                  color: AppTheme.textColor,
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(26.r),
-                                                      topRight: Radius.circular(26.r))),
-                                              child: ListView.builder(
-                                                itemCount: cardData != null && cardData['email']!= null ? cardData['email'].length :0,
-                                                itemBuilder: (context, index){
-                                                  return Padding(padding: EdgeInsets.symmetric(vertical: 15.h),
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(Icons.email_outlined,color: AppTheme.backColor,size: 18.sp,),
-                                                        SizedBox(width: 20.w,),
-                                                        Text(cardData!['email'][index].toString(),style: AppTheme.buttonText,),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          Icons.email_outlined,
-                                          color: AppTheme.backColor,
-                                          size: 18.sp,
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Text(
-                                          "Email",
-                                          style: AppTheme.buttonText,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const VerticalDivider(
-                                    color: AppTheme.backColor,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () => showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: MediaQuery.of(context)
-                                                    .viewInsets
-                                                    .bottom),
-                                            child: Container(
-                                              height: 287.h,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w,vertical: 30.h),
-                                              decoration: BoxDecoration(
-                                                  color: AppTheme.textColor,
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(26.r),
-                                                      topRight: Radius.circular(26.r))),
-                                              child: ListView.builder(
-                                                itemCount: cardData != null && cardData['social']!= null ? cardData['social'].length :0,
-                                                itemBuilder: (context, index){
-                                                  return Padding(padding: EdgeInsets.symmetric(vertical: 15.h),
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(Icons.language_rounded,color: AppTheme.backColor,size: 18.sp,),
-                                                        SizedBox(width: 20.w,),
-                                                        Text(cardData!['social'][index].toString(),style: AppTheme.buttonText,),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          Icons.language_rounded,
-                                          color: AppTheme.backColor,
-                                          size: 18.sp,
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Text(
-                                          "Social",
-                                          style: AppTheme.buttonText,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Basic Details",
-                                  style: AppTheme.tabText,
-                                ),
-                                SvgPicture.asset(AssetResources.editIcon)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                             DetailsTextFormField(
-                                labelText: 'Company Name',
-                                controller: TextEditingController(text:  'Codignus Technology')
-                            ),
-                            const SizedBox(height: 10,),
-                             DetailsTextFormField(
-                              labelText: 'Address',
-                            controller: TextEditingController(text: cardData?['address']),
-                            ),
-                            const SizedBox(height: 10,),
-                             DetailsTextFormField(
-                              labelText: 'Business Details',
-                              controller:TextEditingController(text: "Trading Company",)
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                             DetailsTextFormField(
-                              labelText: 'Website',
-                              controller: TextEditingController(text: "www.codignus.com"),
-                            ),
+                                  size: 25.sp,
+                                ))
                           ],
                         ),
-                      )
-                    ],
+                        SizedBox(
+                          height: 25.h,
+                        ),
+                        Container(
+                          height: 80.h,
+                          width: 80.w,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: AppTheme.smallText, width: 0.5.w),
+                            image: DecorationImage(
+                                image: NetworkImage(cardData?['imageUrl']),
+                                fit: BoxFit.cover),
+                            // color: Colors.blue,
+                            borderRadius: BorderRadius.circular(100.r),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              cardData?['name'],
+                              style: AppTheme.pageHead,
+                            ),
+                            SizedBox(
+                              width: 4.w,
+                            ),
+                            Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                              size: 20.sp,
+                            )
+                          ],
+                        ),
+                        Text(
+                          "Verified",
+                          style: AppTheme.smallHeadGreen,
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                bottomNavigationBar: Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
-                  child: const ButtonWidget(buttonTextContent: "Save"),
-                ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15.h, horizontal: 30.w),
+                          height: 75.h,
+                          decoration: BoxDecoration(
+                              color: AppTheme.textColor,
+                              borderRadius: BorderRadius.circular(8.r)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () => showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: Container(
+                                          height: 287.h,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.w, vertical: 30.h),
+                                          decoration: BoxDecoration(
+                                              color: AppTheme.textColor,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(26.r),
+                                                  topRight:
+                                                      Radius.circular(26.r))),
+                                          child: ListView.builder(
+                                            itemCount: cardData != null &&
+                                                    cardData['phone'] != null
+                                                ? cardData['phone'].length
+                                                : 0,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 15.h),
+                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      cardData!['phone'][index]
+                                                          .toString(),
+                                                      style:
+                                                          AppTheme.buttonText,
+                                                    ),
+                                                    Container(
+                                                      height: 23.h,
+                                                      width: 23.w,
+                                                      decoration: BoxDecoration(
+                                                          color: AppTheme.cardColor,
+                                                          borderRadius: BorderRadius.circular(2.r)
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.local_phone_outlined,
+                                                        color: AppTheme.backColor,
+                                                        size: 18.sp,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.phone_outlined,
+                                      color: AppTheme.backColor,
+                                      size: 18.sp,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "Mobile",
+                                      style: AppTheme.buttonText,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const VerticalDivider(
+                                color: AppTheme.backColor,
+                              ),
+                              GestureDetector(
+                                onTap: () => showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: Container(
+                                          height: 287.h,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.w, vertical: 30.h),
+                                          decoration: BoxDecoration(
+                                              color: AppTheme.textColor,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(26.r),
+                                                  topRight:
+                                                      Radius.circular(26.r))),
+                                          child: ListView.builder(
+                                            itemCount: cardData != null &&
+                                                    cardData['email'] != null
+                                                ? cardData['email'].length
+                                                : 0,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 15.h),
+                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      cardData!['email'][index]
+                                                          .toString(),
+                                                      style:
+                                                          AppTheme.buttonText,
+                                                    ),
+                                                    Container(
+                                                        height: 23.h,
+                                                        width: 23.w,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(2.r),
+                                                            color: AppTheme.pinkColor
+                                                        ),
+                                                        child: SvgPicture.asset(AssetResources.email,color: AppTheme.backColor,)),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.email_outlined,
+                                      color: AppTheme.backColor,
+                                      size: 18.sp,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "Email",
+                                      style: AppTheme.buttonText,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const VerticalDivider(
+                                color: AppTheme.backColor,
+                              ),
+                              GestureDetector(
+                                onTap: () => showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: Container(
+                                          height: 287.h,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.w, vertical: 30.h),
+                                          decoration: BoxDecoration(
+                                              color: AppTheme.textColor,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(26.r),
+                                                  topRight:
+                                                      Radius.circular(26.r))),
+                                          child: ListView.builder(
+                                            itemCount: cardData != null &&
+                                                    cardData['social'] != null
+                                                ? cardData['social'].length
+                                                : 0,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 15.h),
+                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.language_rounded,
+                                                          color: AppTheme.backColor,
+                                                          size: 18.sp,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 20.w,
+                                                        ),
+                                                        Text(
+                                                          cardData!['social'][index]
+                                                              .toString(),
+                                                          style:
+                                                          AppTheme.buttonText,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Icon(
+                                                      Icons.send_outlined,
+                                                      color: AppTheme.backColor,
+                                                      size: 18.sp,
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.language_rounded,
+                                      color: AppTheme.backColor,
+                                      size: 18.sp,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "Social",
+                                      style: AppTheme.buttonText,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Basic Details",
+                              style: AppTheme.tabText,
+                            ),
+                            SvgPicture.asset(AssetResources.editIcon)
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        DetailsTextFormField(
+                          labelText: 'Address',
+                          controller:
+                              TextEditingController(text: cardData?['address']),
+                        ),const SizedBox(
+                          height: 10,
+                        ),
+                        DetailsTextFormField(
+                          labelText: 'Profession',
+                          controller:
+                          TextEditingController(text: cardData?['profession']),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        DetailsTextFormField(
+                          labelText: 'Website',
+                          controller:
+                              TextEditingController(text: cardData?['website']),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-            );
-          }else {
-            return Container();
-          }
-        }
-    );
+            ),
+            bottomNavigationBar: Padding(
+              padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
+              child: const ButtonWidget(buttonTextContent: "Save"),
+            ),
+          ),
+        );
+      } else {
+        return Container();
+      }
+    });
   }
 }

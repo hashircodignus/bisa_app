@@ -35,7 +35,7 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
                     verificationSend: "Verification completed"));
               },
               verificationFailed: (FirebaseAuthException e) {
-                emit(RegisterPageError(errorText: "Mobile number is not valid"));
+                emit(RegisterPageError(errorText: e.toString()));
                 throw (e);
               },
               codeSent: (String verificationId, int? resendToken) {
@@ -52,7 +52,7 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
       // });
     } catch (e) {
       log(e.toString());
-      emit(RegisterPageError(errorText: "Login Failed"));
+      emit(RegisterPageError(errorText: e.toString()));
     }
   }
 }
