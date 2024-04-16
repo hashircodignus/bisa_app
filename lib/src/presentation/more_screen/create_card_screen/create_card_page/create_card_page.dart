@@ -128,7 +128,11 @@ class _CreateCardPageState extends State<CreateCardPage> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating, content: Text(message)));
   }
-
+  @override
+  void initState() {
+    BlocProvider.of<CreateCardCubit>(context).clearCardData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final cardBloc = BlocProvider.of<CreateCardCubit>(context);
