@@ -54,7 +54,7 @@ class SubscribePage extends StatelessWidget {
           },
           child: ButtonWidget(
             buttonTextContent: "Payment",
-            onPressed: () {
+            onPressed: () async {
               log("name : ${cardBloc.selectedPlan?.name}");
               if (cardBloc.selectedPlan != null) {
                 showDialog(
@@ -67,11 +67,7 @@ class SubscribePage extends StatelessWidget {
                         ),
                       );
                     });
-                Future.delayed(Duration(seconds: 2), () async {
-                  Navigator.pop(context);
                   await cardBloc.updateCardData();
-                  // cardBloc.clearCardData();
-                });
               } else {
                 _showSnackBar("Please select a subscription plan.");
               }

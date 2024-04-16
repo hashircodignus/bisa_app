@@ -10,25 +10,23 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class FullCardView extends StatefulWidget {
   final String cardId;
-  const FullCardView({Key? key,required this.cardId}) : super(key: key);
+  const FullCardView({Key? key, required this.cardId}) : super(key: key);
 
   @override
   State<FullCardView> createState() => _FullCardViewState();
 }
 
-
 class _FullCardViewState extends State<FullCardView> {
-
   @override
   void initState() {
     super.initState();
     context.read<CardViewCubit>().fetchData(widget.cardId);
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CardViewCubit, CardViewState>(
       builder: (context, cardViewState) {
-        print(cardViewState);
         if (cardViewState is CardViewLoading) {
           return Scaffold(
             body: Center(
@@ -113,11 +111,7 @@ class _FullCardViewState extends State<FullCardView> {
                               SizedBox(width: 4.w),
                             ],
                           ),
-                          Text(
-                            cardData?['profession'],
-                            style: AppTheme.smallHead,
-                          ),
-                          SizedBox(height: 10.h),
+                          SizedBox(height: 40.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -149,7 +143,6 @@ class _FullCardViewState extends State<FullCardView> {
                       ),
                       controller: TextEditingController(text: cardData?['address']),
                       labelText: "Address",
-                      keyboardType: TextInputType.multiline,
                     ),
                     SizedBox(height: 20.h),
                     FullCardDetailsScreen(
@@ -159,32 +152,95 @@ class _FullCardViewState extends State<FullCardView> {
                       ),
                       labelText: "Website",
                       controller: TextEditingController(text: cardData?['website']),
-                      keyboardType: TextInputType.multiline,
                     ),
                     SizedBox(height: 20.h),
                     FullCardDetailsScreen(
                       prefixIcon: SvgPicture.asset(
-                        AssetResources.phone,
+                        AssetResources.website,
                         fit: BoxFit.none,
                       ),
-                      labelText: "Phone Number",
-                      controller: TextEditingController(text: cardData?['phone']),
-                      keyboardType: TextInputType.number,
+                      labelText: "Profession",
+                      controller: TextEditingController(text: cardData?['profession']),
                     ),
-                    SizedBox(height: 20.h),
-                    FullCardDetailsScreen(
-                      prefixIcon: SvgPicture.asset(
-                        AssetResources.email,
-                        fit: BoxFit.none,
+                   SizedBox(height: 20.h,),
+                   Padding(
+                     padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         Align(alignment: Alignment(-0.72.sp, 0.sp),
+                             child: Text("Phone Number",style: AppTheme.optionsText,)),
+                         SizedBox(height: 4.h,),
+                         ListView.separated(
+                           padding: EdgeInsets.all(0),
+                           shrinkWrap: true,
+                             physics: NeverScrollableScrollPhysics(),
+                             itemCount: cardData != null && cardData['phone']!= null ? cardData['phone'].length : 0,
+                             itemBuilder: (context, index){
+                               return Padding(
+                                 padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                                 child: Row(
+                                   children: [
+                                     Icon(Icons.phone_outlined,color: AppTheme.smallText,size: 18.sp,),
+                                     SizedBox(width: 13.w,),
+                                     Column(
+                                       children: [
+                                         Text(cardData!['phone'][index].toString(),style: AppTheme.labelTextBlack,),
+                                       ],)],),);
+                             }, separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(height: 10.h,);
+                         },),],),),
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Divider(
+                        color: AppTheme.textColor.withOpacity(0.6),
                       ),
-                      labelText: "Email",
-                      controller: TextEditingController(text: cardData?['email']),
-                      keyboardType: TextInputType.emailAddress,
                     ),
-                  ],
-                ),
+                  SizedBox(height: 20.h),
+                  if (cardData != null && cardData['email'] != null)
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                              alignment: Alignment(-0.78.sp, 0.sp),
+                              child: Text('Email',style: AppTheme.optionsText,)),
+                          ListView.separated(
+                            padding: EdgeInsets.all(0),
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: cardData['email'].length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      AssetResources.email,
+                                      fit: BoxFit.none,
+                                    ),
+                                    // Icon(Icons.email_outlined, color: AppTheme.smallText, size: 18.sp),
+                                    SizedBox(width: 13.w),
+                                    Text(cardData['email'][index].toString(), style: AppTheme.labelTextBlack),
+                                  ],
+                                ),
+                              );
+                            }, separatorBuilder: (BuildContext context, int index) {
+                              return SizedBox(height: 10.h,);
+                          },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Divider(
+                        color: AppTheme.textColor.withOpacity(0.6),
+                      ),
+                    ),
+                ],
               ),
             ),
+            )
           );
         } else {
           return Container(

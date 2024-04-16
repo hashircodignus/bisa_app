@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 import 'package:bisa_app/src/presentation/more_screen/subscription/subscribe_page.dart';
 import 'package:bisa_app/src/presentation/register_screen/cubit/register_page_cubit.dart';
 import 'package:bisa_app/src/presentation/widget/custom_data_textfield.dart';
@@ -19,10 +20,6 @@ class CreateCardSecondPage extends StatefulWidget {
 }
 
 class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
-  List<TextEditingController> listController = [TextEditingController()];
-  List<TextEditingController> listControllerEmail = [TextEditingController()];
-  List<TextEditingController> listControllerSocialMedia = [TextEditingController()];
-  List<AssetImage?> selectedImages = [null];
   final _phoneController = TextEditingController();
 
   @override
@@ -32,6 +29,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
   }
   @override
   Widget build(BuildContext context) {
+    final cardBloc = BlocProvider.of<CreateCardCubit>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -60,12 +58,12 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                           child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: listController.length,
+                              itemCount: cardBloc.listControllerPhone.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
-                                    controller: listController[index],
+                                    controller: cardBloc.listControllerPhone[index],
                                     hintText: "Phone Number",
                                     prefixIcon:
                                         const Icon(Icons.phone_outlined),
@@ -79,7 +77,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              listController.add(TextEditingController());
+                              cardBloc.listControllerPhone.add(TextEditingController());
                             });
                           },
                           child: Container(
@@ -118,14 +116,14 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                       children: [
                         SizedBox(
                           child: ListView.builder(
-                              itemCount: listControllerEmail.length,
+                              itemCount: cardBloc.listControllerEmail.length,
                               shrinkWrap: true,
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
-                                    controller: listControllerEmail[index],
+                                    controller: cardBloc.listControllerEmail[index],
                                     hintText: "Email Address",
                                     prefixIcon: Icon(
                                       Icons.mail_outline,
@@ -141,7 +139,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              listControllerEmail.add(TextEditingController());
+                              cardBloc.listControllerEmail.add(TextEditingController());
                             });
                           },
                           child: Container(
@@ -184,12 +182,12 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            itemCount: listControllerSocialMedia.length,
+                            itemCount: cardBloc.listControllerSocialMedia.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: CustomDataTextField(
-                                  controller: listControllerSocialMedia[index],
+                                  controller: cardBloc.listControllerSocialMedia[index],
                                   onTap: () =>
                                    showModalBottomSheet(
                                       isScrollControlled: true,
@@ -251,7 +249,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                                     GestureDetector(
                                                       onTap: () {
                                                         setState(() {
-                                                          selectedImages[
+                                                          cardBloc.selectedImages[
                                                                   index] =
                                                               const AssetImage(
                                                                   AssetResources
@@ -278,7 +276,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                                     GestureDetector(
                                                       onTap: () {
                                                         setState(() {
-                                                          selectedImages[
+                                                          cardBloc.selectedImages[
                                                                   index] =
                                                               const AssetImage(
                                                                   AssetResources
@@ -305,7 +303,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                                     GestureDetector(
                                                       onTap: () {
                                                         setState(() {
-                                                          selectedImages[
+                                                          cardBloc.selectedImages[
                                                                   index] =
                                                               const AssetImage(
                                                                   AssetResources
@@ -332,7 +330,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                                     GestureDetector(
                                                       onTap: () {
                                                         setState(() {
-                                                          selectedImages[
+                                                          cardBloc.selectedImages[
                                                                   index] =
                                                               const AssetImage(
                                                                   AssetResources
@@ -359,7 +357,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                                     GestureDetector(
                                                       onTap: () {
                                                         setState(() {
-                                                          selectedImages[
+                                                         cardBloc.selectedImages[
                                                                   index] =
                                                               const AssetImage(
                                                                   AssetResources
@@ -386,7 +384,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                                     GestureDetector(
                                                       onTap: () {
                                                         setState(() {
-                                                          selectedImages[
+                                                          cardBloc.selectedImages[
                                                                   index] =
                                                               const AssetImage(
                                                                   AssetResources
@@ -429,10 +427,10 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100.r),
-                                            image: selectedImages[index] != null
+                                            image: cardBloc.selectedImages[index] != null
                                                 ? DecorationImage(
                                                     image:
-                                                        selectedImages[index]!,
+                                                        cardBloc.selectedImages[index]!,
                                                     fit: BoxFit.cover)
                                                 : null)),
                                   ),
@@ -447,9 +445,9 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              listControllerSocialMedia
+                              cardBloc.listControllerSocialMedia
                                   .add(TextEditingController());
-                              selectedImages.add(null);
+                              cardBloc.selectedImages.add(null);
                             });
                           },
                           child: Container(

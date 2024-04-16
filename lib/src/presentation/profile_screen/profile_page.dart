@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widget/details_text_form_field.dart';
-import '../widget/pop_up_text_field.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? cardId;
@@ -29,11 +28,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CardViewCubit,CardViewState>(
         builder: (context , CardViewState){
-          print(CardViewState);
           if(CardViewState is CardViewLoading){
             return Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: AppTheme.textColor,
+                ),
               ),
             );
           }
@@ -166,25 +166,25 @@ class _ProfilePageState extends State<ProfilePage> {
                                             child: Container(
                                               height: 287.h,
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w),
+                                                  horizontal: 20.w,vertical: 30.h),
                                               decoration: BoxDecoration(
                                                   color: AppTheme.textColor,
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(26.r),
                                                       topRight: Radius.circular(26.r))),
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 35.h,
+                                              child: ListView.builder(
+                                                itemCount: cardData != null && cardData['phone']!= null ? cardData['phone'].length :0,
+                                                itemBuilder: (context, index){
+                                                  return Padding(padding: EdgeInsets.symmetric(vertical: 15.h),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.phone_outlined,color: AppTheme.backColor,size: 18.sp,),
+                                                      SizedBox(width: 20.w,),
+                                                      Text(cardData!['phone'][index].toString(),style: AppTheme.buttonText,),
+                                                    ],
                                                   ),
-                                                   PopUpTextField(
-                                                    controller: TextEditingController(text: cardData?['phone']),
-                                                      image: AssetImage(
-                                                          AssetResources.callIcon)),
-                                                  SizedBox(
-                                                    height: 35.h,
-                                                  ),
-                                                ],
+                                                  );
+                                                },
                                               ),
                                             ),
                                           );
@@ -221,36 +221,27 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .viewInsets
                                                     .bottom),
                                             child: Container(
+                                              height: 287.h,
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w),
-                                              height: 208.h,
+                                                  horizontal: 20.w,vertical: 30.h),
                                               decoration: BoxDecoration(
                                                   color: AppTheme.textColor,
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(26.r),
                                                       topRight: Radius.circular(26.r))),
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 35.h,
-                                                  ),
-                                                  PopUpTextField(
-                                                    controller: TextEditingController(text: 'email@gmail.com'),
-                                                      prefix: Image(
-                                                        image: AssetImage(
-                                                            AssetResources.faceBook),
-                                                      ),
-                                                      prefixIconConstraints:
-                                                      BoxConstraints(
-                                                          maxWidth: 23.w,
-                                                          maxHeight: 23.h),
-                                                      image: AssetImage(
-                                                          AssetResources.socialIcon)),
-
-                                                  SizedBox(
-                                                    height: 35.h,
-                                                  ),
-                                                ],
+                                              child: ListView.builder(
+                                                itemCount: cardData != null && cardData['email']!= null ? cardData['email'].length :0,
+                                                itemBuilder: (context, index){
+                                                  return Padding(padding: EdgeInsets.symmetric(vertical: 15.h),
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(Icons.email_outlined,color: AppTheme.backColor,size: 18.sp,),
+                                                        SizedBox(width: 20.w,),
+                                                        Text(cardData!['email'][index].toString(),style: AppTheme.buttonText,),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             ),
                                           );
@@ -258,7 +249,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: Column(
                                       children: [
                                         Icon(
-                                          Icons.mail_outline_rounded,
+                                          Icons.email_outlined,
                                           color: AppTheme.backColor,
                                           size: 18.sp,
                                         ),
@@ -287,35 +278,27 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .viewInsets
                                                     .bottom),
                                             child: Container(
+                                              height: 287.h,
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w),
-                                              height: 208.h,
+                                                  horizontal: 20.w,vertical: 30.h),
                                               decoration: BoxDecoration(
                                                   color: AppTheme.textColor,
                                                   borderRadius: BorderRadius.only(
                                                       topLeft: Radius.circular(26.r),
                                                       topRight: Radius.circular(26.r))),
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 35.h,
-                                                  ),
-                                                  PopUpTextField(
-                                                    controller: TextEditingController(text: cardData?['website']),
-                                                      prefix: Image(
-                                                        image: AssetImage(
-                                                            AssetResources.faceBook),
-                                                      ),
-                                                      prefixIconConstraints:
-                                                      BoxConstraints(
-                                                          maxWidth: 23.w,
-                                                          maxHeight: 23.h),
-                                                      image: AssetImage(
-                                                          AssetResources.socialIcon)),
-                                                  SizedBox(
-                                                    height: 35.h,
-                                                  ),
-                                                ],
+                                              child: ListView.builder(
+                                                itemCount: cardData != null && cardData['social']!= null ? cardData['social'].length :0,
+                                                itemBuilder: (context, index){
+                                                  return Padding(padding: EdgeInsets.symmetric(vertical: 15.h),
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(Icons.language_rounded,color: AppTheme.backColor,size: 18.sp,),
+                                                        SizedBox(width: 20.w,),
+                                                        Text(cardData!['social'][index].toString(),style: AppTheme.buttonText,),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             ),
                                           );
