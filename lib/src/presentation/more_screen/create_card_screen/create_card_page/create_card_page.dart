@@ -128,7 +128,11 @@ class _CreateCardPageState extends State<CreateCardPage> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating, content: Text(message)));
   }
-
+  @override
+  void initState() {
+    BlocProvider.of<CreateCardCubit>(context).clearCardData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final cardBloc = BlocProvider.of<CreateCardCubit>(context);
@@ -157,14 +161,14 @@ class _CreateCardPageState extends State<CreateCardPage> {
                         image: DecorationImage(
                             image: AssetImage(AssetResources.background),
                             fit: BoxFit.cover)),
-                    child: InkWell(
-                      onTap: (){
-                        setState(() {
-                          _pickImage();
-                        });
-                      },
-                      child: Align(
-                        alignment: const Alignment(0, 0.5),
+                    child: Align(
+                      alignment: const Alignment(0, 0.5),
+                      child: GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            _pickImage();
+                          });
+                        },
                         child: Container(
                           height: 82.h,
                           width: 82.w,

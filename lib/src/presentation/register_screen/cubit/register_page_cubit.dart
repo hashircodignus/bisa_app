@@ -36,7 +36,7 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
                     verificationSend: "Verification completed"));
               },
               verificationFailed: (FirebaseAuthException e) {
-                emit(RegisterPageError(errorText: "${e.toString()}"));
+                emit(RegisterPageError(errorText: e.toString()));
                 throw (e);
                 
               },
@@ -54,7 +54,7 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
       // });
     } catch (e) {
       log(e.toString());
-      emit(RegisterPageError(errorText: "Login Failed"));
+      emit(RegisterPageError(errorText: e.toString()));
     }
   }
 }

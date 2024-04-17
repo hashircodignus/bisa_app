@@ -3,37 +3,30 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
 class FullCardDetailsScreen extends StatelessWidget {
-  
+  final TextEditingController? controller;
   final String? labelText;
-  final String? initialValue;
   final Widget? prefixIcon;
-  final TextInputType keyboardType;
    FullCardDetailsScreen({
     this.labelText,
-    this.initialValue,
     super.key,
+     this.controller,
     this.prefixIcon,
-    required this.keyboardType,
   });
 
   @override
 
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding:  EdgeInsets.symmetric(horizontal: 20.w),
       child: TextFormField(
-      
-        keyboardType: keyboardType,
+        readOnly: true,
+      controller: controller,
        maxLines:null,
-        // readOnly: true,
-       // initialValue: initialValue,
         textInputAction: TextInputAction.newline,
         style: AppTheme.labelTextBlack,
-        cursorColor: AppTheme.textColor,
         decoration: InputDecoration(
-          
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppTheme.textColor)),
-            contentPadding: EdgeInsets.all(4),
+            contentPadding: EdgeInsets.all(4.r),
             prefixIcon: prefixIcon,
             labelText: labelText,
             labelStyle: AppTheme.smallHead),

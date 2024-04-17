@@ -1,3 +1,4 @@
+import 'package:bisa_app/src/presentation/full_card_view/full_card_view.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/create_card_page.dart';
 import 'package:bisa_app/src/presentation/widget/app_bar_title_widget.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
@@ -22,27 +23,26 @@ class MyCardPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           children: [
-            StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('cards')
-                    .where('uid',
-                        isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+            FutureBuilder<QuerySnapshot>(
+                future: FirebaseFirestore.instance
+                .collection('cards')
+                    .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid).get(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+                  if(snapshot.connectionState == ConnectionState.waiting){
                     return Center(
                       child: CircularProgressIndicator(
                         color: AppTheme.textColor,
                       ),
                     );
                   }
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
+                  if(snapshot.hasError){
+                    return Center(child: Text(
+                      'Error: ${snapshot.error}'
+                    ),);
                   }
                   final docs = snapshot.data?.docs;
 
-                  if (docs == null || docs.isEmpty) {
+                  if(docs == null || docs.isEmpty){
                     return Text("No data available");
                   }
 
@@ -56,59 +56,62 @@ class MyCardPage extends StatelessWidget {
                         final name = doc['name'];
                         final designation = doc['profession'];
                         final cardImageDp = doc['imageUrl'];
-                        return Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 24.h),
-                          height: 120.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.r),
-                            color: AppTheme.cardColor.withOpacity(0.12),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 63.h,
-                                width: 63.w,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50.r),
-                                  //color: Colors.red,
-                                  border: Border.all(
-                                      width: 3.w, color: AppTheme.backColor),
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (context)=>FullCardView(cardId: doc.id)));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 24.h),
+                            height: 120.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.r),
+                              color: AppTheme.cardColor.withOpacity(0.12),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 63.h,
+                                  width: 63.w,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(image: NetworkImage(cardImageDp),fit: BoxFit.cover),
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    //color: Colors.red,
+                                    border: Border.all(
+                                        width: 3.w, color: AppTheme.backColor),
+                                  ),
                                 ),
-                                child: Image.network(cardImageDp, fit: BoxFit.cover),
-                                // child: Image.asset(
-                                //   AssetResources.user2Dp,
-                                //   fit: BoxFit.cover,
-                                // ),
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    name,
-                                    style: AppTheme.pageHead,
-                                  ),
-                                  SizedBox(
-                                    height: 5.h,
-                                  ),
-                                  Text(
-                                    designation,
-                                    style: AppTheme.greenSubText,
-                                  )
-                                ],
-                              ),
-                              Expanded(
-                                  child: Align(
-                                      alignment: Alignment(1, -1),
-                                      child: Icon(
-                                        Icons.check_circle,
-                                        color: AppTheme.cardColor,
-                                      )))
-                            ],
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      name,
+                                      style: AppTheme.pageHead,
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      designation,
+                                      style: AppTheme.greenSubText,
+                                    )
+                                  ],
+                                ),
+                                Expanded(
+                                    child: Align(
+                                        alignment: Alignment(1, -1),
+                                        child: Icon(
+                                          Icons.check_circle,
+                                          color: AppTheme.cardColor,
+                                        )))
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -117,6 +120,8 @@ class MyCardPage extends StatelessWidget {
                     ),
                   );
                 }),
+
+
             SizedBox(
               height: 20.h,
             ),
