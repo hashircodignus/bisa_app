@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
 class CustomDataTextField extends StatelessWidget {
+  final Widget? suffixIcon;
   final String? hintText;
   final Widget? prefixIcon;
   final Function()? onTap;
@@ -20,7 +21,7 @@ class CustomDataTextField extends StatelessWidget {
     this.onTap,
     this.fieldHead,
     super.key,
-    this.validator,
+    this.validator, this.suffixIcon,
   });
 
   @override
@@ -49,6 +50,7 @@ class CustomDataTextField extends StatelessWidget {
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 20.h),
                   prefixIcon: prefixIcon,
+                  suffixIcon: suffixIcon,
                   prefixIconConstraints: prefixIconConstraints,
                   // suffix: IconButton(onPressed: (){}, icon:  Icon(Icons.clear,color: AppTheme.textColor,size: 20.sp,),alignment: const Alignment(0, -1),),
                   hintText: hintText,

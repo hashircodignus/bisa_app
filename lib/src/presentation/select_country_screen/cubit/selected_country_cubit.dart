@@ -1,14 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:meta/meta.dart';
+import 'package:intl_phone_field/countries.dart';
 part 'selected_country_state.dart';
+
 
 class SelectedCountryCubit extends Cubit<SelectedCountryState> {
   SelectedCountryCubit() : super(const SelectedCountryInitial());
   final TextEditingController countryController = TextEditingController();
   String selectedCountryCode = '';
   String countryPhoneCode = '';
-
 
 
 
@@ -31,5 +33,5 @@ class SelectedCountryCubit extends Cubit<SelectedCountryState> {
     }
     return '';
   }
-  
 }
+  

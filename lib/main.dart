@@ -1,5 +1,6 @@
 import 'package:bisa_app/src/presentation/full_card_view/cubit/card_view_cubit.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
+import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_second_page.dart';
 import 'package:bisa_app/src/presentation/otp_screen/cubit/otp_page_cubit.dart';
 import 'package:bisa_app/src/presentation/register_screen/cubit/register_page_cubit.dart';
 import 'package:bisa_app/src/presentation/select_country_screen/cubit/selected_country_cubit.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
             ),
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
-            home:AuthPage(),
+            home:AuthPage()
           ),
         );
       },
