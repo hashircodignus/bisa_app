@@ -20,6 +20,12 @@ class CreateCardSecondPage extends StatefulWidget {
 
 class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
   final _phoneController = TextEditingController();
+   List<TextEditingController> listControllerPhone = [TextEditingController()];
+  List<TextEditingController> listControllerEmail = [TextEditingController()];
+  List<TextEditingController> listControllerSocialMedia = [
+    TextEditingController()
+  ];
+  List<AssetImage?> selectedImages = [null];
 
   @override
   void initState() {
@@ -64,6 +70,11 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
+                                    suffixIcon: IconButton(onPressed: (){
+                                      setState(() {
+                                        cardBloc.listControllerPhone.removeAt(index);
+                                      });
+                                    }, icon:Icon(Icons.close,size: 15,)),
                                     controller: cardBloc.listControllerPhone[index],
                                     hintText: "Phone Number",
                                     prefixIcon:
@@ -125,6 +136,11 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
+                                    suffixIcon: IconButton(onPressed: (){
+                                      setState(() {
+                                       cardBloc.listControllerEmail.removeAt(index);
+                                      });
+                                    }, icon:Icon(Icons.close,size: 15,)),
                                     controller: cardBloc.listControllerEmail[index],
                                     hintText: "Email Address",
                                     prefixIcon: Icon(
@@ -188,6 +204,11 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: CustomDataTextField(
+                                  suffixIcon: IconButton(onPressed: (){
+                                      setState(() {
+                                        cardBloc.listControllerSocialMedia.removeAt(index);
+                                      });
+                                    }, icon:Icon(Icons.close,size: 15,)),
                                   controller: cardBloc.listControllerSocialMedia[index],
                                   onTap: () =>
                                    showModalBottomSheet(
