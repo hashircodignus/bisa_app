@@ -1,8 +1,10 @@
+import 'package:bisa_app/src/presentation/select_country_screen/cubit/selected_country_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pinput/pinput.dart';
 import '../../utils/resources/theme.dart';
-
 
 class UserIdTextField extends StatefulWidget {
   final String flag;
@@ -24,6 +26,11 @@ class UserIdTextField extends StatefulWidget {
 }
 
 class _UserIdTextFieldState extends State<UserIdTextField> {
+  final Map<String, int> countryPhoneNumberLengths = {
+    'US': 10,
+    'GB': 11,
+    'IN': 10,
+  };
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
@@ -39,6 +46,9 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<SelectedCountryCubit>(context);
+    final countryPhoneLength =
+        countryPhoneNumberLengths[bloc.selectedCountryCode] ?? 10;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,15 +75,14 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                       return null;
                     },
                     initialValue: " +${widget.countryphoneCode}",
-                  readOnly: true,
+                    readOnly: true,
                     style: AppTheme.fieldText,
                     decoration: InputDecoration(
-                      contentPadding:
-                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 20.h, horizontal: 20.w),
                       prefixIcon: Text(widget.flag),
                       prefixIconConstraints: BoxConstraints(maxWidth: 70.w),
-                      suffixIcon:
-                          const Icon(Icons.keyboard_arrow_down_rounded),
+                      suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
                       suffixIconConstraints: BoxConstraints(maxWidth: 70.w),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -107,7 +116,9 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
             ),
             Expanded(
               child: TextFormField(
-                inputFormatters: [LengthLimitingTextInputFormatter(15)],
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(countryPhoneLength)
+                ],
                 keyboardType: TextInputType.phone,
                 onFieldSubmitted: widget.onSubmitted,
                 textInputAction: widget.textInputAction,
@@ -125,7 +136,7 @@ class _UserIdTextFieldState extends State<UserIdTextField> {
                   //errorStyle: AppTheme.errorTextRed,
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-                  
+
                   hintText: "Enter here...",
                   hintStyle: AppTheme.smallHead,
                   enabledBorder: UnderlineInputBorder(

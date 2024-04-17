@@ -15,10 +15,9 @@ class CreateCardCubit extends Cubit<CreateCardState> {
   final TextEditingController professionController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController websiteController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController socialController = TextEditingController();
-
+  List<TextEditingController> listController = [TextEditingController()];
+  List<TextEditingController> listControllerEmail = [TextEditingController()];
+  List<TextEditingController> listControllerSocialMedia = [TextEditingController()];
   SubscriptionPlan? selectedPlan;
   File? image;
 
@@ -28,9 +27,9 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     professionController.clear();
     addressController.clear();
     websiteController.clear();
-    phoneController.clear();
-    emailController.clear();
-    socialController.clear();
+    listController.clear();
+    listControllerEmail.clear();
+    listControllerSocialMedia.clear();
   }
 
    updateCardData() async {
@@ -40,7 +39,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
       if(currentUser == null){
-        throw Exception('User not loggede in');
+        throw Exception('User not logged in');
       }
       if(nameController.text.isEmpty || professionController.text.isEmpty || addressController.text.isEmpty){
         throw Exception('Name, Profession, and Address are required fields');
@@ -61,9 +60,9 @@ class CreateCardCubit extends Cubit<CreateCardState> {
         'profession': professionController.text,
         'address': addressController.text,
         'website': websiteController.text,
-        'phone': phoneController.text,
-        'email': emailController.text,
-        'social': socialController.text,
+        'phone': listController.toString(),
+        'email': listControllerEmail.toString(),
+        'social': listControllerSocialMedia.toString(),
         'subscriptionPlan': selectedPlan?.name ?? '',
         'subscriptionAmount': ' ${selectedPlan?.amount}',
         'uid': currentUser.uid,
@@ -91,7 +90,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
   void selectPlan(SubscriptionPlan plan) {
     selectedPlan = plan;
   }
-
+  
 
   //   uploadImage()async {
   //   emit(CreateCardLoading());

@@ -86,17 +86,19 @@ class _OTPPageState extends State<OTPPage> {
                 showDialog(
                     context: context,
                     barrierDismissible: false,
-                    builder: (BuildContext context){
+                    builder: (BuildContext context) {
                       return Center(
                         child: CircularProgressIndicator(
                           color: AppTheme.textColor,
                         ),
                       );
-                    }
-                );
+                    });
               }
-              if(state is OtpPageUserExists){
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>BottomNavBarPage()), (route) => false);
+              if (state is OtpPageUserExists) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => BottomNavBarPage()),
+                    (route) => false);
               }
               if (state is OtpPageSuccess) {
                 Navigator.pushAndRemoveUntil(
@@ -113,17 +115,17 @@ class _OTPPageState extends State<OTPPage> {
                 buttonTextContent: "GO",
                 onPressed: () async {
                   showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context){
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: AppTheme.textColor,
-                          ),
-                        );
-                      },
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.textColor,
+                        ),
+                      );
+                    },
                   );
-                  Future.delayed(Duration(seconds: 2),(){
+                  Future.delayed(Duration(seconds: 2), () {
                     Navigator.pop(context);
                     otpBloc.otpValidate(context);
                   });

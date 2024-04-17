@@ -13,7 +13,6 @@ import '../widget/card_details_container_widget.dart';
 class CreateCardSecondPage extends StatefulWidget {
   const CreateCardSecondPage({super.key});
 
-
   @override
   State<CreateCardSecondPage> createState() => _CreateCardSecondPageState();
 }
@@ -21,21 +20,25 @@ class CreateCardSecondPage extends StatefulWidget {
 class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
   List<TextEditingController> listController = [TextEditingController()];
   List<TextEditingController> listControllerEmail = [TextEditingController()];
-  List<TextEditingController> listControllerSocialMedia = [TextEditingController()];
+  List<TextEditingController> listControllerSocialMedia = [
+    TextEditingController()
+  ];
   List<AssetImage?> selectedImages = [null];
   final _phoneController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _phoneController.text = BlocProvider.of<RegisterPageCubit>(context).phoneNumber;
+    _phoneController.text =
+        BlocProvider.of<RegisterPageCubit>(context).phoneNumber;
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-               resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: true,
         backgroundColor: AppTheme.backColor,
         appBar: AppBar(
           scrolledUnderElevation: 0.0,
@@ -65,6 +68,11 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
+                                    suffixIcon: IconButton(onPressed: (){
+                                      setState(() {
+                                        listController.removeAt(index);
+                                      });
+                                    }, icon: Icon(Icons.close,size: 15,)),
                                     controller: listController[index],
                                     hintText: "Phone Number",
                                     prefixIcon:
@@ -109,7 +117,8 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                       ],
                     )),
                 SizedBox(
-                  height: 20.h,),
+                  height: 20.h,
+                ),
                 CardDetailsContainer(
                     cardHead: "Email address",
                     // height: 132.h,
@@ -125,6 +134,11 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
+                                    suffixIcon: IconButton(onPressed: (){
+                                      setState(() {
+                                        listControllerEmail.removeAt(index);
+                                      });
+                                    }, icon: Icon(Icons.close,size: 15,)),
                                     controller: listControllerEmail[index],
                                     hintText: "Email Address",
                                     prefixIcon: Icon(
@@ -170,7 +184,6 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         )
                       ],
                     )),
-
                 SizedBox(
                   height: 20.h,
                 ),
@@ -189,9 +202,13 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: CustomDataTextField(
+                                  suffixIcon: IconButton(onPressed: (){
+                                      setState(() {
+                                        listControllerSocialMedia.removeAt(index);
+                                      });
+                                    }, icon: Icon(Icons.close,size: 15,)),
                                   controller: listControllerSocialMedia[index],
-                                  onTap: () =>
-                                   showModalBottomSheet(
+                                  onTap: () => showModalBottomSheet(
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
                                       context: context,
@@ -512,21 +529,23 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                 ),
                 InkWell(
                   onTap: () {
-                   showDialog(context: context,
-                       barrierDismissible: false,
-                       builder: (BuildContext context){
-                     return Center(
-                       child: CircularProgressIndicator(color: AppTheme.textColor,),
-                     );
-                       }
-                   );
-                   Future.delayed(Duration(seconds: 2),(){
-                     Navigator.pop(context);
-                     Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => const SubscribePage()));
-                   });
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: AppTheme.textColor,
+                            ),
+                          );
+                        });
+                    Future.delayed(Duration(seconds: 2), () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SubscribePage()));
+                    });
                   },
                   child: Container(
                     height: 59.h,
@@ -545,9 +564,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
             ),
           ),
         ),
-    ),
-      );
+      ),
+    );
   }
 }
-
-

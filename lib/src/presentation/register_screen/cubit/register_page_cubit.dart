@@ -26,6 +26,7 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
     try {
       phoneNumber= "+${countryBloc.countryPhoneCode + loginIdController.text}";
       log("phone number = ${phoneNumber}");
+
       await auth
           .verifyPhoneNumber(
               phoneNumber:
@@ -35,8 +36,9 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
                     verificationSend: "Verification completed"));
               },
               verificationFailed: (FirebaseAuthException e) {
-                emit(RegisterPageError(errorText: "Mobile number is not valid"));
+                emit(RegisterPageError(errorText: "${e.toString()}"));
                 throw (e);
+                
               },
               codeSent: (String verificationId, int? resendToken) {
                 emit(RegisterPageCodeSent(codeSend: "OTP sent"));

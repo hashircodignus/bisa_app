@@ -6,7 +6,7 @@ import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+
 import '../../utils/resources/asset_resources.dart';
 import '../otp_screen/otp_page.dart';
 import '../select_country_screen/cubit/selected_country_cubit.dart';
