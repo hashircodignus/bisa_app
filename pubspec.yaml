@@ -52,6 +52,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   libphonenumber: ^2.0.2
   intl_phone_field: ^3.2.0
+  uuid: ^4.4.0
   phone_number: ^2.1.0
 
 

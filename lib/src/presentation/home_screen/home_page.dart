@@ -4,6 +4,7 @@ import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -89,7 +90,7 @@ class HomePage extends StatelessWidget {
                 width: double.infinity,
                 child: SingleChildScrollView(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection('cards').snapshots(),
+                      stream: FirebaseFirestore.instance.collection('cards').where('uid',isNotEqualTo: FirebaseAuth.instance.currentUser?.uid).snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
