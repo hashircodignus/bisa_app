@@ -1,7 +1,9 @@
 import 'package:bisa_app/src/presentation/full_card_view/cubit/card_view_cubit.dart';
+import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,6 +27,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+   // final bloc = BlocProvider.of<CreateCardCubit>(context);
+    void _showSnackBar(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+    }
+
     return BlocBuilder<CardViewCubit, CardViewState>(
         builder: (context, CardViewState) {
       if (CardViewState is CardViewLoading) {
@@ -429,7 +437,34 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             bottomNavigationBar: Padding(
               padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
-              child: const ButtonWidget(buttonTextContent: "Save"),
+              child:BlocListener<CreateCardCubit, CreateCardState>(
+                listener: (BuildContext context, CreateCardState state) {
+                  if(state is CreateCardLoading){
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context){
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: AppTheme.textColor,
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  if(state is CreateCardLoaded){
+                    _showSnackBar('Card saved!');
+                  }
+                  if(state is CreateCardError){
+                    _showSnackBar(state.errorText);
+                  }
+                },
+                child:   ButtonWidget(buttonTextContent: "Save",
+                onPressed: (){
+                  context.read<CreateCardCubit>().savedCard(FirebaseAuth.instance.currentUser!.uid);
+                },
+                ),
+              )
             ),
           ),
         );

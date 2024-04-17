@@ -67,7 +67,7 @@ class SubscribePage extends StatelessWidget {
                         ),
                       );
                     });
-                  await cardBloc.updateCardData();
+                  await cardBloc.CreateCard();
               } else {
                 _showSnackBar("Please select a subscription plan.");
               }

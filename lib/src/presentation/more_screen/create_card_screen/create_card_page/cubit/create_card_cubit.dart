@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 part 'create_card_state.dart';
 
 class CreateCardCubit extends Cubit<CreateCardState> {
@@ -21,6 +22,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
 
   SubscriptionPlan? selectedPlan;
   File? image;
+  var uuid = Uuid();
 
 
   void clearCardData() {
@@ -33,7 +35,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     listControllerSocialMedia.clear();
   }
 
-  updateCardData() async {
+  CreateCard() async {
     emit(CreateCardInitial());
     emit(CreateCardLoading());
 
@@ -71,6 +73,8 @@ class CreateCardCubit extends Cubit<CreateCardState> {
         socialValues.add(socialValue);
       }
 
+      String cardId = uuid.v4();
+
       Map<String, dynamic> data = {
         'name': nameController.text,
         'profession': professionController.text,
@@ -83,6 +87,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
         'subscriptionAmount': ' ${selectedPlan?.amount}',
         'uid': currentUser.uid,
         'imageUrl' : imageUrl,
+        'cardId': cardId,
       };
 
       DocumentReference cardDocRef =
@@ -92,6 +97,32 @@ class CreateCardCubit extends Cubit<CreateCardState> {
 
       emit(CreateCardLoaded());
     } catch (e) {
+      emit(CreateCardError(errorText: e.toString()));
+    }
+  }
+
+  Future<void> savedCard(String cardId) async{
+    emit(CreateCardLoading());
+    try{
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if(currentUser == null){
+        throw Exception('User not logged in');
+      }
+
+      DocumentSnapshot cardSnapshot =
+          await FirebaseFirestore.instance.collection('cards').doc(cardId).get();
+      if(!cardSnapshot.exists){
+        throw Exception('Card data not found');
+      }
+
+      Map<String, dynamic> cardData = (await cardSnapshot.data()) as Map<String, dynamic>;
+
+      cardData['savedUid'] = currentUser.uid;
+
+      await FirebaseFirestore.instance.collection('saved').add(cardData);
+
+      emit(CreateCardLoaded());
+    }catch (e) {
       emit(CreateCardError(errorText: e.toString()));
     }
   }
