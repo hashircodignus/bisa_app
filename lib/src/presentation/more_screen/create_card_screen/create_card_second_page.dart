@@ -14,7 +14,6 @@ import '../widget/card_details_container_widget.dart';
 class CreateCardSecondPage extends StatefulWidget {
   const CreateCardSecondPage({super.key});
 
-
   @override
   State<CreateCardSecondPage> createState() => _CreateCardSecondPageState();
 }
@@ -25,15 +24,17 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
   @override
   void initState() {
     super.initState();
-    _phoneController.text = BlocProvider.of<RegisterPageCubit>(context).phoneNumber;
+    _phoneController.text =
+        BlocProvider.of<RegisterPageCubit>(context).phoneNumber;
   }
+
   @override
   Widget build(BuildContext context) {
     final cardBloc = BlocProvider.of<CreateCardCubit>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-               resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: true,
         backgroundColor: AppTheme.backColor,
         appBar: AppBar(
           scrolledUnderElevation: 0.0,
@@ -107,7 +108,8 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                       ],
                     )),
                 SizedBox(
-                  height: 20.h,),
+                  height: 20.h,
+                ),
                 CardDetailsContainer(
                     cardHead: "Email address",
                     // height: 132.h,
@@ -168,7 +170,6 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         )
                       ],
                     )),
-
                 SizedBox(
                   height: 20.h,
                 ),
@@ -510,21 +511,23 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                 ),
                 InkWell(
                   onTap: () {
-                   showDialog(context: context,
-                       barrierDismissible: false,
-                       builder: (BuildContext context){
-                     return Center(
-                       child: CircularProgressIndicator(color: AppTheme.textColor,),
-                     );
-                       }
-                   );
-                   Future.delayed(Duration(seconds: 2),(){
-                     Navigator.pop(context);
-                     Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => const SubscribePage()));
-                   });
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: AppTheme.textColor,
+                            ),
+                          );
+                        });
+                    Future.delayed(Duration(seconds: 2), () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SubscribePage()));
+                    });
                   },
                   child: Container(
                     height: 59.h,
@@ -543,9 +546,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
             ),
           ),
         ),
-    ),
-      );
+      ),
+    );
   }
 }
-
-

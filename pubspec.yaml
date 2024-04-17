@@ -50,7 +50,10 @@ dependencies:
   bloc: ^8.1.4
   flutter_bloc: ^8.1.5
   flutter_launcher_icons: ^0.13.1
+  libphonenumber: ^2.0.2
   intl_phone_field: ^3.2.0
+  phone_number: ^2.1.0
+
 
 dev_dependencies:
  
