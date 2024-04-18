@@ -3,7 +3,6 @@ import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,15 +18,26 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+
   @override
   void initState() {
     super.initState();
     context.read<CardViewCubit>().fetchData(widget.cardId!);
   }
 
+  // void _launchCaller(String phoneNumber) async{
+  //   String url = 'tel: $phoneNumber';
+  //   if(await canLaunch(url)){
+  //     await launch(url);
+  //   } else {
+  //     throw "Could not launch $url";
+  //   }
+  // }
+
+
   @override
   Widget build(BuildContext context) {
-   // final bloc = BlocProvider.of<CreateCardCubit>(context);
     void _showSnackBar(String message) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
@@ -182,16 +192,28 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 ? cardData['phone'].length
                                                 : 0,
                                             itemBuilder: (context, index) {
+                                              String phoneNumber = cardData!['phone'][index].toString();
                                               return Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 15.h),
                                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Text(
-                                                      cardData!['phone'][index]
-                                                          .toString(),
-                                                      style:
-                                                          AppTheme.buttonText,
+                                                    GestureDetector(
+                                                      // onTap: () async{
+                                                      //   phoneNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
+                                                      //   String url = 'tel:$phoneNumber';
+                                                      //   Uri uri = Uri.parse(url);
+                                                      //   if(await canLaunchUrl(uri)){
+                                                      //     await launchUrl(uri);
+                                                      //   }else{
+                                                      //     throw 'Could not launch $url';
+                                                      //   }
+                                                      // },
+                                                      child: Text(
+                                                        phoneNumber,
+                                                        style:
+                                                            AppTheme.buttonText,
+                                                      ),
                                                     ),
                                                     Container(
                                                       height: 23.h,
@@ -452,17 +474,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                     );
                   }
-                  if(state is CreateCardLoaded){
+                  if(state is CreateCardSuccess){
                     _showSnackBar('Card saved!');
+                    Navigator.pop(context);
                   }
                   if(state is CreateCardError){
                     _showSnackBar(state.errorText);
                   }
                 },
-                child:   ButtonWidget(buttonTextContent: "Save",
-                onPressed: (){
-                  context.read<CreateCardCubit>().savedCard(FirebaseAuth.instance.currentUser!.uid);
-                },
+                child: ButtonWidget(buttonTextContent:  "Save",
+                  onPressed:  (){
+                    context.read<CreateCardCubit>().saveCard(cardData!);
+                  },
                 ),
               )
             ),

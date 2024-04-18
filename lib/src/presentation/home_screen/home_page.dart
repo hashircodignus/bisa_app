@@ -152,30 +152,63 @@ class HomePage extends StatelessWidget {
                 // padding: EdgeInsets.symmetric(horizontal: 20.w),
                 width: double.infinity,
                 child: SingleChildScrollView(
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfilePage()));
-                            },
-                            child: const ListTile(
-                              leading: CircleAvatar(),
-                              trailing: Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                              ),
-                              title: Text("Customer Name"),
-                              subtitle: Text("Designation"),
+                    child:  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance.collection('saved').where('savedBy',isEqualTo: FirebaseAuth.instance.currentUser?.uid).snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: AppTheme.textColor,
                             ),
                           );
-                        })),
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+                        final docs = snapshot.data?.docs;
+
+                        if(docs == null || docs.isEmpty){
+                          return Center(child: Text("No data available"));
+                        }
+                        return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount:docs.length,
+                            itemBuilder: (BuildContext context,int index) {
+                              final doc = docs[index];
+                              final name = doc['name'];
+                              final designation = doc['profession'];
+                              final cardImageDp = doc['imageUrl'];
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfilePage(cardId: doc.id,)));
+                                },
+                                child: ListTile(
+                                  leading: Container(
+                                    height: 49.h,
+                                    width: 49.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50.r),
+                                        image: DecorationImage(image: NetworkImage(cardImageDp),fit: BoxFit.cover)
+                                    ),
+                                    //  child: Image.network(cardImageDp,fit: BoxFit.cover,),
+                                  ),
+                                  trailing: Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                  ),
+                                  title: Text(name),
+                                  subtitle:
+                                  Text(designation),
+                                ),
+                              );
+                            });
+                      },
+                    )),
               ),
               Container(
                 color: AppTheme.backColor,

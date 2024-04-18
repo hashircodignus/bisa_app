@@ -101,31 +101,17 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     }
   }
 
-  Future<void> savedCard(String cardId) async{
-    emit(CreateCardLoading());
+  Future<void> saveCard(Map<String,dynamic> cardData) async{
+
     try{
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if(currentUser == null){
-        throw Exception('User not logged in');
-      }
-
-      DocumentSnapshot cardSnapshot =
-          await FirebaseFirestore.instance.collection('cards').doc(cardId).get();
-      if(!cardSnapshot.exists){
-        throw Exception('Card data not found');
-      }
-
-      Map<String, dynamic> cardData = (await cardSnapshot.data()) as Map<String, dynamic>;
-
-      cardData['savedUid'] = currentUser.uid;
-
+      cardData['savedBy'] = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance.collection('saved').add(cardData);
-
-      emit(CreateCardLoaded());
-    }catch (e) {
+      emit(CreateCardSuccess());
+    }catch (e){
       emit(CreateCardError(errorText: e.toString()));
     }
   }
+
 
 
   void selectPlan(SubscriptionPlan plan) {
