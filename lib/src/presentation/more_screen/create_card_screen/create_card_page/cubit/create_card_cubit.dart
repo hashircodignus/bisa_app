@@ -127,7 +127,31 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     }
   }
 
+ Future<void> uploadImage(File imageFile) async {
+    emit(CreateCardLoading());
+    
+    try {
 
+      String fileName = 'user_${uuid.v4()}.jpg';
+      
+
+      Reference ref = FirebaseStorage.instance.ref().child('images/$fileName');
+      
+  
+      await ref.putFile(imageFile);
+      
+
+      String imageUrl = await ref.getDownloadURL();
+      
+     
+      AssetImage uploadedImage = AssetImage(imageUrl);
+      
+    
+      emit(CreateCardImageUploaded(assetImage: uploadedImage));
+    } catch (e) {
+      emit(CreateCardError(errorText: e.toString()));
+    }
+  }
   void selectPlan(SubscriptionPlan plan) {
     selectedPlan = plan;
   }

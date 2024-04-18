@@ -1,7 +1,10 @@
+import 'package:bisa_app/src/presentation/full_card_view/cubit/card_view_cubit.dart';
 import 'package:bisa_app/src/presentation/full_card_view/full_card_view.dart';
 import 'package:bisa_app/src/presentation/home_screen/bottom_nav_bar.dart';
+import 'package:bisa_app/src/presentation/home_screen/home_page.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_second_page.dart';
+import 'package:bisa_app/src/presentation/more_screen/subscription/subscribe_page.dart';
 import 'package:bisa_app/src/presentation/otp_screen/cubit/otp_page_cubit.dart';
 import 'package:bisa_app/src/presentation/register_screen/cubit/register_page_cubit.dart';
 import 'package:bisa_app/src/presentation/select_country_screen/cubit/selected_country_cubit.dart';
@@ -33,22 +36,21 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => SelectedCountryCubit()),
-            BlocProvider(create: (context)=> RegisterPageCubit()),
-            BlocProvider(create: (context)=> OtpPageCubit()),
-            BlocProvider(create: (context)=> CreateCardCubit()),
+            BlocProvider(create: (context) => RegisterPageCubit()),
+            BlocProvider(create: (context) => OtpPageCubit()),
+            BlocProvider(create: (context) => CreateCardCubit()),
+            BlocProvider(create: (context) => CardViewCubit()),
           ],
           child: MaterialApp(
-            theme: ThemeData(
-              textSelectionTheme: TextSelectionThemeData(
+              theme: ThemeData(
+                  textSelectionTheme: TextSelectionThemeData(
                 cursorColor: Colors.black,
                 selectionColor: Colors.black,
                 selectionHandleColor: Colors.black,
-              )
-            ),
-            title: 'Flutter Demo',
-            debugShowCheckedModeBanner: false,
-            home:CreateCardSecondPage()
-          ),
+              )),
+              title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
+              home: AuthPage()),
         );
       },
       designSize: const Size(430, 932),
