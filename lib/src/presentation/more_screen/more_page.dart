@@ -78,7 +78,7 @@ class MorePage extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SubscriptionPage())),
+                        builder: (context) =>  SubscriptionPage())),
               ),
               SizedBox(
                 height: 30.h,

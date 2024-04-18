@@ -10,14 +10,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 
 class SubscriptionWidget extends StatefulWidget {
-  const SubscriptionWidget({super.key});
+  final Function(SubscriptionPlan) onPlanSelected;
+  const SubscriptionWidget({super.key, required this.onPlanSelected});
 
   @override
   State<SubscriptionWidget> createState() => _SubscriptionWidgetState();
 }
 
 class _SubscriptionWidgetState extends State<SubscriptionWidget> {
-  int selectedIndex = 0;
+  int selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +28,12 @@ class _SubscriptionWidgetState extends State<SubscriptionWidget> {
         stream:
             FirebaseFirestore.instance.collection('subscription').snapshots(),
         builder: (context, snapshot) {
-          if(snapshot.hasError) {
+          if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
           if (snapshot.data == null) {
-            return Center(child: CircularProgressIndicator(
+            return Center(
+                child: CircularProgressIndicator(
               color: AppTheme.textColor,
             )); // Or any loading indicator
           }
@@ -52,17 +54,19 @@ class _SubscriptionWidgetState extends State<SubscriptionWidget> {
               ),
               itemCount: subscriptionPlans.length,
               itemBuilder: (context, index) {
-                subscriptionPlans.sort((a,b)=> a.amount!.compareTo(b.amount ??0));
+                subscriptionPlans
+                    .sort((a, b) => a.amount!.compareTo(b.amount ?? 0));
                 final plan = subscriptionPlans[index];
                 return GestureDetector(
                   onTap: () {
                     setState(() {
                       selectedIndex = index;
+                      final plan = subscriptionPlans[index];
+                      widget.onPlanSelected(plan);
                       // cardBloc.selectedPlan.add(subscriptionPlans[index]);
                       cardBloc.selectPlan(plan);
                       log("name1: ${subscriptionPlans[index].name}");
                       log("name2: ${cardBloc.selectedPlan?.name}");
-
                     });
                   },
                   child: Container(

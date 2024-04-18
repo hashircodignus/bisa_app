@@ -19,13 +19,13 @@ class CreateCardSecondPage extends StatefulWidget {
 }
 
 class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
-  final _phoneController = TextEditingController();
-   List<TextEditingController> listControllerPhone = [TextEditingController()];
+  List<TextEditingController> listController = [TextEditingController()];
   List<TextEditingController> listControllerEmail = [TextEditingController()];
   List<TextEditingController> listControllerSocialMedia = [
     TextEditingController()
   ];
   List<AssetImage?> selectedImages = [null];
+  final _phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -36,7 +36,6 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
 
   @override
   Widget build(BuildContext context) {
-    final cardBloc = BlocProvider.of<CreateCardCubit>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -65,17 +64,12 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                           child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: cardBloc.listControllerPhone.length,
+                              itemCount: listController.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
-                                    suffixIcon: IconButton(onPressed: (){
-                                      setState(() {
-                                        cardBloc.listControllerPhone.removeAt(index);
-                                      });
-                                    }, icon:Icon(Icons.close,size: 15,)),
-                                    controller: cardBloc.listControllerPhone[index],
+                                    controller: listController[index],
                                     hintText: "Phone Number",
                                     prefixIcon:
                                         const Icon(Icons.phone_outlined),
@@ -89,7 +83,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              cardBloc.listControllerPhone.add(TextEditingController());
+                              listController.add(TextEditingController());
                             });
                           },
                           child: Container(
@@ -129,19 +123,14 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                       children: [
                         SizedBox(
                           child: ListView.builder(
-                              itemCount: cardBloc.listControllerEmail.length,
+                              itemCount: listControllerEmail.length,
                               shrinkWrap: true,
                               physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: CustomDataTextField(
-                                    suffixIcon: IconButton(onPressed: (){
-                                      setState(() {
-                                       cardBloc.listControllerEmail.removeAt(index);
-                                      });
-                                    }, icon:Icon(Icons.close,size: 15,)),
-                                    controller: cardBloc.listControllerEmail[index],
+                                    controller: listControllerEmail[index],
                                     hintText: "Email Address",
                                     prefixIcon: Icon(
                                       Icons.mail_outline,
@@ -157,7 +146,7 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              cardBloc.listControllerEmail.add(TextEditingController());
+                              listControllerEmail.add(TextEditingController());
                             });
                           },
                           child: Container(
@@ -199,87 +188,122 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
-                            itemCount: cardBloc.listControllerSocialMedia.length,
+                            itemCount: listControllerSocialMedia.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: CustomDataTextField(
-                                  suffixIcon: IconButton(onPressed: (){
-                                      setState(() {
-                                        cardBloc.listControllerSocialMedia.removeAt(index);
-                                      });
-                                    }, icon:Icon(Icons.close,size: 15,)),
-                                  controller: cardBloc.listControllerSocialMedia[index],
-                                  onTap: () =>
-                                   showModalBottomSheet(
+                                  controller: listControllerSocialMedia[index],
+                                  onTap: () => showModalBottomSheet(
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: MediaQuery.of(context)
-                                                  .viewInsets
-                                                  .bottom),
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20.w),
-                                            height: 200.h,
-                                            decoration: BoxDecoration(
-                                                color: AppTheme.backColor,
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(26.r),
-                                                    topRight:
-                                                        Radius.circular(26.r))),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                    top: 35.h,
-                                                  ),
-                                                  padding: EdgeInsets.only(
-                                                      left: 20.w, right: 5.w),
-                                                  decoration: BoxDecoration(
-                                                    color: AppTheme.textColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            60.r),
-                                                  ),
-                                                  child: SearchTextField(
-                                                    cursorColor:
-                                                        AppTheme.backColor,
-                                                    hintText: "Search Icons",
-                                                    style:
-                                                        AppTheme.smallHeadWhite,
-                                                    hintStyle:
-                                                        AppTheme.smallHeadWhite,
-                                                    icon: const Icon(
-                                                      Icons.search,
-                                                      color: AppTheme.backColor,
+                                        return BlocListener<CreateCardCubit,
+                                            CreateCardState>(
+                                          listener: (context, state) {
+                                            if (state is CreateCardImageUploaded) {
+                                              setState(() {
+                                                selectedImages[index]=state.assetImage;
+                                              });
+                                            }
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .viewInsets
+                                                    .bottom),
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20.w),
+                                              height: 200.h,
+                                              decoration: BoxDecoration(
+                                                  color: AppTheme.backColor,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  26.r),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  26.r))),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                      top: 35.h,
+                                                    ),
+                                                    padding: EdgeInsets.only(
+                                                        left: 20.w, right: 5.w),
+                                                    decoration: BoxDecoration(
+                                                      color: AppTheme.textColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              60.r),
+                                                    ),
+                                                    child: SearchTextField(
+                                                      cursorColor:
+                                                          AppTheme.backColor,
+                                                      hintText: "Search Icons",
+                                                      style: AppTheme
+                                                          .smallHeadWhite,
+                                                      hintStyle: AppTheme
+                                                          .smallHeadWhite,
+                                                      icon: const Icon(
+                                                        Icons.search,
+                                                        color:
+                                                            AppTheme.backColor,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  height: 20.h,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          cardBloc.selectedImages[
-                                                                  index] =
-                                                              const AssetImage(
-                                                                  AssetResources
-                                                                      .faceBook);
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Container(
+                                                  SizedBox(
+                                                    height: 20.h,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedImages[
+                                                                    index] =
+                                                                const AssetImage(
+                                                                    AssetResources
+                                                                        .faceBook);
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Container(
+                                                            height: 52.h,
+                                                            width: 52.w,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(100
+                                                                            .r),
+                                                                image: const DecorationImage(
+                                                                    image: AssetImage(
+                                                                        AssetResources
+                                                                            .faceBook),
+                                                                    fit: BoxFit
+                                                                        .cover))),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedImages[
+                                                                    index] =
+                                                                const AssetImage(
+                                                                    AssetResources
+                                                                        .instagram);
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Container(
                                                           height: 52.h,
                                                           width: 52.w,
                                                           decoration: BoxDecoration(
@@ -291,151 +315,134 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                                               image: const DecorationImage(
                                                                   image: AssetImage(
                                                                       AssetResources
-                                                                          .faceBook),
+                                                                          .instagram),
                                                                   fit: BoxFit
-                                                                      .cover))),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          cardBloc.selectedImages[
-                                                                  index] =
-                                                              const AssetImage(
-                                                                  AssetResources
-                                                                      .instagram);
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Container(
-                                                        height: 52.h,
-                                                        width: 52.w,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100.r),
-                                                            image: const DecorationImage(
-                                                                image: AssetImage(
-                                                                    AssetResources
-                                                                        .instagram),
-                                                                fit: BoxFit
-                                                                    .cover)),
+                                                                      .cover)),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          cardBloc.selectedImages[
-                                                                  index] =
-                                                              const AssetImage(
-                                                                  AssetResources
-                                                                      .whatsApp);
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Container(
-                                                        height: 52.h,
-                                                        width: 52.w,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100.r),
-                                                            image: const DecorationImage(
-                                                                image: AssetImage(
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedImages[
+                                                                    index] =
+                                                                const AssetImage(
                                                                     AssetResources
-                                                                        .whatsApp),
-                                                                fit: BoxFit
-                                                                    .cover)),
+                                                                        .whatsApp);
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Container(
+                                                          height: 52.h,
+                                                          width: 52.w,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          100
+                                                                              .r),
+                                                              image: const DecorationImage(
+                                                                  image: AssetImage(
+                                                                      AssetResources
+                                                                          .whatsApp),
+                                                                  fit: BoxFit
+                                                                      .cover)),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          cardBloc.selectedImages[
-                                                                  index] =
-                                                              const AssetImage(
-                                                                  AssetResources
-                                                                      .behance);
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Container(
-                                                        height: 52.h,
-                                                        width: 52.h,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100.r),
-                                                            image: const DecorationImage(
-                                                                image: AssetImage(
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedImages[
+                                                                    index] =
+                                                                const AssetImage(
                                                                     AssetResources
-                                                                        .behance),
-                                                                fit: BoxFit
-                                                                    .cover)),
+                                                                        .behance);
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Container(
+                                                          height: 52.h,
+                                                          width: 52.h,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          100
+                                                                              .r),
+                                                              image: const DecorationImage(
+                                                                  image: AssetImage(
+                                                                      AssetResources
+                                                                          .behance),
+                                                                  fit: BoxFit
+                                                                      .cover)),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                         cardBloc.selectedImages[
-                                                                  index] =
-                                                              const AssetImage(
-                                                                  AssetResources
-                                                                      .twitter);
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Container(
-                                                        height: 52.h,
-                                                        width: 52.w,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100.r),
-                                                            image: const DecorationImage(
-                                                                image: AssetImage(
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedImages[
+                                                                    index] =
+                                                                const AssetImage(
                                                                     AssetResources
-                                                                        .twitter),
-                                                                fit: BoxFit
-                                                                    .cover)),
+                                                                        .twitter);
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Container(
+                                                          height: 52.h,
+                                                          width: 52.w,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          100
+                                                                              .r),
+                                                              image: const DecorationImage(
+                                                                  image: AssetImage(
+                                                                      AssetResources
+                                                                          .twitter),
+                                                                  fit: BoxFit
+                                                                      .cover)),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          cardBloc.selectedImages[
-                                                                  index] =
-                                                              const AssetImage(
-                                                                  AssetResources
-                                                                      .linkedIn);
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Container(
-                                                        height: 52.h,
-                                                        width: 52.w,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100.r),
-                                                            image: const DecorationImage(
-                                                                image: AssetImage(
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedImages[
+                                                                    index] =
+                                                                const AssetImage(
                                                                     AssetResources
-                                                                        .linkedIn),
-                                                                fit: BoxFit
-                                                                    .cover)),
+                                                                        .linkedIn);
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Container(
+                                                          height: 52.h,
+                                                          width: 52.w,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          100
+                                                                              .r),
+                                                              image: const DecorationImage(
+                                                                  image: AssetImage(
+                                                                      AssetResources
+                                                                          .linkedIn),
+                                                                  fit: BoxFit
+                                                                      .cover)),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 20.h,
-                                                ),
-                                              ],
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20.h,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         );
@@ -449,10 +456,10 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(100.r),
-                                            image: cardBloc.selectedImages[index] != null
+                                            image: selectedImages[index] != null
                                                 ? DecorationImage(
                                                     image:
-                                                        cardBloc.selectedImages[index]!,
+                                                        selectedImages[index]!,
                                                     fit: BoxFit.cover)
                                                 : null)),
                                   ),
@@ -467,9 +474,9 @@ class _CreateCardSecondPageState extends State<CreateCardSecondPage> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              cardBloc.listControllerSocialMedia
+                              listControllerSocialMedia
                                   .add(TextEditingController());
-                              cardBloc.selectedImages.add(null);
+                              selectedImages.add(null);
                             });
                           },
                           child: Container(

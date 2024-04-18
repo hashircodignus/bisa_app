@@ -29,7 +29,7 @@ class SubscribePage extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        child: SubscriptionWidget(),
+        child: SubscriptionWidget(onPlanSelected: (SubscriptionPlan ) {  },),
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
