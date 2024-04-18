@@ -36,10 +36,11 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => SelectedCountryCubit()),
-            BlocProvider(create: (context) => RegisterPageCubit()),
-            BlocProvider(create: (context) => OtpPageCubit()),
-            BlocProvider(create: (context) => CreateCardCubit()),
-            BlocProvider(create: (context) => CardViewCubit()),
+            BlocProvider(create: (context)=> RegisterPageCubit()),
+            BlocProvider(create: (context)=> OtpPageCubit()),
+            BlocProvider(create: (context)=> CreateCardCubit()),
+            BlocProvider(create: (context)=> CardViewCubit()),
+
           ],
           child: MaterialApp(
               theme: ThemeData(
@@ -47,11 +48,12 @@ class MyApp extends StatelessWidget {
                 cursorColor: Colors.black,
                 selectionColor: Colors.black,
                 selectionHandleColor: Colors.black,
-              )),
-              title: 'Flutter Demo',
-              debugShowCheckedModeBanner: false,
-              home: AuthPage()),
-        );
+              )
+            ),
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            home:AuthPage(),
+          ),
       },
       designSize: const Size(430, 932),
     );
