@@ -16,13 +16,15 @@ class SubscriptionPage extends StatefulWidget {
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
   SubscriptionPlan? selectedPlan;
+  bool isUpdated = false;
+  SubscriptionPlan? updatedPlan;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backColor,
       appBar: AppBar(
-          backgroundColor: AppTheme.backColor,
+        backgroundColor: AppTheme.backColor,
         title: const AppBarTitleWidget(text: "Subscription"),
         automaticallyImplyLeading: false,
       ),
@@ -35,28 +37,33 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 child: Container(
                   height: 131.h,
                   decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage(AssetResources.backgroundcard),fit: BoxFit.cover),
+                      image: DecorationImage(
+                          image: AssetImage(AssetResources.backgroundcard),
+                          fit: BoxFit.cover),
                       borderRadius: BorderRadiusDirectional.circular(30)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "200.00",
+                         updatedPlan != null ? "${updatedPlan?.amount}" : "Select a plan",
+                       
                         style: AppTheme.centerTextWhite,
                       ),
                       Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "6 Month",
+                              updatedPlan != null ? updatedPlan?.name ?? "" : "",
                               style: AppTheme.labelText,
                             ),
-                            Text(
-                              "Subscribed",
-                              style: AppTheme.smallHeadGreen,
-                            ),
+                            isUpdated && updatedPlan != null
+                                ? Text(
+                                    "Subscribed",
+                                    style: AppTheme.smallHeadGreen,
+                                  )
+                                : Text("")
                           ],
                         ),
                       )
@@ -67,7 +74,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               SizedBox(
                 height: 20.h,
               ),
-              Column(crossAxisAlignment: CrossAxisAlignment.start,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     textAlign: TextAlign.start,
@@ -77,17 +85,28 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   SizedBox(
                     height: 20.h,
                   ),
-                   SubscriptionWidget(),
+                  SubscriptionWidget(
+                    onPlanSelected: (SubscriptionPlan plan) {
+                      setState(() {
+                        selectedPlan = plan;
+                      });
+                    },
+                  ),
                 ],
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Padding(padding: EdgeInsets.only(bottom: 50.h,left: 20.w,right: 20.w),
-      child: ButtonWidget(buttonTextContent: "Update"),),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(bottom: 50.h, left: 20.w, right: 20.w),
+        child: ButtonWidget(buttonTextContent: "Update",onPressed: () {
+          setState(() {
+             updatedPlan = selectedPlan;
+            isUpdated=true;
+          });
+        },),
+      ),
     );
   }
 }
-
-

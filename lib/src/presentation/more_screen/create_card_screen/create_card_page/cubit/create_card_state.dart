@@ -10,4 +10,10 @@ class CreateCardError extends CreateCardState {
   final String errorText;
   CreateCardError({required this.errorText});
 }
-class CreateCardImageUploaded extends CreateCardState {}
+class CreateCardImageUploaded extends CreateCardState {
+   final AssetImage assetImage;
+
+  CreateCardImageUploaded({required this.assetImage});
+
+
+}
