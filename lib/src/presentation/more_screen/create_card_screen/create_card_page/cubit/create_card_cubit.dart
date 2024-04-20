@@ -102,7 +102,12 @@ class CreateCardCubit extends Cubit<CreateCardState> {
   }
 
   Future<void> saveCard(Map<String,dynamic> cardData) async{
-
+    final String cardId = cardData['cardId'];
+    final isSaved = await isCardSaved(cardId);
+    if (isSaved){
+      emit(CreateCardSavedAlready(isSavedText: 'Card has already saved!'));
+      return;
+    }
     try{
       cardData['savedBy'] = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance.collection('saved').add(cardData);
@@ -112,6 +117,19 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     }
   }
 
+  Future<bool> isCardSaved(String cardId) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null) {
+      return false;
+    }
+    
+    final savedCardsRef = FirebaseFirestore.instance.collection('saved');
+    final savedCardSnapshot = await savedCardsRef.where('cardId',isEqualTo: cardId)
+    .where('savedBy',isEqualTo: user.uid).get();
+    
+    return savedCardSnapshot.docs.isNotEmpty;
+  }
+  
  Future<void> uploadImage(File imageFile) async {
     emit(CreateCardLoading());
     

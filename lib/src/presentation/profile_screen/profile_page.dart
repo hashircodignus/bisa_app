@@ -19,12 +19,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
   @override
   void initState() {
     super.initState();
     context.read<CardViewCubit>().fetchData(widget.cardId!);
   }
-
+  
   @override
   Widget build(BuildContext context) {
    // final bloc = BlocProvider.of<CreateCardCubit>(context);
@@ -43,7 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         );
-      } else if (CardViewState is CardViewLoaded) {
+      }
+      else if (CardViewState is CardViewLoaded) {
         final cardData = CardViewState.cardData.data();
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -438,7 +440,7 @@ class _ProfilePageState extends State<ProfilePage> {
             bottomNavigationBar: Padding(
               padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
               child:BlocListener<CreateCardCubit, CreateCardState>(
-                listener: (BuildContext context, CreateCardState state) {
+                listener: (BuildContext context, CreateCardState state) async {
                   if(state is CreateCardLoading){
                     showDialog(
                       context: context,
@@ -459,16 +461,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     _showSnackBar(state.errorText);
                   }
                 },
-                child:   ButtonWidget(buttonTextContent: "Save",
-                onPressed: (){
-                  context.read<CreateCardCubit>().saveCard(cardData!);
-                },
+                child: ButtonWidget(buttonTextContent:  "Save",
+                  onPressed: () async {
+                    final isSaved =await context.read<CreateCardCubit>().isCardSaved(widget.cardId!);
+                    if(!isSaved){
+                      context.read<CreateCardCubit>().saveCard(cardData!);
+                    }else{
+                     _showSnackBar('Card already Saved!');
+                    }
+                  },
+
                 ),
               )
             ),
           ),
         );
-      } else {
+      }
+      else {
         return Container();
       }
     });
