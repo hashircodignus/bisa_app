@@ -53,7 +53,8 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             home:AuthPage(),
-          ),
+          )
+          );
       },
       designSize: const Size(430, 932),
     );
