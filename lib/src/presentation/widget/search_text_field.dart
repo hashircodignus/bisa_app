@@ -8,14 +8,18 @@ class SearchTextField extends StatelessWidget {
   final Widget? prefix;
   final TextStyle? style;
   final void Function()? onTap;
+  final TextEditingController ?controller;
+  final void Function(String)?onChanged;
+
   const SearchTextField({required this.hintText,required this.cursorColor, this.icon,required this.hintStyle,this.style,this.prefix,
-    super.key, this.onTap, 
+    super.key, this.onTap, this.onChanged, this.controller, 
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
+      controller: controller,
+      onChanged:onChanged ,
       onTap: onTap,
       textAlignVertical: TextAlignVertical.center,
       cursorColor: cursorColor,

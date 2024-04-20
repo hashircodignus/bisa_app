@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home:AuthPage(),
           ));
+
       },
       designSize: const Size(430, 932),
     );
