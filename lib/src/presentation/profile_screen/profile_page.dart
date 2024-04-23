@@ -1,42 +1,45 @@
+import 'dart:developer';
 import 'package:bisa_app/src/presentation/full_card_view/cubit/card_view_cubit.dart';
 import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
+import 'package:bisa_app/src/presentation/more_screen/create_card_screen/model/saved_model.dart';
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../more_screen/create_card_screen/model/card_model.dart';
 import '../widget/details_text_form_field.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String? cardId;
-  const ProfilePage({super.key, this.cardId});
+  final CardModel? cardModel;
+  final SavedCardModel? savedModel;
+  const ProfilePage({super.key, this.cardModel, this.savedModel});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  bool showButton = false;
 
   @override
   void initState() {
     super.initState();
-    context.read<CardViewCubit>().fetchData(widget.cardId!);
+    BlocProvider.of<CardViewCubit>(context).fetchData(widget.cardModel!.cardId);
   }
-  
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating, content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
-   // final bloc = BlocProvider.of<CreateCardCubit>(context);
-    void _showSnackBar(String message) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
-    }
-
-    return BlocBuilder<CardViewCubit, CardViewState>(
-        builder: (context, CardViewState) {
-      if (CardViewState is CardViewLoading) {
+    return BlocBuilder<CardViewCubit, CardViewState>(builder: (context, state) {
+      log(state.toString());
+      if (state is CardViewLoading) {
         return Scaffold(
           body: Center(
             child: CircularProgressIndicator(
@@ -44,9 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         );
-      }
-      else if (CardViewState is CardViewLoaded) {
-        final cardData = CardViewState.cardData.data();
+      } else if (state is CardViewLoaded) {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
@@ -102,7 +103,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             border: Border.all(
                                 color: AppTheme.smallText, width: 0.5.w),
                             image: DecorationImage(
-                                image: NetworkImage(cardData?['imageUrl']),
+                                image: NetworkImage(
+                                    widget.cardModel?.imageUrl ?? ''),
                                 fit: BoxFit.cover),
                             // color: Colors.blue,
                             borderRadius: BorderRadius.circular(100.r),
@@ -115,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              cardData?['name'],
+                              widget.cardModel?.name ?? '',
                               style: AppTheme.pageHead,
                             ),
                             SizedBox(
@@ -179,19 +181,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   topRight:
                                                       Radius.circular(26.r))),
                                           child: ListView.builder(
-                                            itemCount: cardData != null &&
-                                                    cardData['phone'] != null
-                                                ? cardData['phone'].length
-                                                : 0,
+                                            itemCount:
+                                                widget.cardModel?.phone != null
+                                                    ? widget
+                                                        .cardModel?.phone.length
+                                                    : 0,
                                             itemBuilder: (context, index) {
                                               return Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 15.h),
-                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      cardData!['phone'][index]
-                                                          .toString(),
+                                                      widget.cardModel
+                                                          ?.phone[index],
                                                       style:
                                                           AppTheme.buttonText,
                                                     ),
@@ -199,12 +205,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       height: 23.h,
                                                       width: 23.w,
                                                       decoration: BoxDecoration(
-                                                          color: AppTheme.cardColor,
-                                                          borderRadius: BorderRadius.circular(2.r)
-                                                      ),
+                                                          color: AppTheme
+                                                              .cardColor,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      2.r)),
                                                       child: Icon(
-                                                        Icons.local_phone_outlined,
-                                                        color: AppTheme.backColor,
+                                                        Icons
+                                                            .local_phone_outlined,
+                                                        color:
+                                                            AppTheme.backColor,
                                                         size: 18.sp,
                                                       ),
                                                     ),
@@ -243,53 +254,67 @@ class _ProfilePageState extends State<ProfilePage> {
                                     context: context,
                                     builder: (context) {
                                       return Padding(
-                                        padding: EdgeInsets.only(
-                                            bottom: MediaQuery.of(context)
-                                                .viewInsets
-                                                .bottom),
-                                        child: Container(
-                                          height: 287.h,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20.w, vertical: 30.h),
-                                          decoration: BoxDecoration(
-                                              color: AppTheme.textColor,
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      Radius.circular(26.r),
-                                                  topRight:
-                                                      Radius.circular(26.r))),
-                                          child: ListView.builder(
-                                            itemCount: cardData != null &&
-                                                    cardData['email'] != null
-                                                ? cardData['email'].length
-                                                : 0,
-                                            itemBuilder: (context, index) {
-                                              return Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 15.h),
-                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      cardData!['email'][index]
-                                                          .toString(),
-                                                      style:
-                                                          AppTheme.buttonText,
-                                                    ),
-                                                    Container(
-                                                        height: 23.h,
-                                                        width: 23.w,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(2.r),
-                                                            color: AppTheme.pinkColor
-                                                        ),
-                                                        child: SvgPicture.asset(AssetResources.email,color: AppTheme.backColor,)),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      );
+                                          padding: EdgeInsets.only(
+                                              bottom: MediaQuery.of(context)
+                                                  .viewInsets
+                                                  .bottom),
+                                          child: Container(
+                                            height: 287.h,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20.w,
+                                                vertical: 30.h),
+                                            decoration: BoxDecoration(
+                                                color: AppTheme.textColor,
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(26.r),
+                                                    topRight:
+                                                        Radius.circular(26.r))),
+                                            child: ListView.builder(
+                                              itemCount:
+                                                  widget.cardModel?.email !=
+                                                          null
+                                                      ? widget.cardModel?.email
+                                                          .length
+                                                      : 0,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 15.h),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        widget.cardModel
+                                                            ?.email[index],
+                                                        style:
+                                                            AppTheme.buttonText,
+                                                      ),
+                                                      Container(
+                                                          height: 23.h,
+                                                          width: 23.w,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          2.r),
+                                                              color: AppTheme
+                                                                  .pinkColor),
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            AssetResources
+                                                                .email,
+                                                            color: AppTheme
+                                                                .backColor,
+                                                          )),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ));
                                     }),
                                 child: Column(
                                   children: [
@@ -334,31 +359,37 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   topRight:
                                                       Radius.circular(26.r))),
                                           child: ListView.builder(
-                                            itemCount: cardData != null &&
-                                                    cardData['social'] != null
-                                                ? cardData['social'].length
-                                                : 0,
+                                            itemCount:
+                                                widget.cardModel?.social != null
+                                                    ? widget.cardModel?.social
+                                                        .length
+                                                    : 0,
                                             itemBuilder: (context, index) {
                                               return Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 15.h),
-                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Row(
                                                       children: [
                                                         Icon(
-                                                          Icons.language_rounded,
-                                                          color: AppTheme.backColor,
+                                                          Icons
+                                                              .language_rounded,
+                                                          color: AppTheme
+                                                              .backColor,
                                                           size: 18.sp,
                                                         ),
                                                         SizedBox(
                                                           width: 20.w,
                                                         ),
                                                         Text(
-                                                          cardData!['social'][index]
-                                                              .toString(),
-                                                          style:
-                                                          AppTheme.buttonText,
+                                                          widget.cardModel
+                                                              ?.social[index],
+                                                          style: AppTheme
+                                                              .buttonText,
                                                         ),
                                                       ],
                                                     ),
@@ -413,23 +444,24 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         DetailsTextFormField(
                           labelText: 'Address',
-                          controller:
-                              TextEditingController(text: cardData?['address']),
-                        ),const SizedBox(
+                          controller: TextEditingController(
+                              text: widget.cardModel?.address),
+                        ),
+                        const SizedBox(
                           height: 10,
                         ),
                         DetailsTextFormField(
                           labelText: 'Profession',
-                          controller:
-                          TextEditingController(text: cardData?['profession']),
+                          controller: TextEditingController(
+                              text: widget.cardModel?.profession),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         DetailsTextFormField(
                           labelText: 'Website',
-                          controller:
-                              TextEditingController(text: cardData?['website']),
+                          controller: TextEditingController(
+                              text: widget.cardModel?.website),
                         ),
                       ],
                     ),
@@ -438,46 +470,47 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             bottomNavigationBar: Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
-              child:BlocListener<CreateCardCubit, CreateCardState>(
-                listener: (BuildContext context, CreateCardState state) async {
-                  if(state is CreateCardLoading){
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context){
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: AppTheme.textColor,
-                          ),
-                        );
-                      },
-                    );
-                  }
-                  if(state is CreateCardLoaded){
-                    _showSnackBar('Card saved!');
-                  }
-                  if(state is CreateCardError){
-                    _showSnackBar(state.errorText);
-                  }
-                },
-                child: ButtonWidget(buttonTextContent:  "Save",
-                  onPressed: () async {
-                    final isSaved =await context.read<CreateCardCubit>().isCardSaved(widget.cardId!);
-                    if(!isSaved){
-                      context.read<CreateCardCubit>().saveCard(cardData!);
-                    }else{
-                     _showSnackBar('Card already Saved!');
+                padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
+                child: BlocListener<CreateCardCubit, CreateCardState>(
+                  listener:
+                      (BuildContext context, CreateCardState state) async {
+                    if (state is CreateCardLoading) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: AppTheme.textColor,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    if (state is CreateCardLoaded) {
+                      _showSnackBar('Card saved!');
+                    }
+                    if (state is CreateCardError) {
+                      _showSnackBar(state.errorText);
                     }
                   },
-
-                ),
-              )
-            ),
+                  child: ButtonWidget(
+                    buttonTextContent: "Save",
+                    onPressed: () async {
+                      final isSaved = await context
+                          .read<CreateCardCubit>()
+                          .isCardSaved(widget.cardModel!.cardId);
+                      if (!isSaved) {
+                        // context.read<CreateCardCubit>().saveCard(cardData);
+                      } else {
+                        _showSnackBar('Card already Saved!');
+                      }
+                    },
+                  ),
+                )),
           ),
         );
-      }
-      else {
+      } else {
         return Container();
       }
     });

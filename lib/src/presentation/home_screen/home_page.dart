@@ -1,15 +1,27 @@
+import 'package:bisa_app/src/presentation/home_screen/card_tab.dart';
+import 'package:bisa_app/src/presentation/home_screen/saved_card_tab.dart';
 import 'package:bisa_app/src/presentation/home_screen/widget/tabwidget.dart';
 import 'package:bisa_app/src/presentation/more_screen/more_page.dart';
 import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,132 +96,8 @@ class HomePage extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              Container(
-                color: AppTheme.backColor,
-                //padding: EdgeInsets.symmetric(horizontal: 20.w),
-                width: double.infinity,
-                child: SingleChildScrollView(
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection('cards').where('uid',isNotEqualTo: FirebaseAuth.instance.currentUser?.uid).snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: AppTheme.textColor,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    final docs = snapshot.data?.docs;
-
-                    if(docs == null || docs.isEmpty){
-                      return Center(child: Text("No data available"));
-                    }
-                    return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount:docs.length,
-                        itemBuilder: (BuildContext context,int index) {
-                          final doc = docs[index];
-                          final name = doc['name'];
-                          final designation = doc['profession'];
-                          final cardImageDp = doc['imageUrl'];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProfilePage(cardId: doc.id,)));
-                            },
-                            child: ListTile(
-                              leading: Container(
-                                height: 49.h,
-                                width: 49.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50.r),
-                                  image: DecorationImage(image: NetworkImage(cardImageDp),fit: BoxFit.cover)
-                                ),
-                              //  child: Image.network(cardImageDp,fit: BoxFit.cover,),
-                              ),
-                              trailing: Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                              ),
-                              title: Text(name),
-                              subtitle:
-                              Text(designation),
-                            ),
-                          );
-                        });
-                  },
-                )),
-              ),
-              Container(
-                color: AppTheme.backColor,
-                // padding: EdgeInsets.symmetric(horizontal: 20.w),
-                width: double.infinity,
-                child: SingleChildScrollView(
-                    child:  StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection('saved').where('savedBy',isEqualTo: FirebaseAuth.instance.currentUser?.uid).snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: AppTheme.textColor,
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-                        final docs = snapshot.data?.docs;
-
-                        if(docs == null || docs.isEmpty){
-                          return Center(child: Text("No data available"));
-                        }
-                        return ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount:docs.length,
-                            itemBuilder: (BuildContext context,int index) {
-                              final doc = docs[index];
-                              final name = doc['name'];
-                              final designation = doc['profession'];
-                              final cardImageDp = doc['imageUrl'];
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProfilePage(cardId: doc.id,)));
-                                },
-                                child: ListTile(
-                                  leading: Container(
-                                    height: 49.h,
-                                    width: 49.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50.r),
-                                        image: DecorationImage(image: NetworkImage(cardImageDp),fit: BoxFit.cover)
-                                    ),
-                                    //  child: Image.network(cardImageDp,fit: BoxFit.cover,),
-                                  ),
-                                  trailing: Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                  ),
-                                  title: Text(name),
-                                  subtitle:
-                                  Text(designation),
-                                ),
-                              );
-                            });
-                      },
-                    )),
-              ),
+              CardTab(),
+              SavedCardTab(),
               Container(
                 color: AppTheme.backColor,
                 //padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -247,3 +135,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
