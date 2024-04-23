@@ -42,7 +42,7 @@ class SubscribePage extends StatelessWidget {
                 ),
               );
             }
-            if (state is CreateCardLoaded) {
+            if (state is CreateCardCreated) {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const SuccessPage()),
