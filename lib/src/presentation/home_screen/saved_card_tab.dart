@@ -52,6 +52,7 @@ class _SavedCardTabState extends State<SavedCardTab> {
                       // final cardImageDp = doc['imageUrl'];
                       return GestureDetector(
                         onTap: () {
+                          log("savedMode: ${state.savedCardModel[index].uid}");
                           Navigator.push(
                               context,
                               MaterialPageRoute(

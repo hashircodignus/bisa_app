@@ -5,7 +5,6 @@ import 'package:bisa_app/src/presentation/more_screen/subscription/model/subscri
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -149,7 +148,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     emit(CreateCardInitial());
     emit(CreateCardLoading());
     try{
-      final savedCardList = savedCardCollection.snapshots().map((snapshot) {
+      final savedCardList = savedCardCollection.where('savedBy',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots().map((snapshot) {
         return snapshot.docs.map((doc){
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           return SavedCardModel(
