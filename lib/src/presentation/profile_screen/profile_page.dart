@@ -5,6 +5,8 @@ import 'package:bisa_app/src/presentation/more_screen/create_card_screen/model/s
 import 'package:bisa_app/src/presentation/widget/button_widget.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,17 +24,22 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool showButton = false;
+  bool isSaved = false;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<CardViewCubit>(context).fetchData(widget.cardModel!.cardId);
+    widget.savedModel == null
+        ? BlocProvider.of<CardViewCubit>(context)
+            .fetchData(widget.cardModel!.cardId)
+        : BlocProvider.of<CardViewCubit>(context)
+            .fetchData(widget.savedModel!.cardId);
+    isSaved = widget.savedModel != null;
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        behavior: SnackBarBehavior.floating, content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
   }
 
   @override
@@ -48,6 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
       } else if (state is CardViewLoaded) {
+
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
@@ -103,8 +111,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             border: Border.all(
                                 color: AppTheme.smallText, width: 0.5.w),
                             image: DecorationImage(
-                                image: NetworkImage(
-                                    widget.cardModel?.imageUrl ?? ''),
+                                image: NetworkImage(widget.savedModel == null
+                                    ? widget.cardModel!.imageUrl
+                                    : widget.savedModel!.imageUrl),
                                 fit: BoxFit.cover),
                             // color: Colors.blue,
                             borderRadius: BorderRadius.circular(100.r),
@@ -117,7 +126,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              widget.cardModel?.name ?? '',
+                              widget.savedModel == null
+                                  ? widget.cardModel!.name
+                                  : widget.savedModel!.name,
                               style: AppTheme.pageHead,
                             ),
                             SizedBox(
@@ -181,11 +192,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   topRight:
                                                       Radius.circular(26.r))),
                                           child: ListView.builder(
-                                            itemCount:
-                                                widget.cardModel?.phone != null
-                                                    ? widget
-                                                        .cardModel?.phone.length
-                                                    : 0,
+                                            itemCount: widget.savedModel == null
+                                                ? widget.cardModel?.phone.length
+                                                : widget
+                                                    .savedModel?.phone.length,
                                             itemBuilder: (context, index) {
                                               return Padding(
                                                 padding: EdgeInsets.symmetric(
@@ -196,8 +206,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      widget.cardModel
-                                                          ?.phone[index],
+                                                      widget.savedModel == null
+                                                          ? widget.cardModel!
+                                                              .phone[index]
+                                                          : widget.savedModel!
+                                                              .phone[index],
                                                       style:
                                                           AppTheme.buttonText,
                                                     ),
@@ -272,11 +285,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         Radius.circular(26.r))),
                                             child: ListView.builder(
                                               itemCount:
-                                                  widget.cardModel?.email !=
-                                                          null
+                                                  widget.savedModel == null
                                                       ? widget.cardModel?.email
                                                           .length
-                                                      : 0,
+                                                      : widget.savedModel?.email
+                                                          .length,
                                               itemBuilder: (context, index) {
                                                 return Padding(
                                                   padding: EdgeInsets.symmetric(
@@ -287,8 +300,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             .spaceBetween,
                                                     children: [
                                                       Text(
-                                                        widget.cardModel
-                                                            ?.email[index],
+                                                        widget.savedModel ==
+                                                                null
+                                                            ? widget.cardModel!
+                                                                .email[index]
+                                                            : widget.savedModel!
+                                                                .email[index],
                                                         style:
                                                             AppTheme.buttonText,
                                                       ),
@@ -359,11 +376,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   topRight:
                                                       Radius.circular(26.r))),
                                           child: ListView.builder(
-                                            itemCount:
-                                                widget.cardModel?.social != null
-                                                    ? widget.cardModel?.social
-                                                        .length
-                                                    : 0,
+                                            itemCount: widget.savedModel == null
+                                                ? widget
+                                                    .cardModel?.social.length
+                                                : widget
+                                                    .savedModel?.social.length,
                                             itemBuilder: (context, index) {
                                               return Padding(
                                                 padding: EdgeInsets.symmetric(
@@ -386,8 +403,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           width: 20.w,
                                                         ),
                                                         Text(
-                                                          widget.cardModel
-                                                              ?.social[index],
+                                                          widget.savedModel ==
+                                                                  null
+                                                              ? widget
+                                                                  .cardModel!
+                                                                  .social[index]
+                                                              : widget
+                                                                  .savedModel!
+                                                                  .social[index],
                                                           style: AppTheme
                                                               .buttonText,
                                                         ),
@@ -445,7 +468,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         DetailsTextFormField(
                           labelText: 'Address',
                           controller: TextEditingController(
-                              text: widget.cardModel?.address),
+                              text: widget.savedModel == null
+                                  ? widget.cardModel?.address
+                                  : widget.savedModel?.address),
                         ),
                         const SizedBox(
                           height: 10,
@@ -453,7 +478,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         DetailsTextFormField(
                           labelText: 'Profession',
                           controller: TextEditingController(
-                              text: widget.cardModel?.profession),
+                              text: widget.savedModel == null
+                                  ? widget.cardModel?.profession
+                                  : widget.savedModel?.profession),
                         ),
                         const SizedBox(
                           height: 10,
@@ -461,7 +488,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         DetailsTextFormField(
                           labelText: 'Website',
                           controller: TextEditingController(
-                              text: widget.cardModel?.website),
+                              text: widget.savedModel == null
+                                  ? widget.cardModel?.website
+                                  : widget.savedModel?.website),
                         ),
                       ],
                     ),
@@ -472,40 +501,78 @@ class _ProfilePageState extends State<ProfilePage> {
             bottomNavigationBar: Padding(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 50.h),
                 child: BlocListener<CreateCardCubit, CreateCardState>(
-                  listener:
-                      (BuildContext context, CreateCardState state) async {
+                  listener:(BuildContext context, CreateCardState state) async {
                     if (state is CreateCardLoading) {
                       showDialog(
                         context: context,
                         barrierDismissible: false,
                         builder: (BuildContext context) {
                           return Center(
-                            child: CircularProgressIndicator(
-                              color: AppTheme.textColor,
-                            ),
+                            child: CircularProgressIndicator(color: AppTheme.textColor),
                           );
                         },
                       );
                     }
                     if (state is CreateCardLoaded) {
+                      BlocProvider.of<CreateCardCubit>(context).getSavedCards();
+                      BlocProvider.of<CreateCardCubit>(context).getCards();
+                      setState(() {
+                        isSaved = true;
+                      });
                       _showSnackBar('Card saved!');
                     }
                     if (state is CreateCardError) {
                       _showSnackBar(state.errorText);
                     }
                   },
-                  child: ButtonWidget(
-                    buttonTextContent: "Save",
+                  child:isSaved? SizedBox() :
+                  ButtonWidget(
+                    buttonTextContent:  "Save",
                     onPressed: () async {
-                      final isSaved = await context
-                          .read<CreateCardCubit>()
-                          .isCardSaved(widget.cardModel!.cardId);
                       if (!isSaved) {
-                        // context.read<CreateCardCubit>().saveCard(cardData);
-                      } else {
-                        _showSnackBar('Card already Saved!');
-                      }
+                        final cardData = {
+                          'address': widget.cardModel?.address ?? '',
+                          'cardId': widget.cardModel?.cardId ?? '',
+                          'email': widget.cardModel?.email ?? [],
+                          'imageUrl': widget.cardModel?.imageUrl ?? '',
+                          'name': widget.cardModel?.name ?? '',
+                          'phone': widget.cardModel?.phone ?? [],
+                          'profession': widget.cardModel?.profession ?? '',
+                          'social': widget.cardModel?.social ?? [],
+                          'subscriptionAmount': widget.cardModel?.subscriptionAmount ?? '',
+                          'subscriptionPlan': widget.cardModel?.subscriptionPlan ?? '',
+                          'uid': widget.cardModel?.uid ?? '',
+                          'website': widget.cardModel?.website ?? '',
+                          'savedBy': FirebaseAuth.instance.currentUser!.uid,
+                        };
+
+                        bool isAlreadySaved = false;
+                        final snapshot = await FirebaseFirestore.instance.collection('saved').get();
+                        for(final doc in snapshot.docs) {
+                          final savedCard = SavedCardModel.fromJson(doc.data());
+                          if(savedCard.cardId == widget.cardModel?.cardId && savedCard.savedBy == FirebaseAuth.instance.currentUser!.uid){
+                            isAlreadySaved = true;
+                            break;
+                          }
+                        }
+
+                        if(!isAlreadySaved){
+                          await FirebaseFirestore.instance.collection('saved').add(cardData);
+                          setState(() {
+                            isSaved = true;
+                          });
+                          _showSnackBar('Card saved!');
+                          Navigator.pop(context);
+                        } else {
+                            _showSnackBar('Card already Saved!');
+                          }
+                        }else{
+                        _showSnackBar("Card already Saved!");
+                        }
+
                     },
+
+
                   ),
                 )),
           ),

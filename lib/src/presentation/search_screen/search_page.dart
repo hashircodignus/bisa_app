@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'package:bisa_app/src/presentation/more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
 import 'package:bisa_app/src/presentation/widget/search_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/resources/theme.dart';
 
@@ -87,150 +85,150 @@ class _SearchPageState extends State<SearchPage> {
               child: Column(
                 children: [
 
-                    BlocBuilder<CreateCardCubit, CreateCardState>(
-                        builder: (context, state){
-                          if(state is CreateCardLoading){
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: AppTheme.textColor,
-                              ),
-                            );
-                          }
-                          if(state is CreateCardLoaded){
-                            return  Expanded(
-                              child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: state.cardModel.length,
-                                itemBuilder: (context, index) {
-                                  // final doc = filteredDocs[index];
-                                  // final name = doc['name'];
-                                  // final designation = doc['profession'];
-                                  // final cardImageDp = doc['imageUrl'];
+                    // BlocBuilder<CreateCardCubit, CreateCardState>(
+                    //     builder: (context, state){
+                    //       if(state is CreateCardLoading){
+                    //         return Center(
+                    //           child: CircularProgressIndicator(
+                    //             color: AppTheme.textColor,
+                    //           ),
+                    //         );
+                    //       }
+                    //       if(state is CreateCardLoaded){
+                    //         return  Expanded(
+                    //           child: ListView.builder(
+                    //             physics: const BouncingScrollPhysics(),
+                    //             shrinkWrap: true,
+                    //             itemCount: state.cardModel.length,
+                    //             itemBuilder: (context, index) {
+                    //               // final doc = filteredDocs[index];
+                    //               // final name = doc['name'];
+                    //               // final designation = doc['profession'];
+                    //               // final cardImageDp = doc['imageUrl'];
+                    //
+                    //               return GestureDetector(
+                    //                 onTap: () {
+                    //                   Navigator.push(
+                    //                     context,
+                    //                     MaterialPageRoute(
+                    //                       builder: (context) =>
+                    //                           ProfilePage(cardModel: state.cardModel[index],),
+                    //                     ),
+                    //                   );
+                    //                 },
+                    //                 child: ListTile(
+                    //                   leading: Container(
+                    //                     height: 49.h,
+                    //                     width: 49.h,
+                    //                     decoration: BoxDecoration(
+                    //                       borderRadius: BorderRadius.circular(50.r),
+                    //                       image: DecorationImage(
+                    //                         image: NetworkImage(state.cardModel[index].imageUrl),
+                    //                         fit: BoxFit.cover,
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                   trailing: Icon(
+                    //                     Icons.check_circle,
+                    //                     color: Colors.green,
+                    //                   ),
+                    //                   title: Text(state.cardModel[index].name),
+                    //                   subtitle: Text(state.cardModel[index].profession),
+                    //                 ),
+                    //               );
+                    //             },
+                    //           ),
+                    //         );
+                    //       }
+                    //       if(state is CreateCardError){
+                    //         return  Center(
+                    //           child: Text(state.errorText),
+                    //         );
+                    //       }
+                    //       return SizedBox();
+                    //     }
+                    // ),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: _searchResultsStream,
+                    builder: (context, snapshot) {
+                      if (_searchController.text.isEmpty) {
+                        return Container();
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(
+                            color: AppTheme.textColor);
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProfilePage(cardModel: state.cardModel[index],),
-                                        ),
-                                      );
-                                    },
-                                    child: ListTile(
-                                      leading: Container(
-                                        height: 49.h,
-                                        width: 49.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(50.r),
-                                          image: DecorationImage(
-                                            image: NetworkImage(state.cardModel[index].imageUrl),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      trailing: Icon(
-                                        Icons.check_circle,
-                                        color: Colors.green,
-                                      ),
-                                      title: Text(state.cardModel[index].name),
-                                      subtitle: Text(state.cardModel[index].profession),
+                      final docs = snapshot.data?.docs ?? [];
+                      if (docs.isEmpty) {
+                        return Center(
+                          child: Text("No data available"),
+                        );
+                      }
+
+                      final lowercaseQuery =
+                          _searchController.text.trim().toLowerCase();
+
+                      final filteredDocs = docs.where((doc) {
+                        final name =
+                            (doc.data() as Map<String, dynamic>)['name']
+                                .toLowerCase();
+
+                        return name.contains(lowercaseQuery);
+                      }).toList();
+
+                      if (filteredDocs.isEmpty) {
+                        return Center(child: Text("No data available"));
+                      }
+
+                      return Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: filteredDocs.length,
+                          itemBuilder: (context, index) {
+                            final doc = filteredDocs[index];
+                            final name = doc['name'];
+                            final designation = doc['profession'];
+                            final cardImageDp = doc['imageUrl'];
+
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProfilePage(),
+                                  ),
+                                );
+                              },
+                              child: ListTile(
+                                leading: Container(
+                                  height: 49.h,
+                                  width: 49.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    image: DecorationImage(
+                                      image: NetworkImage(cardImageDp),
+                                      fit: BoxFit.cover,
                                     ),
-                                  );
-                                },
+                                  ),
+                                ),
+                                trailing: Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                ),
+                                title: Text(name),
+                                subtitle: Text(designation),
                               ),
                             );
-                          }
-                          if(state is CreateCardError){
-                            return  Center(
-                              child: Text(state.errorText),
-                            );
-                          }
-                          return SizedBox();
-                        }
-                    ),
-                  // StreamBuilder<QuerySnapshot>(
-                  //   stream: _searchResultsStream,
-                  //   builder: (context, snapshot) {
-                  //     if (_searchController.text.isEmpty) {
-                  //       return Container();
-                  //     }
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return CircularProgressIndicator(
-                  //           color: AppTheme.textColor);
-                  //     } else if (snapshot.hasError) {
-                  //       return Text('Error: ${snapshot.error}');
-                  //     }
-                  //
-                  //     final docs = snapshot.data?.docs ?? [];
-                  //     if (docs.isEmpty) {
-                  //       return Center(
-                  //         child: Text("No data available"),
-                  //       );
-                  //     }
-                  //
-                  //     final lowercaseQuery =
-                  //         _searchController.text.trim().toLowerCase();
-                  //
-                  //     final filteredDocs = docs.where((doc) {
-                  //       final name =
-                  //           (doc.data() as Map<String, dynamic>)['name']
-                  //               .toLowerCase();
-                  //
-                  //       return name.contains(lowercaseQuery);
-                  //     }).toList();
-                  //
-                  //     if (filteredDocs.isEmpty) {
-                  //       return Center(child: Text("No data available"));
-                  //     }
-                  //
-                  //     return Expanded(
-                  //       child: ListView.builder(
-                  //         physics: const BouncingScrollPhysics(),
-                  //         shrinkWrap: true,
-                  //         itemCount: filteredDocs.length,
-                  //         itemBuilder: (context, index) {
-                  //           final doc = filteredDocs[index];
-                  //           final name = doc['name'];
-                  //           final designation = doc['profession'];
-                  //           final cardImageDp = doc['imageUrl'];
-                  //
-                  //           return GestureDetector(
-                  //             onTap: () {
-                  //               Navigator.push(
-                  //                 context,
-                  //                 MaterialPageRoute(
-                  //                   builder: (context) =>
-                  //                       ProfilePage(cardId: doc.id),
-                  //                 ),
-                  //               );
-                  //             },
-                  //             child: ListTile(
-                  //               leading: Container(
-                  //                 height: 49.h,
-                  //                 width: 49.h,
-                  //                 decoration: BoxDecoration(
-                  //                   borderRadius: BorderRadius.circular(50.r),
-                  //                   image: DecorationImage(
-                  //                     image: NetworkImage(cardImageDp),
-                  //                     fit: BoxFit.cover,
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //               trailing: Icon(
-                  //                 Icons.check_circle,
-                  //                 color: Colors.green,
-                  //               ),
-                  //               title: Text(name),
-                  //               subtitle: Text(designation),
-                  //             ),
-                  //           );
-                  //         },
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                          },
+                        ),
+                      );
+                    },
+                  ),
                   SizedBox(
                     height: 20,
                   ),

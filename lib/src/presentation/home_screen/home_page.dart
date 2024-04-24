@@ -6,7 +6,10 @@ import 'package:bisa_app/src/presentation/profile_screen/profile_page.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
 import 'package:bisa_app/src/utils/resources/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../more_screen/create_card_screen/create_card_page/cubit/create_card_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,11 +20,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<CreateCardCubit>(context).getSavedCards();
+    BlocProvider.of<CreateCardCubit>(context).getCards();
   }
+
+  // void _showSnackBar(String message) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(behavior: SnackBarBehavior.floating, content: Text(message)));
+  // }
 
   @override
   Widget build(BuildContext context) {
