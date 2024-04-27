@@ -70,6 +70,11 @@ class CreateCardCubit extends Cubit<CreateCardState> {
       List<String> emailValues = [];
       List<String> socialValues = [];
 
+      List<String?> socialMediaIcons = [];
+      for(AssetImage? icon in selectedImages) {
+        socialMediaIcons.add(icon != null ? icon.assetName : null);
+      }
+
       for (int i = 0; i < listControllerPhone.length; i++) {
         String phoneValue = listControllerPhone[i].text.toString();
         phoneValues.add(phoneValue);
@@ -92,6 +97,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
         'profession': professionController.text,
         'address': addressController.text,
         'website': websiteController.text,
+        'socialMediaIcons': socialMediaIcons,
         'phone': phoneValues,
         'email': emailValues,
         'social': socialValues,
@@ -116,7 +122,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
     emit(CreateCardInitial());
     emit(CreateCardLoading());
     try {
-      final cardList = cardCollection.where('uid',isNotEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots().map((snapshot) {
+      final cardList = cardCollection.snapshots().map((snapshot) {
         return snapshot.docs.map((doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           return CardModel(
@@ -131,7 +137,8 @@ class CreateCardCubit extends Cubit<CreateCardState> {
               subscriptionAmount: data['subscriptionAmount'],
               subscriptionPlan: data['subscriptionPlan'],
               uid: data['uid'],
-              website: data['website']);
+              website: data['website'],
+              socialMediaIcons: data['socialMediaIcons']);
         }).toList();
       });
 
@@ -164,7 +171,7 @@ class CreateCardCubit extends Cubit<CreateCardState> {
               subscriptionAmount: data['subscriptionAmount'],
               subscriptionPlan: data['subscriptionPlan'],
               uid: data['uid'],
-              website: data['website']);
+              website: data['website'], socialMediaIcons: data['socialMediaIcons']);
         }).toList();
       });
 

@@ -377,40 +377,30 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       Radius.circular(26.r))),
                                           child: ListView.builder(
                                             itemCount: widget.savedModel == null
-                                                ? widget
-                                                    .cardModel?.social.length
-                                                : widget
-                                                    .savedModel?.social.length,
+                                                ? widget.cardModel?.social.length
+                                                : widget.savedModel?.social.length,
                                             itemBuilder: (context, index) {
+                                              final String socialMedia = widget.savedModel == null
+                                              ? widget.cardModel?.social[index]
+                                              : widget.savedModel?.social[index];
+
+                                              final String? iconPath = widget.savedModel == null
+                                              ? widget.cardModel?.socialMediaIcons[index]
+                                                  : widget.savedModel?.socialMediaIcons[index];
                                               return Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 15.h),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                padding: EdgeInsets.symmetric(vertical: 15.h),
+                                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        Icon(
-                                                          Icons
-                                                              .language_rounded,
-                                                          color: AppTheme
-                                                              .backColor,
-                                                          size: 18.sp,
-                                                        ),
+                                                       iconPath != null
+                                                        ? Image.asset(iconPath,width: 30.w,height: 30.h,)
+                                                       : SizedBox(),
                                                         SizedBox(
                                                           width: 20.w,
                                                         ),
                                                         Text(
-                                                          widget.savedModel ==
-                                                                  null
-                                                              ? widget
-                                                                  .cardModel!
-                                                                  .social[index]
-                                                              : widget
-                                                                  .savedModel!
-                                                                  .social[index],
+                                                         socialMedia,
                                                           style: AppTheme
                                                               .buttonText,
                                                         ),

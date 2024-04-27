@@ -7,12 +7,14 @@ class CardModel {
   final List<dynamic> phone;
   final String profession;
   final List<dynamic> social;
+  final List<dynamic> socialMediaIcons;
   final String subscriptionAmount;
   final String subscriptionPlan;
   final String uid;
   final String website;
 
   CardModel({
+    required this.socialMediaIcons,
     required this.address,
     required this.cardId,
     required this.email,
@@ -41,6 +43,7 @@ class CardModel {
       subscriptionPlan: json['subscriptionPlan'] ?? "",
       uid: json['uid'] ?? "",
       website: json['website'] ?? "",
+      socialMediaIcons:List<String>.from(json['socialMediaICons']),
     );
   }
 
@@ -54,6 +57,7 @@ class CardModel {
       'phone': phone,
       'profession': profession,
       'social': social,
+      'socialMediaIcons': socialMediaIcons,
       'subscriptionAmount': subscriptionAmount,
       'subscriptionPlan': subscriptionPlan,
       'uid': uid,
