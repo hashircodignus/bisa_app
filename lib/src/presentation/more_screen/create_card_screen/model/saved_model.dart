@@ -12,6 +12,7 @@ class SavedCardModel {
   final String subscriptionPlan;
   final String uid;
   final String website;
+  final List<dynamic> socialMediaIcons;
 
   SavedCardModel({
     required this.address,
@@ -26,6 +27,7 @@ class SavedCardModel {
     required this.subscriptionAmount,
     required this.subscriptionPlan,
     required this.uid,
+    required this.socialMediaIcons,
     required this.website,
   });
 
@@ -44,6 +46,7 @@ class SavedCardModel {
       subscriptionPlan: json['subscriptionPlan'] ?? '',
       uid: json['uid'] ?? '',
       website: json['website'] ?? '',
+      socialMediaIcons:List<String>.from(json['socialMediaICons']),
     );
   }
 
@@ -58,6 +61,7 @@ class SavedCardModel {
       'profession': profession,
       'savedBy': savedBy,
       'social': social,
+      'socialMediaIcons': socialMediaIcons,
       'subscriptionAmount': subscriptionAmount,
       'subscriptionPlan': subscriptionPlan,
       'uid': uid,

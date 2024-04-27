@@ -1,4 +1,5 @@
 import 'package:bisa_app/src/presentation/full_card_view/cubit/card_view_cubit.dart';
+import 'package:bisa_app/src/presentation/more_screen/create_card_screen/model/card_model.dart';
 import 'package:bisa_app/src/presentation/widget/full_card_details_widget.dart';
 import 'package:bisa_app/src/presentation/widget/subscribe_button.dart';
 import 'package:bisa_app/src/utils/resources/asset_resources.dart';
@@ -10,7 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class FullCardView extends StatefulWidget {
   final String cardId;
-  const FullCardView({Key? key, required this.cardId}) : super(key: key);
+  final CardModel? cardModel;
+  const FullCardView({Key? key, required this.cardId,this.cardModel}) : super(key: key);
 
   @override
   State<FullCardView> createState() => _FullCardViewState();
@@ -114,27 +116,39 @@ class _FullCardViewState extends State<FullCardView> {
                               ],
                             ),
                             SizedBox(height: 40.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.w),
-                                  child: Container(
-                                    height: 25.h,
-                                    width: 100.w,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset(AssetResources.whatsApp),
-                                        Image.asset(AssetResources.instagram),
-                                        Image.asset(AssetResources.faceBook),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.end,
+                            //   children: [
+                            //     Padding(
+                            //       padding: EdgeInsets.only(right: 20.w),
+                            //       child: Container(
+                            //         height: 25.h,
+                            //         width: 100.w,
+                            //         child: ListView.builder(
+                            //           itemCount: widget.cardModel?.social.length,
+                            //           itemBuilder: (BuildContext context, int index) {
+                            //             final String? iconPath = widget.cardModel?.socialMediaIcons[index];
+                            //
+                            //             return Row(
+                            //               mainAxisAlignment:
+                            //               MainAxisAlignment.spaceBetween,
+                            //               children: [
+                            //                 iconPath != null
+                            //                 ? Image.asset(iconPath ,width: 20.w,height: 20.h,)
+                            //                     : SizedBox(),
+                            //               ],
+                            //             );
+                            //           },
+                            //
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+
+
+
+
                           ],
                         ),
                       ),
